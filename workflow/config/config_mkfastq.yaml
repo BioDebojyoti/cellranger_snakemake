@@ -1,0 +1,19 @@
+samples_csv:  "../gosia_single_cell_runs/240220_VH01167_29_AAFHTGTM5/SampleSheet.csv"
+# samples_csv:  "../test/cellranger-tiny-bcl-samplesheet-1.2.0.csv"
+
+IEM_samplesheet: True # or the samplesheet is of type "simple csv"
+
+start_with_bcl: True  # Set to False if starting with FASTQ files
+# bcl_folder: "../test/cellranger-tiny-bcl-1.2.0"
+bcl_folder: "../gosia_single_cell_runs/240220_VH01167_29_AAFHTGTM5/bcl_AAFHTGTM5"
+
+use_flowcell_id: True
+# flowcell_id: "H35KCBCXY" # AAFHTGTM5
+flowcell_id: "AAFHTGTM5"
+
+fastq_path: #"/path/to/fastqs"  # Only used if start_with_bcl is False
+
+resources:
+  localcores: 8  # Set the number of cores to use (e.g., 16)
+  localmem: 64  # Set the amount of memory to use in GB
+

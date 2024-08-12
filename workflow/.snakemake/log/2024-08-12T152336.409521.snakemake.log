@@ -1,0 +1,5 @@
+TypeErrorin line 38 of /home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/rules/rule_mkfastq.smk:
+expected str, bytes or os.PathLike object, not NoneType
+  File "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/Snakefile", line 5, in <module>
+  File "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/rules/rule_mkfastq.smk", line 38, in <module>
+  File "/opt/sw/bioinfo-tools/sources/anaconda3/envs/snakemake_7.12.1/lib/python3.10/posixpath.py", line 76, in join

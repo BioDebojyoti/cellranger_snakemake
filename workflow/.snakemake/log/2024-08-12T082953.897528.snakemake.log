@@ -1,0 +1,4 @@
+WorkflowErrorin line 17 of /home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/rules/rule_mkfastq.smk:
+Workflow defines configfile config/config_mkfastq.yaml  but it is not present or accessible.
+  File "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/Snakefile", line 5, in <module>
+  File "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/rules/rule_mkfastq.smk", line 17, in <module>

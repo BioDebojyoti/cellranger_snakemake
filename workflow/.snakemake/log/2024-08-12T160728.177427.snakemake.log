@@ -1,0 +1,27 @@
+Building DAG of jobs...
+Job stats:
+job        count    min threads    max threads
+-------  -------  -------------  -------------
+all            1              1              1
+mkfastq        1              1              1
+total          2              1              1
+
+
+[Mon Aug 12 16:07:28 2024]
+rule mkfastq:
+    input: ../test/cellranger-tiny-bcl-1.2.0
+    output: */outs/fastq_path/s1/*_R1_*.fastq.gz, */outs/fastq_path/s1/*_R2_*.fastq.gz
+    log: logs/mkfastq.log
+    jobid: 1
+    benchmark: benchmarks/benchmarks_mkfastq.txt
+    reason: Missing output files: */outs/fastq_path/s1/*_R2_*.fastq.gz, */outs/fastq_path/s1/*_R1_*.fastq.gz
+    resources: tmpdir=/tmp, cores=8, memory=64
+
+RuleException in rule mkfastq in line 46 of /home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/rules/rule_mkfastq.smk:
+NameError: The name 'opt_id_arg' is unknown in this context. Please make sure that you defined that variable. Also note that braces not used for variable access have to be escaped by repeating them, i.e. {{print $1}}, when formatting the following:
+
+        if [ -z {params.samplesheet} ]; then opt_sample_sheet=""; else opt_sample_sheet="--samplesheet={params.samplesheet}"; fi
+        if [ -z {params.flowcellid} ]; then opt_id_arg=""; else opt_id_arg="--samplesheet={params.flowcellid}"; fi
+
+        cellranger mkfastq --run={input} {{{opt_id_arg}}} {{opt_sample_sheet}}         --localcores={resources.cores}         --localmem={resources.memory} 
+        

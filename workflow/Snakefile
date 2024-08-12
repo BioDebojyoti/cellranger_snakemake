@@ -1,0 +1,16 @@
+# Snakemake pipeline for scRNA-seq data using Cell Ranger and Seurat with Docker containers
+import os, sys
+import pandas as pd 
+
+include: "rules/rule_mkfastq.smk"
+
+
+print("bcl folder  : " + bcl_folder)
+print("fastq folder: " + fastq_folder)
+print("Sample data frame:")
+print(samples_df.head(40))
+# Define rules
+# rule all:
+#     input:
+#         expand(os.path.join(fastq_folder, "{sample}","*_R{read}_*.fastq.gz"), sample=samples, read=[1, 2])
+
