@@ -1,44 +1,46 @@
-samples_csv:  "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/240220_VH01167_29_AAFHTGTM5/SampleSheet.csv"
+samples_csv:  "/test/SampleSheet.csv"
 
 start_with_bcl: true  # Set to False if starting with FASTQ files
-bcl_folder: "cellranger-tiny-bcl-1.2.0"
-flowcell_id: "H35KCBCXY"
+bcl_folder: "test/bcl"
+flowcell_id: "H35KCBCXY" # directory name one level above "/outs/fastq_path"
+
+output_count: "" # A unique run id and output folder name [a-zA-Z0-9_-]+
 
 fastq_path: #"/path/to/fastqs"  # Only used if start_with_bcl is False
 transcriptome: "refdata-cellranger-hg19-1.2.0"
 
-pass_expect_cells: False # true  # This is where you specify the expected cell count
-expect_cells: 3000  # This is where you specify the expected cell count
-pass_force_cells: False #2000   # Optional: This can also be specified
-force_cells:  #2000   # Optional: This can also be specified
-
-create_bam: True  # Set to true if you want to create BAM files during count
 
 resources:
   localcores: 8  # Set the number of cores to use (e.g., 16)
   localmem: 64  # Set the amount of memory to use in GB
 
-use_feature_ref: False  # Indicates whether to use the --feature-ref parameter
-use_libraries: False  # Indicates whether to use the --libraries parameter
 
 feature_ref: "feature_ref.csv" #"/path/to/feature_ref.csv"  # Path to the Feature Reference CSV file (optional)
 libraries_csv: "libraries.csv" #"/path/to/libraries.csv"  # Path to the Libraries CSV file (optional)
 
-# Important
-# cellranger aggr is NOT designed for aggregating multiple sequencing runs of the same library, 
-# for example, resequencing the same library to increase read depth.
-# In this scenario, you must specify all FASTQ files (fastqs field) in a single analysis of either cellranger count or multi.
-
-aggregate: False # Set to False if you do not want to run cellranger aggr
-aggregation_id: "test" # Required. A unique run ID string: e.g. AGG123
-aggregation_csv: "aggregation.csv" # Required. Path to the aggregation CSV file containing the list of molecule_info.h5 files.
-reanalyze: False  # Set to False if you do not want to run cellranger reanalyze
-
-
-# VDJ Making a genome-based reference package
-make_vdjref: False #Path to FASTA file containing your genome reference
-# folder with vdjreference
-vdjref_folder: "/mnt/WD1/home/debojyoti/refdata-cellranger-vdj-GRCh38-alts-ensembl-7.1.0" # else run "cellranger mkvdjref" and create a directory whose name is specified by the --genome argument.
-genome_fasta: # path to genome fasta file to be used by cellranger mkvdjref
-annotation_gtf: # path to genome annotation gtf file to be used by cellranger mkvdjref
-vdj_seqs: # Path to a FASTA file that directly specifies V(D)J sequences. This is mutually exclusive with the "fasta" and "genes" args
+additional_arguments: "--create-bam true" # required 
+# additional but optional arguments are 
+# "--jobmode local" # Job manager to use. Valid options: local (default), sge, lsf, slurm or path to a .template file. 
+#         or  
+# "--chemistry "fiveprime" or something else
+# Assay configuration. NOTE: by default the assay configuration is detected automatically, which is the recommended mode. You usually will not need to specify a chemistry. Options are: 'auto' for autodetection,
+# 'threeprime' for Single Cell 3', 'fiveprime' for  Single Cell 5', 'SC3Pv1' or 'SC3Pv2' or 'SC3Pv3' or 'SC3Pv4' for Single Cell 3' v1/v2/v3/v4, 'SC3Pv3LT' for Single Cell 3' v3 LT, 'SC3Pv3HT' for Single Cell 3'
+# v3 HT, 'SC5P-PE' or 'SC5P-PE-v3' or 'SC5P-R2' or 'SC5P-R2-v3', for Single Cell 5', paired-end/R2-only, 'SC-FB' for Single Cell Antibody-only 3' v2 or 5'. To analyze the GEX portion of multiome data, chemistry
+# must be set to 'ARC-v1' [default: auto]
+#         or
+# "--expect-cells 3000"  # This is where you specify the expected cell count
+# "--force-cells 2000"   # Optional: This can also be specified
+#         or
+# "--lanes 12"           # Only use FASTQs from selected lanes
+#         or
+# "--project <TEXT>"         
+# Name of the project folder within a mkfastq or bcl2fastq-generated folder 
+# # from which to pick FASTQs
+#         or
+# "--nosecondary                  # Disable secondary analysis, e.g. clustering. Optional
+# "--r1-length <NUM>              # Hard trim the input Read 1 to this length before analysis
+# "--r2-length <NUM>              # Hard trim the input Read 2 to this length before analysis
+# "--include-introns <true|false> # Include intronic reads in count [default: true] [possible values: true, false]
+# "--no-libraries                 # Proceed with processing using a --feature-ref but no Feature Barcode libraries specified with the 'libraries' flag
+# "--check-library-compatibility <true|false> # Whether to check for barcode compatibility between libraries. [default: true] [possible values: true, false]
+# "--min-crispr-umi <NUM>"         # Minimum CRISPR UMI threshold [default: 3]

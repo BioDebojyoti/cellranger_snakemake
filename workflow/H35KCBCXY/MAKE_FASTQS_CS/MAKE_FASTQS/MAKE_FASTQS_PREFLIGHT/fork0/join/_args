@@ -1,0 +1,11 @@
+{
+    "__mem_gb": 1,
+    "__threads": 1,
+    "__vmem_gb": 4,
+    "barcode_whitelist": "/opt/cellranger-8.0.1/lib/python/cellranger/barcodes/737K-august-2016.txt,/opt/cellranger-8.0.1/lib/python/cellranger/barcodes/3M-february-2018.txt.gz",
+    "check_executables": true,
+    "interop_output_path": null,
+    "max_bcl2fastq_threads": 6,
+    "output_path": "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/tiny_bcl",
+    "run_path": "/home/debojyoti/Projects/core_facility/cellranger_snakemake/test/cellranger-tiny-bcl-1.2.0"
+}

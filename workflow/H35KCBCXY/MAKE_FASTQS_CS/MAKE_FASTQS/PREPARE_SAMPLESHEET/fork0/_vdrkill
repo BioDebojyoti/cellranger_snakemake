@@ -1,0 +1,19 @@
+{
+    "timestamp": "2024-08-14T14:06:12.130210899+02:00",
+    "paths": [
+        "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/PREPARE_SAMPLESHEET/fork0/chnk0-uf000bc9da6/files/samplesheet.csv"
+    ],
+    "errors": null,
+    "events": [
+        {
+            "Timestamp": "2024-08-14T14:05:59.005570115+02:00",
+            "DeltaBytes": 7630
+        },
+        {
+            "Timestamp": "2024-08-14T14:06:12.130210899+02:00",
+            "DeltaBytes": -575
+        }
+    ],
+    "count": 1,
+    "size": 575
+}

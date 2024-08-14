@@ -1,6 +1,0 @@
-Building DAG of jobs...
-MissingInputException in rule mkfastq in line 46 of /home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/rules/rule_mkfastq.smk:
-Missing input files for rule mkfastq:
-    output: H35KCBCXY/outs/fastq_path/s1/*_R1_*.fastq.gz, H35KCBCXY/outs/fastq_path/s1/*_R2_*.fastq.gz
-    affected files:
-        cellranger-tiny-bcl-1.2.0

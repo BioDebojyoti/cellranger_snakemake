@@ -1,3 +1,0 @@
-NameErrorin line 8 of /home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/Snakefile:
-name 'configfile' is not defined
-  File "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/Snakefile", line 8, in <module>

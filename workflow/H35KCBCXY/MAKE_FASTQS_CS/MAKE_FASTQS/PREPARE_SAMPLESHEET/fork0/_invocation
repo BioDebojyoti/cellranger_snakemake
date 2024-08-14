@@ -1,0 +1,19 @@
+@include "tenkit/_make_fastqs_stages.mro"
+
+call PREPARE_SAMPLESHEET(
+    run_path            = "/home/debojyoti/Projects/core_facility/cellranger_snakemake/test/cellranger-tiny-bcl-1.2.0",
+    specs               = [
+        {
+            "csv": "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/../test/cellranger-tiny-bcl-samplesheet-1.2.0.csv",
+        },
+    ],
+    project             = "H35KCBCXY",
+    bc_read_type        = "R1",
+    bc_length           = 16,
+    si_read_type        = "I1",
+    bcl2fastq2_args     = " -p 6 -d 6 -r 6 -w 6 --barcode-mismatches 1",
+    force_single_index  = false,
+    filter_dual_index   = false,
+    filter_single_index = false,
+    rc_i2_override      = null,
+)

@@ -1,3 +1,0 @@
-CreateRuleExceptionin line 13 of /home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/Snakefile:
-The name all is already used by another rule
-  File "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/Snakefile", line 13, in <module>

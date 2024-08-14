@@ -1,0 +1,24 @@
+{
+    "__mem_gb": 1,
+    "__threads": 1,
+    "__vmem_gb": 4,
+    "all_mkfastq_args": "--run=/home/debojyoti/Projects/core_facility/cellranger_snakemake/test/cellranger-tiny-bcl-1.2.0 --output-dir=tiny_bcl --samplesheet=../test/cellranger-tiny-bcl-samplesheet-1.2.0.csv --localcores=32 --localmem=128",
+    "barcode_whitelist": "/opt/cellranger-8.0.1/lib/python/cellranger/barcodes/737K-august-2016.txt,/opt/cellranger-8.0.1/lib/python/cellranger/barcodes/3M-february-2018.txt.gz",
+    "bases_mask": null,
+    "bc_length": 16,
+    "bc_read_type": "R1",
+    "bc_start_index": 0,
+    "bcl2fastq2_args": " -p 6 -d 6 -r 6 -w 6 --barcode-mismatches 1",
+    "check_executables": false,
+    "lanes": null,
+    "run_path": "/home/debojyoti/Projects/core_facility/cellranger_snakemake/test/cellranger-tiny-bcl-1.2.0",
+    "si_read_type": "I1",
+    "specs": [
+        {
+            "csv": "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/../test/cellranger-tiny-bcl-samplesheet-1.2.0.csv"
+        }
+    ],
+    "umi_length": 10,
+    "umi_read_type": "R1",
+    "umi_start_index": 16
+}

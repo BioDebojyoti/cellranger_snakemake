@@ -1,0 +1,14 @@
+
+resources:
+  localcores: 8  # Set the number of cores to use (e.g., 16)
+  localmem: 64  # Set the amount of memory to use in GB
+
+
+# VDJ Making a genome-based reference package
+make_vdjref: False #Path to FASTA file containing your genome reference
+# folder with vdjreference
+# vdjref_folder: "/mnt/WD1/home/debojyoti/refdata-cellranger-vdj-GRCh38-alts-ensembl-7.1.0" # else run "cellranger mkvdjref" and create a directory whose name is specified by the --genome argument.
+vdjref_folder: "../test/test_vdjref" # else run "cellranger mkvdjref" and create a directory whose name is specified by the --genome argument.
+genome_fasta: "../test/dummy_mkvdjref/dummy_mkvdjref.fasta" # path to genome fasta file to be used by cellranger mkvdjref
+annotation_gtf: "../test/dummy_mkvdjref/dummy_mkvdjref.gtf" # path to genome annotation gtf file to be used by cellranger mkvdjref
+vdj_seqs: # Path to a FASTA file that directly specifies V(D)J sequences. This is mutually exclusive with the "fasta" and "genes" args

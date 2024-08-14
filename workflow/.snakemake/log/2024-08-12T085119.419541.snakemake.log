@@ -1,5 +1,0 @@
-ValueErrorin line 25 of /home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/rules/rule_mkfastq.smk:
-Keyword 'Cloud_Data' not found in the file.
-  File "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/Snakefile", line 5, in <module>
-  File "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/rules/rule_mkfastq.smk", line 29, in <module>
-  File "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/rules/rule_mkfastq.smk", line 25, in find_keyword_line

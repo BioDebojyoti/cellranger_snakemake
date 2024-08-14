@@ -1,4 +1,0 @@
-TypeErrorin line 41 of /home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/rules/rule_mkfastq.smk:
-can only concatenate str (not "NoneType") to str
-  File "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/Snakefile", line 5, in <module>
-  File "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/rules/rule_mkfastq.smk", line 41, in <module>

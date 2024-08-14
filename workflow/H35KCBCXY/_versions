@@ -1,0 +1,4 @@
+{
+    "martian": "v4.0.12",
+    "pipelines": "cellranger-8.0.1"
+}

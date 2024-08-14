@@ -1,0 +1,47 @@
+{
+    "timestamp": "2024-08-14T14:06:12.130210899+02:00",
+    "paths": [
+        "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/PREPARE_SAMPLESHEET/fork0/chnk0-uf000bc9da6/files/samplesheet.csv"
+    ],
+    "errors": null,
+    "events": [
+        {
+            "Timestamp": "2024-08-14T14:05:56.919143671+02:00",
+            "DeltaBytes": 13630
+        },
+        {
+            "Timestamp": "2024-08-14T14:05:59.005570115+02:00",
+            "DeltaBytes": 7630
+        },
+        {
+            "Timestamp": "2024-08-14T14:06:01.463211803+02:00",
+            "DeltaBytes": 5483
+        },
+        {
+            "Timestamp": "2024-08-14T14:06:02.512256168+02:00",
+            "DeltaBytes": 57842
+        },
+        {
+            "Timestamp": "2024-08-14T14:06:07.614313324+02:00",
+            "DeltaBytes": 12455
+        },
+        {
+            "Timestamp": "2024-08-14T14:06:08.051363874+02:00",
+            "DeltaBytes": 7366
+        },
+        {
+            "Timestamp": "2024-08-14T14:06:09.40876041+02:00",
+            "DeltaBytes": 7701
+        },
+        {
+            "Timestamp": "2024-08-14T14:06:10.791634695+02:00",
+            "DeltaBytes": 10457
+        },
+        {
+            "Timestamp": "2024-08-14T14:06:12.130210899+02:00",
+            "DeltaBytes": -575
+        }
+    ],
+    "count": 1,
+    "size": 575
+}

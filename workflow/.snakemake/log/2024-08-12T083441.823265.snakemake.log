@@ -1,4 +1,0 @@
-KeyErrorin line 28 of /home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/rules/rule_mkfastq.smk:
-'IEM_samplesheet'
-  File "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/Snakefile", line 5, in <module>
-  File "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/rules/rule_mkfastq.smk", line 28, in <module>

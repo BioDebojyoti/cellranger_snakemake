@@ -1,0 +1,14 @@
+{
+    "bases_mask": null,
+    "bc_read_type": "R1",
+    "bcl2fastq1_args": " --mismatches=1",
+    "bcl2fastq2_args": " -p 6 -d 6 -r 6 -w 6 --barcode-mismatches 1",
+    "dual_indexed_flowcell": false,
+    "filter_single_index": false,
+    "interop_output_path": null,
+    "max_bcl2fastq_threads": 6,
+    "output_path": "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/tiny_bcl",
+    "run_path": "/home/debojyoti/Projects/core_facility/cellranger_snakemake/test/cellranger-tiny-bcl-1.2.0",
+    "samplesheet_path": "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/PREPARE_SAMPLESHEET/fork0/chnk0-uf000bc9da6/files/samplesheet.csv",
+    "si_read_type": "I1"
+}
