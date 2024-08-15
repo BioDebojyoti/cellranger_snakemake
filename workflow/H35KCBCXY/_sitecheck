@@ -1,7 +1,7 @@
 cellranger mkfastq (cellranger-8.0.1)
 Copyright (c) 2021 10x Genomics, Inc.  All rights reserved.
 -------------------------------------------------------------------------------
-Wed Aug 14 14:06:18 CEST 2024
+Thu Aug 15 20:37:13 CEST 2024
 
 =====================================================================
 System Info
@@ -87,7 +87,7 @@ Size Used Avail
 16M 12K 16M
 377G 89G 269G
 252G 0 252G
-252G 188M 252G
+252G 124M 252G
 252G 0 252G
 5.2T 2.2T 2.8T
 =====================================================================
@@ -204,7 +204,7 @@ Global File Limit
 cat /proc/sys/fs/file-{max,nr}
 ---------------------------------------------------------------------
 9223372036854775807
-50912	0	9223372036854775807
+53408	0	9223372036854775807
 =====================================================================
 
 =====================================================================
@@ -288,41 +288,41 @@ cat /proc/self/cgroup
 cgroup mem stats
 cat /sys/fs/cgroup/memory/user.slice/user-1005.slice/user@1005.service/memory.stat
 ---------------------------------------------------------------------
-cache 5350383616
-rss 2826448896
+cache 5025435648
+rss 3541602304
 rss_huge 0
-shmem 79753216
-mapped_file 478744576
-dirty 237678592
+shmem 46481408
+mapped_file 270622720
+dirty 237424640
 writeback 0
 swap 0
-pgpgin 878987845
-pgpgout 876991471
-pgfault 956143295
-pgmajfault 48326
-inactive_anon 2904334336
-active_anon 1568768
-inactive_file 4521791488
-active_file 748871680
+pgpgin 1343536546
+pgpgout 1341444984
+pgfault 1427382555
+pgmajfault 63369
+inactive_anon 3586322432
+active_anon 1593344
+inactive_file 3625148416
+active_file 1353838592
 unevictable 32768
 hierarchical_memory_limit 9223372036854771712
 hierarchical_memsw_limit 9223372036854771712
-total_cache 5350383616
-total_rss 2826448896
+total_cache 5025435648
+total_rss 3541602304
 total_rss_huge 0
-total_shmem 79753216
-total_mapped_file 478744576
-total_dirty 237678592
+total_shmem 46481408
+total_mapped_file 270622720
+total_dirty 237424640
 total_writeback 0
 total_swap 0
-total_pgpgin 878987845
-total_pgpgout 876991471
-total_pgfault 956143295
-total_pgmajfault 48326
-total_inactive_anon 2904334336
-total_active_anon 1568768
-total_inactive_file 4521791488
-total_active_file 748871680
+total_pgpgin 1343536546
+total_pgpgout 1341444984
+total_pgfault 1427382555
+total_pgmajfault 63369
+total_inactive_anon 3586322432
+total_active_anon 1593344
+total_inactive_file 3625148416
+total_active_file 1353838592
 total_unevictable 32768
 =====================================================================
 

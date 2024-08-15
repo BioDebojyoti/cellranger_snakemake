@@ -1,6 +1,0 @@
-2024-08-14 14:05:59 [time] __start__
-2024-08-14 14:05:59 [monitor] cgroup memory limit of 9223372036854771712 bytes detected
-2024-08-14 14:06:00 [info] Read Info: [{'read_length': 26, 'index_read': False, 'read_name': 'R1', 'original_read_name': 'R1'}, {'read_length': 8, 'index_read': True, 'read_name': 'I1', 'original_read_name': 'R2'}, {'read_length': 98, 'index_read': False, 'read_name': 'R2', 'original_read_name': 'R3'}]
-2024-08-14 14:06:00 [info] Flowcell ID: H35KCBCXY
-2024-08-14 14:06:00 [info] I2 Read is RC: False
-2024-08-14 14:06:01 [time] __end__

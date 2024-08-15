@@ -1,0 +1,28 @@
+{
+    "__mem_gb": 1,
+    "__threads": 1,
+    "__vmem_gb": 4,
+    "bcl2fastq_version": "2.20.0.422",
+    "fastq_path": "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/tiny_bcl",
+    "input_files": [
+        "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/tiny_bcl/p1/s1_1/test_sample_S1_L001_I1_001.fastq.gz",
+        "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/tiny_bcl/p1/s1_1/test_sample_S1_L001_R1_001.fastq.gz",
+        "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/tiny_bcl/p1/s1_1/test_sample_S1_L001_R2_001.fastq.gz",
+        "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/tiny_bcl/p1/s1_2/test_sample_S2_L001_I1_001.fastq.gz",
+        "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/tiny_bcl/p1/s1_2/test_sample_S2_L001_R1_001.fastq.gz",
+        "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/tiny_bcl/p1/s1_2/test_sample_S2_L001_R2_001.fastq.gz",
+        "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/tiny_bcl/p1/s1_3/test_sample_S3_L001_I1_001.fastq.gz",
+        "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/tiny_bcl/p1/s1_3/test_sample_S3_L001_R1_001.fastq.gz",
+        "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/tiny_bcl/p1/s1_3/test_sample_S3_L001_R2_001.fastq.gz",
+        "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/tiny_bcl/p1/s1_4/test_sample_S4_L001_I1_001.fastq.gz",
+        "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/tiny_bcl/p1/s1_4/test_sample_S4_L001_R1_001.fastq.gz",
+        "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/tiny_bcl/p1/s1_4/test_sample_S4_L001_R2_001.fastq.gz"
+    ],
+    "lane": 1,
+    "output_snum": "1",
+    "project": "p1",
+    "remove_split_fastqs": true,
+    "remove_undetermined_fastqs": false,
+    "sample_id": "s1",
+    "samplesheet_path": "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/PREPARE_SAMPLESHEET/fork0/chnk0-u0d46be4ac6/files/samplesheet.csv"
+}

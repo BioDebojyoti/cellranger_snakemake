@@ -1,0 +1,45 @@
+
+
+/opt/cellranger-8.0.1/bin
+cellranger mkfastq (cellranger-8.0.1)
+Copyright (c) 2021 10x Genomics, Inc.  All rights reserved.
+-------------------------------------------------------------------------------
+
+Martian Runtime - v4.0.12
+Serving UI at http://z6g4:38531?auth=7MUx-ydlSdNab0qdWzfc9O8ENzKj85NEok_eRiZzjx8
+
+Running preflight checks (please wait)...
+Checking run folder...
+Checking RunInfo.xml...
+Checking system environment...
+Emitting run information...
+Checking read specification...
+Checking samplesheet specs...
+2024-08-15 20:36:54 [runtime] (ready)           ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.PREPARE_SAMPLESHEET
+2024-08-15 20:36:54 [runtime] (run:local)       ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.PREPARE_SAMPLESHEET.fork0.chnk0.main
+2024-08-15 20:36:56 [runtime] (chunks_complete) ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.PREPARE_SAMPLESHEET
+2024-08-15 20:36:56 [runtime] (ready)           ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.BCL2FASTQ_WITH_SAMPLESHEET
+2024-08-15 20:36:56 [runtime] (run:local)       ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.BCL2FASTQ_WITH_SAMPLESHEET.fork0.split
+2024-08-15 20:36:57 [runtime] (split_complete)  ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.BCL2FASTQ_WITH_SAMPLESHEET
+2024-08-15 20:36:57 [runtime] (run:local)       ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.BCL2FASTQ_WITH_SAMPLESHEET.fork0.chnk0.main
+2024-08-15 20:37:02 [runtime] (chunks_complete) ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.BCL2FASTQ_WITH_SAMPLESHEET
+2024-08-15 20:37:02 [runtime] (run:local)       ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.BCL2FASTQ_WITH_SAMPLESHEET.fork0.join
+2024-08-15 20:37:03 [runtime] (join_complete)   ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.BCL2FASTQ_WITH_SAMPLESHEET
+2024-08-15 20:37:03 [runtime] (ready)           ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.MERGE_FASTQS_BY_LANE_SAMPLE
+2024-08-15 20:37:03 [runtime] (run:local)       ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.MERGE_FASTQS_BY_LANE_SAMPLE.fork0.split
+2024-08-15 20:37:04 [runtime] (split_complete)  ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.MERGE_FASTQS_BY_LANE_SAMPLE
+2024-08-15 20:37:04 [runtime] (run:local)       ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.MERGE_FASTQS_BY_LANE_SAMPLE.fork0.chnk0.main
+2024-08-15 20:37:05 [runtime] (chunks_complete) ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.MERGE_FASTQS_BY_LANE_SAMPLE
+2024-08-15 20:37:05 [runtime] (run:local)       ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.MERGE_FASTQS_BY_LANE_SAMPLE.fork0.join
+2024-08-15 20:37:07 [runtime] (join_complete)   ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.MERGE_FASTQS_BY_LANE_SAMPLE
+
+Outputs:
+- FASTQ output folder:   /home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/tiny_bcl
+- Interop output folder: /home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/H35KCBCXY/outs/interop_path
+- Input samplesheet:     /home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/H35KCBCXY/outs/input_samplesheet.csv
+
+Waiting 6 seconds for UI to do final refresh.
+Pipestance completed successfully!
+
+2024-08-15 20:37:13 Shutting down.
+Saving pipestance info to "H35KCBCXY/H35KCBCXY.mri.tgz"

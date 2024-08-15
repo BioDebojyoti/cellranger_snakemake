@@ -1,5 +1,5 @@
 {
     "dual_indexed_flowcell": false,
-    "input_samplesheet": "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/PREPARE_SAMPLESHEET/fork0/chnk0-uf000bc9da6/files/input_samplesheet.csv",
-    "samplesheet": "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/PREPARE_SAMPLESHEET/fork0/chnk0-uf000bc9da6/files/samplesheet.csv"
+    "input_samplesheet": "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/PREPARE_SAMPLESHEET/fork0/chnk0-u0d46be4ac6/files/input_samplesheet.csv",
+    "samplesheet": "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/PREPARE_SAMPLESHEET/fork0/chnk0-u0d46be4ac6/files/samplesheet.csv"
 }

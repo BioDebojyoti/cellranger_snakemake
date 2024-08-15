@@ -4,10 +4,10 @@ bcl_folder: "../test/cellranger-tiny-bcl-1.2.0"
 outputdir: "tiny_bcl"
 
 resources:
-  localcores: 32  # Set the number of cores to use (e.g., 16)
-  localmem: 128   # Set the amount of memory to use in GB
+  localcores: 8  
+  localmem: 32   
 
-IEM_samplesheet: True # or the sample sheet is of type "simple csv"
+IEM_samplesheet: True 
 samples_csv:  "../test/cellranger-tiny-bcl-samplesheet-1.2.0.csv" 
 
-additional_argmuments: #
+additional_arguments: #

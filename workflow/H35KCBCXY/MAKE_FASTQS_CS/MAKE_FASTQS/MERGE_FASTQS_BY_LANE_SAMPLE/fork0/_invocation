@@ -2,7 +2,7 @@
 
 call MERGE_FASTQS_BY_LANE_SAMPLE(
     fastq_path                 = "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/tiny_bcl",
-    samplesheet_path           = "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/PREPARE_SAMPLESHEET/fork0/chnk0-uf000bc9da6/files/samplesheet.csv",
+    samplesheet_path           = "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/PREPARE_SAMPLESHEET/fork0/chnk0-u0d46be4ac6/files/samplesheet.csv",
     remove_undetermined_fastqs = false,
     remove_split_fastqs        = true,
     bcl2fastq_version          = "2.20.0.422",

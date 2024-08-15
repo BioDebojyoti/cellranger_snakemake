@@ -1,79 +1,79 @@
 Martian Runtime - v4.0.12
-2024-08-14 14:05:56 [build  ] Built with Go version go1.21.5 X:nocoverageredesign
-2024-08-14 14:05:56 [cmdline] mrp __H35KCBCXY.mro H35KCBCXY --localcores=32 --localmem=128
-2024-08-14 14:05:56 [pid    ] 1896448
-2024-08-14 14:05:56 [environ] CONDA_BACKUP_RANLIB=/opt/sw/bioinfo-tools/sources/anaconda3/bin/x86_64-conda_cos6-linux-gnu-ranlib
-2024-08-14 14:05:56 [environ] CONDA_SHLVL=0
-2024-08-14 14:05:56 [environ] LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
-2024-08-14 14:05:56 [environ] CONDA_EXE=/opt/sw/bioinfo-tools/sources/anaconda3/bin/conda
-2024-08-14 14:05:56 [environ] CONDA_BACKUP_OBJCOPY=/opt/sw/bioinfo-tools/sources/anaconda3/bin/x86_64-conda_cos6-linux-gnu-objcopy
-2024-08-14 14:05:56 [environ] LC_MEASUREMENT=sv_SE.UTF-8
-2024-08-14 14:05:56 [environ] LC_PAPER=sv_SE.UTF-8
-2024-08-14 14:05:56 [environ] LC_MONETARY=sv_SE.UTF-8
-2024-08-14 14:05:56 [environ] XDG_MENU_PREFIX=gnome-
-2024-08-14 14:05:56 [environ] CONDA_BACKUP_AR=/opt/sw/bioinfo-tools/sources/anaconda3/bin/x86_64-conda_cos6-linux-gnu-ar
-2024-08-14 14:05:56 [environ] CONDA_BACKUP_AS=/opt/sw/bioinfo-tools/sources/anaconda3/bin/x86_64-conda_cos6-linux-gnu-as
-2024-08-14 14:05:56 [environ] TENX_PRODUCT=cellranger
-2024-08-14 14:05:56 [environ] LANG=C
-2024-08-14 14:05:56 [environ] RUST_BACKTRACE=1
-2024-08-14 14:05:56 [environ] SSH_AUTH_SOCK=/run/user/1005/keyring/ssh
-2024-08-14 14:05:56 [environ] NUMEXPR_NUM_THREADS=1
-2024-08-14 14:05:56 [environ] TENX_VERSION=cellranger-8.0.1
-2024-08-14 14:05:56 [environ] LC_NAME=sv_SE.UTF-8
-2024-08-14 14:05:56 [environ] CONDA_BACKUP_STRIP=/opt/sw/bioinfo-tools/sources/anaconda3/bin/x86_64-conda_cos6-linux-gnu-strip
-2024-08-14 14:05:56 [environ] USER=debojyoti
-2024-08-14 14:05:56 [environ] PYTHONNOUSERSITE=1
-2024-08-14 14:05:56 [environ] PWD=/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow
-2024-08-14 14:05:56 [environ] HOME=/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow
-2024-08-14 14:05:56 [environ] CONDA_PYTHON_EXE=/opt/sw/bioinfo-tools/sources/anaconda3/bin/python
-2024-08-14 14:05:56 [environ] LC_CTYPE=en_US.UTF-8
-2024-08-14 14:05:56 [environ] MKL_CBWR=COMPATIBLE
-2024-08-14 14:05:56 [environ] XDG_SESSION_TYPE=x11
-2024-08-14 14:05:56 [environ] BASH_ENV=/opt/Modules/init/bash
-2024-08-14 14:05:56 [environ] XDG_DATA_DIRS=/usr/share/ubuntu:/usr/local/share:/usr/share:/var/lib/snapd/desktop
-2024-08-14 14:05:56 [environ] CONDA_BACKUP_STRINGS=/opt/sw/bioinfo-tools/sources/anaconda3/bin/x86_64-conda_cos6-linux-gnu-strings
-2024-08-14 14:05:56 [environ] CONDA_BACKUP_CXXFILT=/opt/sw/bioinfo-tools/sources/anaconda3/bin/x86_64-conda_cos6-linux-gnu-c++filt
-2024-08-14 14:05:56 [environ] CONDA_BACKUP_SIZE=/opt/sw/bioinfo-tools/sources/anaconda3/bin/x86_64-conda_cos6-linux-gnu-size
-2024-08-14 14:05:56 [environ] CONDA_BACKUP_HOST=x86_64-conda_cos6-linux-gnu
-2024-08-14 14:05:56 [environ] MKL_NUM_THREADS=1
-2024-08-14 14:05:56 [environ] XDG_SESSION_DESKTOP=ubuntu
-2024-08-14 14:05:56 [environ] LC_ADDRESS=sv_SE.UTF-8
-2024-08-14 14:05:56 [environ] SSH_AGENT_LAUNCHER=gnome-keyring
-2024-08-14 14:05:56 [environ] TMPDIR=/tmp
-2024-08-14 14:05:56 [environ] LC_NUMERIC=sv_SE.UTF-8
-2024-08-14 14:05:56 [environ] TENX_SUBCMD=mkfastq
-2024-08-14 14:05:56 [environ] CONDA_BACKUP_READELF=/opt/sw/bioinfo-tools/sources/anaconda3/bin/x86_64-conda_cos6-linux-gnu-readelf
-2024-08-14 14:05:56 [environ] CONDA_BACKUP_LD=/opt/sw/bioinfo-tools/sources/anaconda3/bin/x86_64-conda_cos6-linux-gnu-ld
-2024-08-14 14:05:56 [environ] TERM=xterm-256color
-2024-08-14 14:05:56 [environ] SHELL=/bin/bash
-2024-08-14 14:05:56 [environ] XDG_SESSION_CLASS=user
-2024-08-14 14:05:56 [environ] CONDA_BACKUP_GPROF=/opt/sw/bioinfo-tools/sources/anaconda3/bin/x86_64-conda_cos6-linux-gnu-gprof
-2024-08-14 14:05:56 [environ] TENX_COPYRIGHT=Copyright (c) 2021 10x Genomics, Inc.  All rights reserved.
-2024-08-14 14:05:56 [environ] TENX_SCRIPTDIR=/opt/cellranger-8.0.1/bin
-2024-08-14 14:05:56 [environ] XDG_CURRENT_DESKTOP=Unity
-2024-08-14 14:05:56 [environ] CONDA_BACKUP_ADDR2LINE=/opt/sw/bioinfo-tools/sources/anaconda3/bin/x86_64-conda_cos6-linux-gnu-addr2line
-2024-08-14 14:05:56 [environ] TENX_SUBCMDDIR=/opt/cellranger-8.0.1/bin/sc_rna
-2024-08-14 14:05:56 [environ] CONDA_BACKUP_ELFEDIT=/opt/sw/bioinfo-tools/sources/anaconda3/bin/x86_64-conda_cos6-linux-gnu-elfedit
-2024-08-14 14:05:56 [environ] SHLVL=4
-2024-08-14 14:05:56 [environ] PYTHONPATH=/opt/cellranger-8.0.1/lib/python:/opt/cellranger-8.0.1/external/martian/adapters/python
-2024-08-14 14:05:56 [environ] LC_TELEPHONE=sv_SE.UTF-8
-2024-08-14 14:05:56 [environ] LOGNAME=debojyoti
-2024-08-14 14:05:56 [environ] XDG_RUNTIME_DIR=/run/user/1005
-2024-08-14 14:05:56 [environ] XDG_CONFIG_DIRS=/etc/xdg/xdg-ubuntu:/etc/xdg
-2024-08-14 14:05:56 [environ] PATH=/opt/cellranger-8.0.1/lib/bin:/opt/cellranger-8.0.1/external/martian/bin:/opt/cellranger-8.0.1/external/anaconda/bin:/opt/cellranger-8.0.1/bin/tenkit:/opt/cellranger-8.0.1/bin:/opt/cellranger-8.0.1/lib/bin:/opt/cellranger-8.0.1/external/martian/bin:/opt/cellranger-8.0.1/external/anaconda/bin:/opt/cellranger-8.0.1/bin/tenkit:/opt/cellranger-8.0.1/bin:/opt/cellranger-8.0.1/lib/bin:/opt/cellranger-8.0.1/external/martian/bin:/opt/cellranger-8.0.1/external/anaconda/bin:/opt/cellranger-8.0.1/bin/tenkit:/opt/cellranger-8.0.1/bin:/opt/cellranger-8.0.1:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-2024-08-14 14:05:56 [environ] LC_IDENTIFICATION=sv_SE.UTF-8
-2024-08-14 14:05:56 [environ] TENX_BANNER=cellranger mkfastq (cellranger-8.0.1)
+2024-08-15 20:36:52 [build  ] Built with Go version go1.21.5 X:nocoverageredesign
+2024-08-15 20:36:52 [cmdline] mrp __H35KCBCXY.mro H35KCBCXY --localcores=8 --localmem=32
+2024-08-15 20:36:52 [pid    ] 331078
+2024-08-15 20:36:52 [environ] CONDA_BACKUP_RANLIB=/opt/sw/bioinfo-tools/sources/anaconda3/bin/x86_64-conda_cos6-linux-gnu-ranlib
+2024-08-15 20:36:52 [environ] CONDA_SHLVL=0
+2024-08-15 20:36:52 [environ] LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
+2024-08-15 20:36:52 [environ] CONDA_EXE=/opt/sw/bioinfo-tools/sources/anaconda3/bin/conda
+2024-08-15 20:36:52 [environ] CONDA_BACKUP_OBJCOPY=/opt/sw/bioinfo-tools/sources/anaconda3/bin/x86_64-conda_cos6-linux-gnu-objcopy
+2024-08-15 20:36:52 [environ] LC_MEASUREMENT=sv_SE.UTF-8
+2024-08-15 20:36:52 [environ] LC_PAPER=sv_SE.UTF-8
+2024-08-15 20:36:52 [environ] LC_MONETARY=sv_SE.UTF-8
+2024-08-15 20:36:52 [environ] XDG_MENU_PREFIX=gnome-
+2024-08-15 20:36:52 [environ] CONDA_BACKUP_AR=/opt/sw/bioinfo-tools/sources/anaconda3/bin/x86_64-conda_cos6-linux-gnu-ar
+2024-08-15 20:36:52 [environ] CONDA_BACKUP_AS=/opt/sw/bioinfo-tools/sources/anaconda3/bin/x86_64-conda_cos6-linux-gnu-as
+2024-08-15 20:36:52 [environ] TENX_PRODUCT=cellranger
+2024-08-15 20:36:52 [environ] LANG=C
+2024-08-15 20:36:52 [environ] RUST_BACKTRACE=1
+2024-08-15 20:36:52 [environ] SSH_AUTH_SOCK=/run/user/1005/keyring/ssh
+2024-08-15 20:36:52 [environ] NUMEXPR_NUM_THREADS=1
+2024-08-15 20:36:52 [environ] TENX_VERSION=cellranger-8.0.1
+2024-08-15 20:36:52 [environ] LC_NAME=sv_SE.UTF-8
+2024-08-15 20:36:52 [environ] CONDA_BACKUP_STRIP=/opt/sw/bioinfo-tools/sources/anaconda3/bin/x86_64-conda_cos6-linux-gnu-strip
+2024-08-15 20:36:52 [environ] USER=debojyoti
+2024-08-15 20:36:52 [environ] PYTHONNOUSERSITE=1
+2024-08-15 20:36:52 [environ] PWD=/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow
+2024-08-15 20:36:52 [environ] HOME=/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow
+2024-08-15 20:36:52 [environ] CONDA_PYTHON_EXE=/opt/sw/bioinfo-tools/sources/anaconda3/bin/python
+2024-08-15 20:36:52 [environ] LC_CTYPE=en_US.UTF-8
+2024-08-15 20:36:52 [environ] MKL_CBWR=COMPATIBLE
+2024-08-15 20:36:52 [environ] XDG_SESSION_TYPE=x11
+2024-08-15 20:36:52 [environ] BASH_ENV=/opt/Modules/init/bash
+2024-08-15 20:36:52 [environ] XDG_DATA_DIRS=/usr/share/ubuntu:/usr/local/share:/usr/share:/var/lib/snapd/desktop
+2024-08-15 20:36:52 [environ] CONDA_BACKUP_STRINGS=/opt/sw/bioinfo-tools/sources/anaconda3/bin/x86_64-conda_cos6-linux-gnu-strings
+2024-08-15 20:36:52 [environ] CONDA_BACKUP_CXXFILT=/opt/sw/bioinfo-tools/sources/anaconda3/bin/x86_64-conda_cos6-linux-gnu-c++filt
+2024-08-15 20:36:52 [environ] CONDA_BACKUP_SIZE=/opt/sw/bioinfo-tools/sources/anaconda3/bin/x86_64-conda_cos6-linux-gnu-size
+2024-08-15 20:36:52 [environ] CONDA_BACKUP_HOST=x86_64-conda_cos6-linux-gnu
+2024-08-15 20:36:52 [environ] MKL_NUM_THREADS=1
+2024-08-15 20:36:52 [environ] XDG_SESSION_DESKTOP=ubuntu
+2024-08-15 20:36:52 [environ] LC_ADDRESS=sv_SE.UTF-8
+2024-08-15 20:36:52 [environ] SSH_AGENT_LAUNCHER=gnome-keyring
+2024-08-15 20:36:52 [environ] TMPDIR=/tmp
+2024-08-15 20:36:52 [environ] LC_NUMERIC=sv_SE.UTF-8
+2024-08-15 20:36:52 [environ] TENX_SUBCMD=mkfastq
+2024-08-15 20:36:52 [environ] CONDA_BACKUP_READELF=/opt/sw/bioinfo-tools/sources/anaconda3/bin/x86_64-conda_cos6-linux-gnu-readelf
+2024-08-15 20:36:52 [environ] CONDA_BACKUP_LD=/opt/sw/bioinfo-tools/sources/anaconda3/bin/x86_64-conda_cos6-linux-gnu-ld
+2024-08-15 20:36:52 [environ] TERM=xterm-256color
+2024-08-15 20:36:52 [environ] SHELL=/bin/bash
+2024-08-15 20:36:52 [environ] XDG_SESSION_CLASS=user
+2024-08-15 20:36:52 [environ] CONDA_BACKUP_GPROF=/opt/sw/bioinfo-tools/sources/anaconda3/bin/x86_64-conda_cos6-linux-gnu-gprof
+2024-08-15 20:36:52 [environ] TENX_COPYRIGHT=Copyright (c) 2021 10x Genomics, Inc.  All rights reserved.
+2024-08-15 20:36:52 [environ] TENX_SCRIPTDIR=/opt/cellranger-8.0.1/bin
+2024-08-15 20:36:52 [environ] XDG_CURRENT_DESKTOP=Unity
+2024-08-15 20:36:52 [environ] CONDA_BACKUP_ADDR2LINE=/opt/sw/bioinfo-tools/sources/anaconda3/bin/x86_64-conda_cos6-linux-gnu-addr2line
+2024-08-15 20:36:52 [environ] TENX_SUBCMDDIR=/opt/cellranger-8.0.1/bin/sc_rna
+2024-08-15 20:36:52 [environ] CONDA_BACKUP_ELFEDIT=/opt/sw/bioinfo-tools/sources/anaconda3/bin/x86_64-conda_cos6-linux-gnu-elfedit
+2024-08-15 20:36:52 [environ] SHLVL=4
+2024-08-15 20:36:52 [environ] PYTHONPATH=/opt/cellranger-8.0.1/lib/python:/opt/cellranger-8.0.1/external/martian/adapters/python
+2024-08-15 20:36:52 [environ] LC_TELEPHONE=sv_SE.UTF-8
+2024-08-15 20:36:52 [environ] LOGNAME=debojyoti
+2024-08-15 20:36:52 [environ] XDG_RUNTIME_DIR=/run/user/1005
+2024-08-15 20:36:52 [environ] XDG_CONFIG_DIRS=/etc/xdg/xdg-ubuntu:/etc/xdg
+2024-08-15 20:36:52 [environ] PATH=/opt/cellranger-8.0.1/lib/bin:/opt/cellranger-8.0.1/external/martian/bin:/opt/cellranger-8.0.1/external/anaconda/bin:/opt/cellranger-8.0.1/bin/tenkit:/opt/cellranger-8.0.1/bin:/opt/cellranger-8.0.1/lib/bin:/opt/cellranger-8.0.1/external/martian/bin:/opt/cellranger-8.0.1/external/anaconda/bin:/opt/cellranger-8.0.1/bin/tenkit:/opt/cellranger-8.0.1/bin:/opt/cellranger-8.0.1/lib/bin:/opt/cellranger-8.0.1/external/martian/bin:/opt/cellranger-8.0.1/external/anaconda/bin:/opt/cellranger-8.0.1/bin/tenkit:/opt/cellranger-8.0.1/bin:/opt/cellranger-8.0.1:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+2024-08-15 20:36:52 [environ] LC_IDENTIFICATION=sv_SE.UTF-8
+2024-08-15 20:36:52 [environ] TENX_BANNER=cellranger mkfastq (cellranger-8.0.1)
 Copyright (c) 2021 10x Genomics, Inc.  All rights reserved.
 -------------------------------------------------------------------------------
-2024-08-14 14:05:56 [environ] HDF5_USE_FILE_LOCKING=FALSE
-2024-08-14 14:05:56 [environ] CONDA_BACKUP_OBJDUMP=/opt/sw/bioinfo-tools/sources/anaconda3/bin/x86_64-conda_cos6-linux-gnu-objdump
-2024-08-14 14:05:56 [environ] CONDA_BACKUP_NM=/opt/sw/bioinfo-tools/sources/anaconda3/bin/x86_64-conda_cos6-linux-gnu-nm
-2024-08-14 14:05:56 [environ] OMP_NUM_THREADS=1
-2024-08-14 14:05:56 [environ] CONDA_BACKUP_LD_GOLD=/opt/sw/bioinfo-tools/sources/anaconda3/bin/x86_64-conda_cos6-linux-gnu-ld.gold
-2024-08-14 14:05:56 [environ] LC_TIME=sv_SE.UTF-8
-2024-08-14 14:05:56 [environ] BASH_FUNC_module%%=() {  _module_raw "$@" 2>&1
+2024-08-15 20:36:52 [environ] HDF5_USE_FILE_LOCKING=FALSE
+2024-08-15 20:36:52 [environ] CONDA_BACKUP_OBJDUMP=/opt/sw/bioinfo-tools/sources/anaconda3/bin/x86_64-conda_cos6-linux-gnu-objdump
+2024-08-15 20:36:52 [environ] CONDA_BACKUP_NM=/opt/sw/bioinfo-tools/sources/anaconda3/bin/x86_64-conda_cos6-linux-gnu-nm
+2024-08-15 20:36:52 [environ] OMP_NUM_THREADS=1
+2024-08-15 20:36:52 [environ] CONDA_BACKUP_LD_GOLD=/opt/sw/bioinfo-tools/sources/anaconda3/bin/x86_64-conda_cos6-linux-gnu-ld.gold
+2024-08-15 20:36:52 [environ] LC_TIME=sv_SE.UTF-8
+2024-08-15 20:36:52 [environ] BASH_FUNC_module%%=() {  _module_raw "$@" 2>&1
 }
-2024-08-14 14:05:56 [environ] BASH_FUNC__module_raw%%=() {  unset _mlshdbg;
+2024-08-15 20:36:52 [environ] BASH_FUNC__module_raw%%=() {  unset _mlshdbg;
  if [ "${MODULES_SILENT_SHELL_DEBUG:-0}" = '1' ]; then
  case "$-" in 
  *v*x*)
@@ -126,80 +126,80 @@ Copyright (c) 2021 10x Genomics, Inc.  All rights reserved.
  unset _mlshdbg;
  return $_mlstatus
 }
-2024-08-14 14:05:56 [environ] BASH_FUNC_ml%%=() {  module ml "$@"
+2024-08-15 20:36:52 [environ] BASH_FUNC_ml%%=() {  module ml "$@"
 }
-2024-08-14 14:05:56 [environ] _=/opt/cellranger-8.0.1/external/martian/bin/mrp
-2024-08-14 14:05:56 [options] --localcores=32
-2024-08-14 14:05:56 [options] --localmem=128
-2024-08-14 14:05:56 [environ] MROPATH=/opt/cellranger-8.0.1/mro
-2024-08-14 14:05:56 [version] MRO Version=cellranger-8.0.1
-2024-08-14 14:05:56 [options] --jobmode=local
-2024-08-14 14:05:56 [options] --vdrmode=rolling
-2024-08-14 14:05:56 [options] --profile=disable
-2024-08-14 14:05:56 [options] --stackvars=false
-2024-08-14 14:05:56 [options] --zip=false
-2024-08-14 14:05:56 [options] --limit-loadavg=false
-2024-08-14 14:05:56 [options] --noexit=false
-2024-08-14 14:05:56 [options] --nopreflight=false
-2024-08-14 14:05:56 [jobmngr] Job config = /opt/cellranger-8.0.1/external/martian/jobmanagers/config.json
-2024-08-14 14:05:56 [jobmngr] Using 32 cores, per --localcores option.
-2024-08-14 14:05:56 [jobmngr] Using 128 GB, per --localmem option.
-2024-08-14 14:05:56 [sysinfo] linux amd64
-2024-08-14 14:05:56 [sysinfo] Linux kernel release version: 5.15.0-71-generic
-2024-08-14 14:05:56 [sysinfo] glibc version: 2.28
-2024-08-14 14:05:56 [filesys] Pipestance path /home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/H35KCBCXY
-2024-08-14 14:05:56 [filesys] Pipestance filesystem type ext
-2024-08-14 14:05:56 [filesys] 3.0 TB and 172,499,789 inodes available.
-2024-08-14 14:05:56 [filesys] Pipestance filesystem ext4 mount options: rw,nosuid,nodev,relatime,rw
-2024-08-14 14:05:56 [filesys] Pipestance directory permissions drwxrwxr-x owned by uid 1005 gid 1006
-2024-08-14 14:05:56 [filesys] Bin path /opt/cellranger-8.0.1/external/martian/bin
-2024-08-14 14:05:56 [filesys] Bin filesystem type ext
-2024-08-14 14:05:56 [filesys] Bin filesystem ext4 mount options: ro,nosuid,nodev,relatime,rw,errors=remount-ro
-2024-08-14 14:05:56 [filesys] Executable file permissions -rwxr-xr-x owned by uid 1005 gid 1006
-2024-08-14 14:05:56 [user   ] User debojyoti uid 1005 / gid 1006
-Serving UI at http://z6g4:33439?auth=3XVJwneWo5nRF2rDiihM3raDWaevB-gE5O_a9NxFXK4
+2024-08-15 20:36:52 [environ] _=/opt/cellranger-8.0.1/external/martian/bin/mrp
+2024-08-15 20:36:52 [options] --localcores=8
+2024-08-15 20:36:52 [options] --localmem=32
+2024-08-15 20:36:52 [environ] MROPATH=/opt/cellranger-8.0.1/mro
+2024-08-15 20:36:52 [version] MRO Version=cellranger-8.0.1
+2024-08-15 20:36:52 [options] --jobmode=local
+2024-08-15 20:36:52 [options] --vdrmode=rolling
+2024-08-15 20:36:52 [options] --profile=disable
+2024-08-15 20:36:52 [options] --stackvars=false
+2024-08-15 20:36:52 [options] --zip=false
+2024-08-15 20:36:52 [options] --limit-loadavg=false
+2024-08-15 20:36:52 [options] --noexit=false
+2024-08-15 20:36:52 [options] --nopreflight=false
+2024-08-15 20:36:52 [jobmngr] Job config = /opt/cellranger-8.0.1/external/martian/jobmanagers/config.json
+2024-08-15 20:36:52 [jobmngr] Using 8 cores, per --localcores option.
+2024-08-15 20:36:52 [jobmngr] Using 32 GB, per --localmem option.
+2024-08-15 20:36:53 [sysinfo] linux amd64
+2024-08-15 20:36:53 [sysinfo] Linux kernel release version: 5.15.0-71-generic
+2024-08-15 20:36:53 [sysinfo] glibc version: 2.28
+2024-08-15 20:36:53 [filesys] Pipestance path /home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/H35KCBCXY
+2024-08-15 20:36:53 [filesys] Pipestance filesystem type ext
+2024-08-15 20:36:53 [filesys] 3.0 TB and 172,458,835 inodes available.
+2024-08-15 20:36:53 [filesys] Pipestance filesystem ext4 mount options: rw,nosuid,nodev,relatime,rw
+2024-08-15 20:36:53 [filesys] Pipestance directory permissions drwxrwxr-x owned by uid 1005 gid 1006
+2024-08-15 20:36:53 [filesys] Bin path /opt/cellranger-8.0.1/external/martian/bin
+2024-08-15 20:36:53 [filesys] Bin filesystem type ext
+2024-08-15 20:36:53 [filesys] Bin filesystem ext4 mount options: ro,nosuid,nodev,relatime,rw,errors=remount-ro
+2024-08-15 20:36:53 [filesys] Executable file permissions -rwxr-xr-x owned by uid 1005 gid 1006
+2024-08-15 20:36:53 [user   ] User debojyoti uid 1005 / gid 1006
+Serving UI at http://z6g4:38531?auth=7MUx-ydlSdNab0qdWzfc9O8ENzKj85NEok_eRiZzjx8
 
 Running preflight checks (please wait)...
-2024-08-14 14:05:56 [runtime] (ready)           ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.MAKE_FASTQS_PREFLIGHT_LOCAL
-2024-08-14 14:05:56 [runtime] (run:local)       ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.MAKE_FASTQS_PREFLIGHT_LOCAL.fork0.chnk0.main
-2024-08-14 14:05:56 [runtime] (ready)           ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.MAKE_FASTQS_PREFLIGHT
-2024-08-14 14:05:56 [runtime] (run:local)       ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.MAKE_FASTQS_PREFLIGHT.fork0.chnk0.main
-2024-08-14 14:05:57 [runtime] (chunks_complete) ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.MAKE_FASTQS_PREFLIGHT
-2024-08-14 14:05:58 [runtime] (chunks_complete) ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.MAKE_FASTQS_PREFLIGHT_LOCAL
-2024-08-14 14:05:58 [runtime] (ready)           ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.PREPARE_SAMPLESHEET
-2024-08-14 14:05:59 [runtime] (run:local)       ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.PREPARE_SAMPLESHEET.fork0.chnk0.main
-2024-08-14 14:06:01 [runtime] (chunks_complete) ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.PREPARE_SAMPLESHEET
-2024-08-14 14:06:01 [runtime] (ready)           ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.BCL2FASTQ_WITH_SAMPLESHEET
-2024-08-14 14:06:01 [runtime] (run:local)       ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.BCL2FASTQ_WITH_SAMPLESHEET.fork0.split
-2024-08-14 14:06:02 [runtime] (split_complete)  ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.BCL2FASTQ_WITH_SAMPLESHEET
-2024-08-14 14:06:02 [runtime] (run:local)       ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.BCL2FASTQ_WITH_SAMPLESHEET.fork0.chnk0.main
-2024-08-14 14:06:07 [runtime] (chunks_complete) ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.BCL2FASTQ_WITH_SAMPLESHEET
-2024-08-14 14:06:07 [runtime] (run:local)       ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.BCL2FASTQ_WITH_SAMPLESHEET.fork0.join
-2024-08-14 14:06:08 [runtime] (join_complete)   ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.BCL2FASTQ_WITH_SAMPLESHEET
-2024-08-14 14:06:08 [runtime] (ready)           ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.MERGE_FASTQS_BY_LANE_SAMPLE
-2024-08-14 14:06:08 [runtime] (run:local)       ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.MERGE_FASTQS_BY_LANE_SAMPLE.fork0.split
-2024-08-14 14:06:09 [runtime] (split_complete)  ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.MERGE_FASTQS_BY_LANE_SAMPLE
-2024-08-14 14:06:09 [runtime] (run:local)       ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.MERGE_FASTQS_BY_LANE_SAMPLE.fork0.chnk0.main
-2024-08-14 14:06:10 [runtime] (chunks_complete) ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.MERGE_FASTQS_BY_LANE_SAMPLE
-2024-08-14 14:06:10 [runtime] (run:local)       ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.MERGE_FASTQS_BY_LANE_SAMPLE.fork0.join
-2024-08-14 14:06:12 [runtime] (join_complete)   ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.MERGE_FASTQS_BY_LANE_SAMPLE
-2024-08-14 14:06:12 [runtime] VDR killed 1 files, 575 B.
+2024-08-15 20:36:53 [runtime] (ready)           ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.MAKE_FASTQS_PREFLIGHT
+2024-08-15 20:36:53 [runtime] (run:local)       ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.MAKE_FASTQS_PREFLIGHT.fork0.chnk0.main
+2024-08-15 20:36:53 [runtime] (ready)           ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.MAKE_FASTQS_PREFLIGHT_LOCAL
+2024-08-15 20:36:53 [runtime] (run:local)       ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.MAKE_FASTQS_PREFLIGHT_LOCAL.fork0.chnk0.main
+2024-08-15 20:36:53 [runtime] (chunks_complete) ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.MAKE_FASTQS_PREFLIGHT
+2024-08-15 20:36:54 [runtime] (chunks_complete) ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.MAKE_FASTQS_PREFLIGHT_LOCAL
+2024-08-15 20:36:54 [runtime] (ready)           ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.PREPARE_SAMPLESHEET
+2024-08-15 20:36:54 [runtime] (run:local)       ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.PREPARE_SAMPLESHEET.fork0.chnk0.main
+2024-08-15 20:36:56 [runtime] (chunks_complete) ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.PREPARE_SAMPLESHEET
+2024-08-15 20:36:56 [runtime] (ready)           ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.BCL2FASTQ_WITH_SAMPLESHEET
+2024-08-15 20:36:56 [runtime] (run:local)       ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.BCL2FASTQ_WITH_SAMPLESHEET.fork0.split
+2024-08-15 20:36:57 [runtime] (split_complete)  ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.BCL2FASTQ_WITH_SAMPLESHEET
+2024-08-15 20:36:57 [runtime] (run:local)       ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.BCL2FASTQ_WITH_SAMPLESHEET.fork0.chnk0.main
+2024-08-15 20:37:02 [runtime] (chunks_complete) ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.BCL2FASTQ_WITH_SAMPLESHEET
+2024-08-15 20:37:02 [runtime] (run:local)       ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.BCL2FASTQ_WITH_SAMPLESHEET.fork0.join
+2024-08-15 20:37:03 [runtime] (join_complete)   ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.BCL2FASTQ_WITH_SAMPLESHEET
+2024-08-15 20:37:03 [runtime] (ready)           ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.MERGE_FASTQS_BY_LANE_SAMPLE
+2024-08-15 20:37:03 [runtime] (run:local)       ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.MERGE_FASTQS_BY_LANE_SAMPLE.fork0.split
+2024-08-15 20:37:04 [runtime] (split_complete)  ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.MERGE_FASTQS_BY_LANE_SAMPLE
+2024-08-15 20:37:04 [runtime] (run:local)       ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.MERGE_FASTQS_BY_LANE_SAMPLE.fork0.chnk0.main
+2024-08-15 20:37:05 [runtime] (chunks_complete) ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.MERGE_FASTQS_BY_LANE_SAMPLE
+2024-08-15 20:37:05 [runtime] (run:local)       ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.MERGE_FASTQS_BY_LANE_SAMPLE.fork0.join
+2024-08-15 20:37:07 [runtime] (join_complete)   ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.MERGE_FASTQS_BY_LANE_SAMPLE
+2024-08-15 20:37:07 [runtime] VDR killed 1 files, 575 B.
 
 Outputs:
 - FASTQ output folder:   /home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/tiny_bcl
 - Interop output folder: /home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/H35KCBCXY/outs/interop_path
 - Input samplesheet:     /home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/H35KCBCXY/outs/input_samplesheet.csv
 
-2024-08-14 14:06:12 [perform] Serializing pipestance performance data.
+2024-08-15 20:37:07 [perform] Serializing pipestance performance data.
 Waiting 6 seconds for UI to do final refresh.
 Pipestance completed successfully!
 
-2024-08-14 14:06:18 Shutting down.
-2024-08-14 14:06:18 [jobmngr] Highest memory usage observed: {
-  "rss": 935661568,
-  "shared": 37961728,
-  "vmem": 4028649472,
+2024-08-15 20:37:13 Shutting down.
+2024-08-15 20:37:13 [jobmngr] Highest memory usage observed: {
+  "rss": 934387712,
+  "shared": 15663104,
+  "vmem": 3964964864,
   "text": 8351744,
-  "stack": 1294639104,
+  "stack": 1283117056,
   "proc_count": 51
 }

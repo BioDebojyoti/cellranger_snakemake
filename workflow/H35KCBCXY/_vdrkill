@@ -1,44 +1,44 @@
 {
-    "timestamp": "2024-08-14T14:06:12.130210899+02:00",
+    "timestamp": "2024-08-15T20:37:07.221393538+02:00",
     "paths": [
-        "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/PREPARE_SAMPLESHEET/fork0/chnk0-uf000bc9da6/files/samplesheet.csv"
+        "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/PREPARE_SAMPLESHEET/fork0/chnk0-u0d46be4ac6/files/samplesheet.csv"
     ],
     "errors": null,
     "events": [
         {
-            "Timestamp": "2024-08-14T14:05:56.919143671+02:00",
-            "DeltaBytes": 13630
+            "Timestamp": "2024-08-15T20:36:53.029778164+02:00",
+            "DeltaBytes": 13621
         },
         {
-            "Timestamp": "2024-08-14T14:05:59.005570115+02:00",
-            "DeltaBytes": 7630
+            "Timestamp": "2024-08-15T20:36:54.840176441+02:00",
+            "DeltaBytes": 7629
         },
         {
-            "Timestamp": "2024-08-14T14:06:01.463211803+02:00",
-            "DeltaBytes": 5483
+            "Timestamp": "2024-08-15T20:36:56.694508207+02:00",
+            "DeltaBytes": 5471
         },
         {
-            "Timestamp": "2024-08-14T14:06:02.512256168+02:00",
-            "DeltaBytes": 57842
+            "Timestamp": "2024-08-15T20:36:57.540086002+02:00",
+            "DeltaBytes": 51772
         },
         {
-            "Timestamp": "2024-08-14T14:06:07.614313324+02:00",
-            "DeltaBytes": 12455
+            "Timestamp": "2024-08-15T20:37:02.756318286+02:00",
+            "DeltaBytes": 12452
         },
         {
-            "Timestamp": "2024-08-14T14:06:08.051363874+02:00",
-            "DeltaBytes": 7366
+            "Timestamp": "2024-08-15T20:37:03.136136829+02:00",
+            "DeltaBytes": 7358
         },
         {
-            "Timestamp": "2024-08-14T14:06:09.40876041+02:00",
-            "DeltaBytes": 7701
+            "Timestamp": "2024-08-15T20:37:04.48365929+02:00",
+            "DeltaBytes": 7695
         },
         {
-            "Timestamp": "2024-08-14T14:06:10.791634695+02:00",
-            "DeltaBytes": 10457
+            "Timestamp": "2024-08-15T20:37:05.884542126+02:00",
+            "DeltaBytes": 10455
         },
         {
-            "Timestamp": "2024-08-14T14:06:12.130210899+02:00",
+            "Timestamp": "2024-08-15T20:37:07.221393538+02:00",
             "DeltaBytes": -575
         }
     ],

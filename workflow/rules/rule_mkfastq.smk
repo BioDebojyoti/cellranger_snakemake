@@ -9,7 +9,7 @@ configfile: os.path.join("config", "config_mkfastq.yaml")
 bcl_folder = config["bcl_folder"] 
 
 outdir = config['outputdir']
-add_args = config['additional_arguments'] if config['additional_arguments'] not None else ""
+add_args = [config['additional_arguments'] if config['additional_arguments'] != None else ""]
 
 def find_keyword_line(filepath, keyword):
     with open(filepath, 'r') as file:
@@ -48,22 +48,24 @@ rule mkfastq:
         memory = config["resources"]["localmem"]    
     params:
         sampleinfo = opt_sample_sheet,
-        args2add = add_args,
-        outdir2use = lambda wc, outdir: os.path.splitext(outdir[0])[0]
+        args2add = add_args[0],
+        outdir2use = lambda wc, output: os.path.splitext(os.path.dirname(output.all[0]))[0],
+        file2create = lambda wc, output: os.path.abspath(output.flag)
     container:
         "docker://litd/docker-cellranger:v8.0.1" 
     log:
-        lambda wc: os.path.join("logs","mkfastq.log")    
+        os.path.join("logs","mkfastq.log")    
     benchmark:
-        lambda wc: os.path.join("benchmarks", "benchmarks_mkfastq.txt")
+        os.path.join("benchmarks", "benchmarks_mkfastq.txt")
     shell:
         """
         cellranger mkfastq --run={input} \
         --output-dir={params.outdir2use} \
         {params.sampleinfo} \
-        {args2add} \
+        {params.args2add} \
         --localcores={resources.cores} \
-        --localmem={resources.memory} 2>&1 | tee {log} && touch {output.flag} && \
-        find {params.outdir2use} -iname *gz | grep -v "Undetermined" | xargs {{}} mv {{}} {params.outdir2use};
+        --localmem={resources.memory} \
+        2>&1 | tee {log} && touch {params.file2create} && \
+        find {params.outdir2use} -iname *gz | grep -v "Undetermined" | xargs -I {{}} mv {{}} {params.outdir2use};
         """
 

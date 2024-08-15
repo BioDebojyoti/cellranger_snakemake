@@ -28,5 +28,5 @@ call MAKE_FASTQS_CS(
     filter_single_index   = false,
     max_bcl2fastq_threads = 6,
     rc_i2_override        = null,
-    all_mkfastq_args      = "--run=/home/debojyoti/Projects/core_facility/cellranger_snakemake/test/cellranger-tiny-bcl-1.2.0 --output-dir=tiny_bcl --samplesheet=../test/cellranger-tiny-bcl-samplesheet-1.2.0.csv --localcores=32 --localmem=128",
+    all_mkfastq_args      = "--run=/home/debojyoti/Projects/core_facility/cellranger_snakemake/test/cellranger-tiny-bcl-1.2.0 --output-dir=tiny_bcl --samplesheet=../test/cellranger-tiny-bcl-samplesheet-1.2.0.csv --localcores=8 --localmem=32",
 )

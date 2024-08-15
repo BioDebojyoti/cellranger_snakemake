@@ -1,16 +1,16 @@
 {
-    "timestamp": "2024-08-14T14:06:12.130210899+02:00",
+    "timestamp": "2024-08-15T20:37:07.221393538+02:00",
     "paths": [
-        "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/PREPARE_SAMPLESHEET/fork0/chnk0-uf000bc9da6/files/samplesheet.csv"
+        "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/PREPARE_SAMPLESHEET/fork0/chnk0-u0d46be4ac6/files/samplesheet.csv"
     ],
     "errors": null,
     "events": [
         {
-            "Timestamp": "2024-08-14T14:05:59.005570115+02:00",
-            "DeltaBytes": 7630
+            "Timestamp": "2024-08-15T20:36:54.840176441+02:00",
+            "DeltaBytes": 7629
         },
         {
-            "Timestamp": "2024-08-14T14:06:12.130210899+02:00",
+            "Timestamp": "2024-08-15T20:37:07.221393538+02:00",
             "DeltaBytes": -575
         }
     ],
