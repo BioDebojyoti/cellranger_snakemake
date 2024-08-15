@@ -7,8 +7,9 @@ configfile: os.path.join("config", "config_mkfastq.yaml")
 
 # Define paths based on configuration
 bcl_folder = config["bcl_folder"] 
-fastq_folder_root = config['flowcell_id'] 
+
 outdir = config['outputdir']
+add_args = config['additional_arguments'] if config['additional_arguments'] not None else ""
 
 def find_keyword_line(filepath, keyword):
     with open(filepath, 'r') as file:
@@ -21,16 +22,14 @@ def find_keyword_line(filepath, keyword):
 if (config["IEM_samplesheet"] == True):
     keyword_line = find_keyword_line(config['samples_csv'], '(\[Cloud_Data\]|\[Data\])')
     samples_df = pd.read_csv(config['samples_csv'], skiprows=keyword_line)
-    samples = samples_df['Sample_ID'].tolist()
-    project = samples_df['Sample_Project'].tolist()[0]
+    samples = samples_df['Sample_Name'].tolist()
 else:
     samples_df = pd.read_csv(config['samples_csv'])
     samples = samples_df['Sample'].tolist()
-    project = fastq_folder_root
 
 
 
-opt_sample_sheet = "--samplesheet="+config["samples_csv"] if (config["IEM_samplesheet"] == True) else "--csv="+config["samples_csv"]
+opt_sample_sheet = " --samplesheet="+config["samples_csv"] if (config["IEM_samplesheet"] == True) else " --csv="+config["samples_csv"]
 
 # Define rules
 # rule all:
@@ -42,25 +41,29 @@ rule mkfastq:
     input:
         os.path.abspath(bcl_folder)
     output:
-        directory(os.path.join(outdir, project,"{sample}"))
+        flag = os.path.join(outdir, "mkfastq.sucess"),
+        all = expand(os.path.join(outdir, "{sample}_S*_R*.gz"), sample=samples)
     resources:
         cores = config["resources"]["localcores"],
         memory = config["resources"]["localmem"]    
     params:
         sampleinfo = opt_sample_sheet,
-        outdir2use = outdir
+        args2add = add_args,
+        outdir2use = lambda wc, outdir: os.path.splitext(outdir[0])[0]
     container:
         "docker://litd/docker-cellranger:v8.0.1" 
     log:
-        os.path.join("logs","mkfastq_{sample}.log")    
+        lambda wc: os.path.join("logs","mkfastq.log")    
     benchmark:
-        os.path.join("benchmarks", "benchmarks_{sample}_mkfastq.txt")
+        lambda wc: os.path.join("benchmarks", "benchmarks_mkfastq.txt")
     shell:
         """
         cellranger mkfastq --run={input} \
         --output-dir={params.outdir2use} \
         {params.sampleinfo} \
+        {args2add} \
         --localcores={resources.cores} \
-        --localmem={resources.memory} 
+        --localmem={resources.memory} 2>&1 | tee {log} && touch {output.flag} && \
+        find {params.outdir2use} -iname *gz | grep -v "Undetermined" | xargs {{}} mv {{}} {params.outdir2use};
         """
 

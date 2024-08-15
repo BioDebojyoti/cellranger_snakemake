@@ -1,7 +1,6 @@
 
 bcl_folder: "../test/cellranger-tiny-bcl-1.2.0" 
 
-flowcell_id: "H35KCBCXY"  # needs to be exact if simple sample sheet csv is used
 outputdir: "tiny_bcl"
 
 resources:
@@ -10,3 +9,5 @@ resources:
 
 IEM_samplesheet: True # or the sample sheet is of type "simple csv"
 samples_csv:  "../test/cellranger-tiny-bcl-samplesheet-1.2.0.csv" 
+
+additional_argmuments: #
