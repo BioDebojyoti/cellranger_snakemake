@@ -19,5 +19,5 @@ call MAKE_FASTQS_PREFLIGHT_LOCAL(
     umi_start_index   = 16,
     umi_length        = 10,
     bases_mask        = null,
-    all_mkfastq_args  = "--run=/home/debojyoti/Projects/core_facility/cellranger_snakemake/test/cellranger-tiny-bcl-1.2.0 --output-dir=tiny_bcl --samplesheet=../test/cellranger-tiny-bcl-samplesheet-1.2.0.csv --localcores=8 --localmem=32",
+    all_mkfastq_args  = "--run=/home/debojyoti/Projects/core_facility/cellranger_snakemake/test/cellranger-tiny-bcl-1.2.0 --output-dir=tiny_bcl --samplesheet=../test/cellranger-tiny-bcl-samplesheet-1.2.0.csv --localcores=8 --localmem=64",
 )

@@ -1,13 +1,15 @@
 
-bcl_folder: "../test/cellranger-tiny-bcl-1.2.0" 
+bcl_folder: "../test/cellranger-tiny-bcl-1.2.0" # "../gosia_single_cell_runs/240227_VH01167_32_AAFH5GKM5" 
 
-outputdir: "tiny_bcl"
+outputdir: "tiny_bcl" # "../gosia_single_cell_runs/output_240227"
 
 resources:
   localcores: 8  
-  localmem: 32   
+  localmem: 64   
+  max_cores: 48
+  max_memory: 128
 
-IEM_samplesheet: True 
-samples_csv:  "../test/cellranger-tiny-bcl-samplesheet-1.2.0.csv" 
+IEM_samplesheet: True
+samples_csv: "../test/cellranger-tiny-bcl-samplesheet-1.2.0.csv" # "../gosia_single_cell_runs/240227_VH01167_32_AAFH5GKM5_sample_sheet.csv" 
 
 additional_arguments: #

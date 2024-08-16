@@ -11,4 +11,5 @@ print(samples)
 # Define rules
 rule all:
     input:
-        flag = os.path.join(outdir, "mkfastq.sucess")  
+        flag = os.path.join(outdir, "mkfastq.sucess.txt")  
+

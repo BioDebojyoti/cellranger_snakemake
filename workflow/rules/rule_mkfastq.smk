@@ -11,6 +11,13 @@ bcl_folder = config["bcl_folder"]
 outdir = config['outputdir']
 add_args = [config['additional_arguments'] if config['additional_arguments'] != None else ""]
 
+mkfastq_cores = config["resources"]["localcores"]
+mkfastq_memory = config["resources"]["localmem"]  
+
+# Define the upper limits
+max_cores = config["resources"]["max_cores"]
+max_memory = config["resources"]["max_memory"]
+
 def find_keyword_line(filepath, keyword):
     with open(filepath, 'r') as file:
         for i, line in enumerate(file):
@@ -41,15 +48,14 @@ rule mkfastq:
     input:
         os.path.abspath(bcl_folder)
     output:
-        flag = os.path.join(outdir, "mkfastq.sucess"),
-        all = expand(os.path.join(outdir, "{sample}_S*_R*.gz"), sample=samples)
+        flag = os.path.join(outdir, "mkfastq.sucess.txt")
     resources:
-        cores = config["resources"]["localcores"],
-        memory = config["resources"]["localmem"]    
+        cores = lambda wc, attempt: min(mkfastq_cores * attempt, max_cores),
+        memory = lambda wc, attempt: min(mkfastq_memory * attempt, max_memory)   
     params:
         sampleinfo = opt_sample_sheet,
         args2add = add_args[0],
-        outdir2use = lambda wc, output: os.path.splitext(os.path.dirname(output.all[0]))[0],
+        outdir2use = lambda wc, output: os.path.splitext(os.path.dirname(output.flag))[0],
         file2create = lambda wc, output: os.path.abspath(output.flag)
     container:
         "docker://litd/docker-cellranger:v8.0.1" 
@@ -65,7 +71,8 @@ rule mkfastq:
         {params.args2add} \
         --localcores={resources.cores} \
         --localmem={resources.memory} \
-        2>&1 | tee {log} && touch {params.file2create} && \
-        find {params.outdir2use} -iname *gz | grep -v "Undetermined" | xargs -I {{}} mv {{}} {params.outdir2use};
+        2>&1 | tee -a {log}; 
+        find {params.outdir2use} -iname *gz | grep -Ev "Undetermined|\_I1_|\_I2_" | xargs -I {{}} mv {{}} {params.outdir2use};
+        touch {params.file2create}; \
         """
 

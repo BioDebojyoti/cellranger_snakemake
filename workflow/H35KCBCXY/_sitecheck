@@ -1,7 +1,7 @@
 cellranger mkfastq (cellranger-8.0.1)
 Copyright (c) 2021 10x Genomics, Inc.  All rights reserved.
 -------------------------------------------------------------------------------
-Thu Aug 15 20:37:13 CEST 2024
+Fri Aug 16 08:33:57 CEST 2024
 
 =====================================================================
 System Info
@@ -85,11 +85,11 @@ df -Ph | awk '{print $2, $3, $4}'
 ---------------------------------------------------------------------
 Size Used Avail
 16M 12K 16M
-377G 89G 269G
+377G 94G 264G
 252G 0 252G
-252G 124M 252G
+252G 159M 252G
 252G 0 252G
-5.2T 2.2T 2.8T
+5.2T 2.3T 2.8T
 =====================================================================
 
 =====================================================================
@@ -204,7 +204,7 @@ Global File Limit
 cat /proc/sys/fs/file-{max,nr}
 ---------------------------------------------------------------------
 9223372036854775807
-53408	0	9223372036854775807
+52640	0	9223372036854775807
 =====================================================================
 
 =====================================================================
@@ -288,41 +288,41 @@ cat /proc/self/cgroup
 cgroup mem stats
 cat /sys/fs/cgroup/memory/user.slice/user-1005.slice/user@1005.service/memory.stat
 ---------------------------------------------------------------------
-cache 5025435648
-rss 3541602304
+cache 5040504832
+rss 3659513856
 rss_huge 0
-shmem 46481408
-mapped_file 270622720
-dirty 237424640
+shmem 73158656
+mapped_file 297586688
+dirty 1280114688
 writeback 0
 swap 0
-pgpgin 1343536546
-pgpgout 1341444984
-pgfault 1427382555
-pgmajfault 63369
-inactive_anon 3586322432
+pgpgin 1445117799
+pgpgout 1442993732
+pgfault 1548434038
+pgmajfault 66372
+inactive_anon 3730845696
 active_anon 1593344
-inactive_file 3625148416
-active_file 1353838592
+inactive_file 3693617152
+active_file 1273761792
 unevictable 32768
 hierarchical_memory_limit 9223372036854771712
 hierarchical_memsw_limit 9223372036854771712
-total_cache 5025435648
-total_rss 3541602304
+total_cache 5040504832
+total_rss 3659513856
 total_rss_huge 0
-total_shmem 46481408
-total_mapped_file 270622720
-total_dirty 237424640
+total_shmem 73158656
+total_mapped_file 297586688
+total_dirty 1280114688
 total_writeback 0
 total_swap 0
-total_pgpgin 1343536546
-total_pgpgout 1341444984
-total_pgfault 1427382555
-total_pgmajfault 63369
-total_inactive_anon 3586322432
+total_pgpgin 1445117799
+total_pgpgout 1442993732
+total_pgfault 1548434038
+total_pgmajfault 66372
+total_inactive_anon 3730845696
 total_active_anon 1593344
-total_inactive_file 3625148416
-total_active_file 1353838592
+total_inactive_file 3693617152
+total_active_file 1273761792
 total_unevictable 32768
 =====================================================================
 
