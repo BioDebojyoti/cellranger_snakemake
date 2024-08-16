@@ -40,4 +40,5 @@ COPY --from=build /usr/local/bin/cellranger /usr/local/bin/cellranger
 COPY --from=build /log /log
 
 # Set the entrypoint to cellranger
-ENTRYPOINT ["/bin/bash"]
+#ENTRYPOINT ["/bin/bash"]
+CMD ["/opt/cellranger/bin/cellranger"]

@@ -1,6 +1,11 @@
-
+Dockerfile
 gosia_single_cell_runs
 singlecell.tgz
-snakemake.log
+.snakemake
 test
-test.yaml
+workflow/pipestance_dirs
+workflow/tiny_bcl
+workflow/tiny_bcl_attempt2
+workflow/tiny_bcl_attempt3
+workflow/tiny_bcl_simple
+workflow/.snakemake
