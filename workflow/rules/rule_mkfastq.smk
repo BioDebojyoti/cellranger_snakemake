@@ -60,9 +60,9 @@ rule mkfastq:
     container:
         "docker://litd/docker-cellranger:v8.0.1" 
     log:
-        os.path.join("logs","mkfastq.log")    
+        os.path.join(outdir, "logs","mkfastq.log")    
     benchmark:
-        os.path.join("benchmarks", "benchmarks_mkfastq.txt")
+        os.path.join(outdir, "benchmarks", "benchmarks_mkfastq.txt")
     shell:
         """
         cellranger mkfastq --run={input} \
@@ -74,5 +74,7 @@ rule mkfastq:
         2>&1 | tee -a {log}; 
         find {params.outdir2use} -iname *gz | grep -Ev "Undetermined|\_I1_|\_I2_" | xargs -I {{}} mv {{}} {params.outdir2use};
         touch {params.file2create}; \
+        dir2del=$(ls -lhtr -d */ | awk 'END{print $NF}');
+        rm -r $dir2del;
         """
 
