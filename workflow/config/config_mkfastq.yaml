@@ -1,7 +1,7 @@
 
 bcl_folder: "../test/cellranger-tiny-bcl-1.2.0" # "../gosia_single_cell_runs/240227_VH01167_32_AAFH5GKM5" 
 
-outputdir: "tiny_bcl" # "../gosia_single_cell_runs/output_240227"
+outputdir: "tiny_bcl_simple" # "../gosia_single_cell_runs/output_240227"
 
 resources:
   localcores: 8  
@@ -9,7 +9,8 @@ resources:
   max_cores: 48
   max_memory: 128
 
-IEM_samplesheet: True
-samples_csv: "../test/cellranger-tiny-bcl-samplesheet-1.2.0.csv" # "../gosia_single_cell_runs/240227_VH01167_32_AAFH5GKM5_sample_sheet.csv" 
+IEM_samplesheet: False
+samples_csv: "../test/cellranger-tiny-bcl-simple.csv" # "../gosia_single_cell_runs/240227_VH01167_32_AAFH5GKM5_sample_sheet.csv" 
+library_type: "Gene Expression"
 
-additional_arguments: #
+additional_arguments: 

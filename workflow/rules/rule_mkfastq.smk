@@ -9,6 +9,8 @@ configfile: os.path.join("config", "config_mkfastq.yaml")
 bcl_folder = config["bcl_folder"] 
 
 outdir = config['outputdir']
+library_type = config["library_type"]
+
 add_args = [config['additional_arguments'] if config['additional_arguments'] != None else ""]
 
 mkfastq_cores = config["resources"]["localcores"]
@@ -56,7 +58,8 @@ rule mkfastq:
         sampleinfo = opt_sample_sheet,
         args2add = add_args[0],
         outdir2use = lambda wc, output: os.path.splitext(os.path.dirname(output.flag))[0],
-        file2create = lambda wc, output: os.path.abspath(output.flag)
+        file2create = lambda wc, output: os.path.abspath(output.flag),
+        lib_type = library_type
     container:
         "docker://litd/docker-cellranger:v8.0.1" 
     log:
@@ -72,9 +75,12 @@ rule mkfastq:
         --localcores={resources.cores} \
         --localmem={resources.memory} \
         2>&1 | tee -a {log}; 
-        find {params.outdir2use} -iname *gz | grep -Ev "Undetermined|\_I1_|\_I2_" | xargs -I {{}} mv {{}} {params.outdir2use};
-        touch {params.file2create}; \
-        dir2del=$(ls -lhtr -d */ | awk 'END{print $NF}');
-        rm -r $dir2del;
+        find {params.outdir2use} -iname "*gz" | grep -Ev "Undetermined|\_I1_|\_I2_" | xargs -I {{}} mv {{}} {params.outdir2use};
+        bash scripts/get_fastq_csv.sh {params.outdir2use} "\""{params.lib_type}"\"" > {params.file2create}; \
+        bash scripts/move_pipestance_dir.sh {log} {params.outdir2use};
         """
 
+# get quality control of fastq files 
+# rule fastqc:
+#     input:
+#         fasq_path = 
