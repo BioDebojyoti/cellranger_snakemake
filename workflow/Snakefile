@@ -2,13 +2,15 @@
 import os, sys
 import pandas as pd 
 
-include: "rules/rule_mkfastq.smk"
+include: os.path.join("rules","rule_mkfastq.smk")
 # include: "rules/rule_mkvdjref.smk"
 
+
 print("bcl folder  : " + bcl_folder)
+print(samples_df)
 print(samples)
-print(expand("{s}_{s_n}_L00{l}_R{read}.fastq.gz", s=samples, s_n=sample_names, l=lanes, read=[1,2]))
-print(lanes)
+# print(expand("{s}_{s_n}_L00{l}_R{read}.fastq.gz", s=samples, s_n=sample_names, l=lanes, read=[1,2]))
+# print(lanes)
 # Define rules
 rule all:
     input:

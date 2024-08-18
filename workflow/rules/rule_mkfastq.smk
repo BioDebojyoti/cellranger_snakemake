@@ -30,12 +30,22 @@ def find_keyword_line(filepath, keyword):
 # Load samples from CSV
 if (config["IEM_samplesheet"] == True):
     keyword_line = find_keyword_line(config['samples_csv'], '(\[Cloud_Data\]|\[Data\])')
+
     samples_df = pd.read_csv(config['samples_csv'], skiprows=keyword_line)
+    
     samples = samples_df['Sample_Name'].tolist()
+    
     sample_names = samples_df['Sample_ID'].tolist()
     sample_names = list(map(str.upper, sample_names))
+    
+    samples_df['Sample_ID'] = sample_names
+    
     lanes = samples_df['Lane'].tolist()
     lanes = list(map(str, lanes))
+
+    samples_df["lanes"] = lanes
+    samples_df["read1"] = samples_df["Sample_Name"] + "_" + samples_df["Sample_ID"] + "_L00" + samples_df["lanes"] + "_R1_001.fastq.gz"
+    samples_df["read2"] = samples_df["Sample_Name"] + "_" + samples_df["Sample_ID"] + "_L00" + samples_df["lanes"] + "_R2_001.fastq.gz"
 else:
     samples_df = pd.read_csv(config['samples_csv'])
     samples = samples_df['Sample'].tolist()
