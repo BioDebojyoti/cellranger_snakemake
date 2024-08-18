@@ -1,5 +1,0 @@
-{
-    "fastq_path": "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/tiny_bcl_iem",
-    "input_samplesheet": "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/PREPARE_SAMPLESHEET/fork0/chnk0-u9accc1aeba/files/input_samplesheet.csv",
-    "interop_path": "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/BCL2FASTQ_WITH_SAMPLESHEET/fork0/join-u9accc1aebb/files/interop_path"
-}
