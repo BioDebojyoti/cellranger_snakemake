@@ -1,0 +1,5 @@
+{
+    "fastq_path": "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/tiny_bcl_iem",
+    "input_samplesheet": "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/H35KCBCXY/outs/input_samplesheet.csv",
+    "interop_path": "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/H35KCBCXY/outs/interop_path"
+}

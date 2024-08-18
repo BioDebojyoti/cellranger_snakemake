@@ -1,0 +1,7 @@
+[stderr]
+/opt/cellranger-8.0.1/external/anaconda/lib/python3.10/zoneinfo/_tzpath.py:44: InvalidTZPathWarning: Invalid paths specified in PYTHONTZPATH environment variable. Paths should be absolute but found the following relative paths:
+    external/anaconda/share/zoneinfo
+    external/anaconda/share/tzinfo
+  warnings.warn(
+WARNING:root:The first row in the CSV file doesn't contain the required fields.
+Please check for extra spaces or typos.

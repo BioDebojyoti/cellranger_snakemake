@@ -1,0 +1,36 @@
+2024-08-18 10:20:09 [time] __start__
+2024-08-18 10:20:09 [monitor] cgroup memory limit of 9223372036854771712 bytes detected
+2024-08-18 10:20:10 [info] -------mkfastq diagnostic start-------
+2024-08-18 10:20:10 [info] args:
+2024-08-18 10:20:10 [info] --run=/home/debojyoti/Projects/core_facility/cellranger_snakemake/test/cellranger-tiny-bcl-1.2.0 --output-dir=tiny_bcl_iem --samplesheet=../test/cellranger-tiny-bcl-samplesheet-1.2.0.csv --localcores=4 --localmem=32
+2024-08-18 10:20:10 [info] runParameters.xml parameters:
+2024-08-18 10:20:10 [info] BCL folder RTA Version: 1.18.66.4
+2024-08-18 10:20:10 [info] BCL params: {'ApplicationName': 'HiSeq Control Software', 'ApplicationVersion': '2.2.70'}
+2024-08-18 10:20:10 [info] RC'ing i2 read: False
+2024-08-18 10:20:10 [info] samplesheet:
+2024-08-18 10:20:10 [info] 
+[Header],,,,,,,,
+IEMFileVersion,4,,,,,,,
+Investigator Name,rjr,,,,,,,
+Experiment Name,hiseq_test,,,,,,,
+Date,8/15/16,,,,,,,
+Workflow,GenerateFASTQ,,,,,,,
+Application,HiSeq FASTQ Only,,,,,,,
+Assay,TruSeq HT,,,,,,,
+Description,hiseq sample sheet,,,,,,,
+Chemistry,Default,,,,,,,
+,,,,,,,,
+[Reads],,,,,,,,
+26,,,,,,,,
+98,,,,,,,,
+,,,,,,,,
+[Settings],,,,,,,,
+,,,,,,,,
+[Data],,,,,,,,
+Lane,Sample_ID,Sample_Name,Sample_Plate,Sample_Well,I7_Index_ID,index,Sample_Project,Description
+001,s1,test_sample,,,SI-P03-C9,SI-P03-C9,p1,
+
+2024-08-18 10:20:10 [info] Read Info: [{'read_length': 26, 'index_read': False, 'read_name': 'R1', 'original_read_name': 'R1'}, {'read_length': 8, 'index_read': True, 'read_name': 'I1', 'original_read_name': 'R2'}, {'read_length': 98, 'index_read': False, 'read_name': 'R2', 'original_read_name': 'R3'}]
+2024-08-18 10:20:10 [info] Flowcell ID: H35KCBCXY
+2024-08-18 10:20:10 [info] -------mkfastq diagnostic end-------
+2024-08-18 10:20:10 [time] __end__

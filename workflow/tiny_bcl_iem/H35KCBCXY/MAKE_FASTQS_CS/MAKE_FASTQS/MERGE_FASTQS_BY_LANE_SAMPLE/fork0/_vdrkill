@@ -1,0 +1,21 @@
+{
+    "timestamp": "0001-01-01T00:00:00Z",
+    "paths": null,
+    "errors": null,
+    "events": [
+        {
+            "Timestamp": "2024-08-18T10:20:19.47067872+02:00",
+            "DeltaBytes": 7421
+        },
+        {
+            "Timestamp": "2024-08-18T10:20:20.777371092+02:00",
+            "DeltaBytes": 7770
+        },
+        {
+            "Timestamp": "2024-08-18T10:20:22.168369699+02:00",
+            "DeltaBytes": 10593
+        }
+    ],
+    "count": 0,
+    "size": 0
+}

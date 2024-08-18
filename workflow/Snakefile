@@ -7,9 +7,10 @@ include: "rules/rule_mkfastq.smk"
 
 print("bcl folder  : " + bcl_folder)
 print(samples)
-
+print(expand("{s}_{s_n}_L00{l}_R{read}.fastq.gz", s=samples, s_n=sample_names, l=lanes, read=[1,2]))
+print(lanes)
 # Define rules
 rule all:
     input:
-        flag = os.path.join(outdir, "mkfastq.sucess.txt")  
+        flag = os.path.join(outdir, "mkfastq.sucess.csv")  
 

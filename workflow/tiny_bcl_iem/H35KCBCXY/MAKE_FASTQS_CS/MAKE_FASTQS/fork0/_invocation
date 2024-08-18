@@ -1,0 +1,32 @@
+@include "tenkit/make_fastqs.mro"
+
+call MAKE_FASTQS(
+    run_path              = "/home/debojyoti/Projects/core_facility/cellranger_snakemake/test/cellranger-tiny-bcl-1.2.0",
+    lanes                 = null,
+    specs                 = [
+        {
+            "csv": "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/../test/cellranger-tiny-bcl-samplesheet-1.2.0.csv",
+        },
+    ],
+    project               = "H35KCBCXY",
+    bases_mask            = null,
+    bcl2fastq1_args       = " --mismatches=1",
+    bcl2fastq2_args       = " -p 4 -d 4 -r 4 -w 4 --barcode-mismatches 1",
+    barcode_whitelist     = "/opt/cellranger-8.0.1/lib/python/cellranger/barcodes/737K-august-2016.txt,/opt/cellranger-8.0.1/lib/python/cellranger/barcodes/3M-february-2018.txt.gz",
+    bc_read_type          = "R1",
+    bc_start_index        = 0,
+    bc_length             = 16,
+    si_read_type          = "I1",
+    umi_read_type         = "R1",
+    umi_start_index       = 16,
+    umi_length            = 10,
+    output_path           = "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/tiny_bcl_iem",
+    interop_output_path   = null,
+    delete_undetermined   = false,
+    max_bcl2fastq_threads = 4,
+    force_single_index    = false,
+    filter_dual_index     = false,
+    filter_single_index   = false,
+    all_mkfastq_args      = "--run=/home/debojyoti/Projects/core_facility/cellranger_snakemake/test/cellranger-tiny-bcl-1.2.0 --output-dir=tiny_bcl_iem --samplesheet=../test/cellranger-tiny-bcl-samplesheet-1.2.0.csv --localcores=4 --localmem=32",
+    rc_i2_override        = null,
+)

@@ -1,0 +1,10 @@
+[
+    {
+        "files_merged": true,
+        "merged_file_paths": [
+            "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/tiny_bcl_iem/p1/s1/test_sample_S01_L001_I1_001.fastq.gz",
+            "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/tiny_bcl_iem/p1/s1/test_sample_S01_L001_R1_001.fastq.gz",
+            "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/tiny_bcl_iem/p1/s1/test_sample_S01_L001_R2_001.fastq.gz"
+        ]
+    }
+]

@@ -1,0 +1,8 @@
+2024-08-18 10:20:09 [time] __start__
+2024-08-18 10:20:09 [monitor] cgroup memory limit of 9223372036854771712 bytes detected
+2024-08-18 10:20:09 [info] BCL folder RTA Version: 1.18.66.4
+2024-08-18 10:20:09 [info] BCL params: {'ApplicationName': 'HiSeq Control Software', 'ApplicationVersion': '2.2.70'}
+2024-08-18 10:20:09 [info] RC'ing i2 read: False
+2024-08-18 10:20:09 [info] On machine: z6g4, configureBclToFastq.pl not found on PATH.  This could indicate a newer bcl2fastq is being used.
+2024-08-18 10:20:09 [info] Running bcl2fastq mode: NEW.  Version: 2.20.0.422
+2024-08-18 10:20:09 [time] __end__

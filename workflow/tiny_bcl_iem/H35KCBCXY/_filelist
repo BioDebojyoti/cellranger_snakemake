@@ -1,0 +1,28 @@
+131669729      4 drwxrwxr-x   2  debojyoti debojyoti     4096 Aug 18 10:20 H35KCBCXY/MAKE_FASTQS_CS/fork0/split/files
+131669722      4 drwxrwxr-x   2  debojyoti debojyoti     4096 Aug 18 10:20 H35KCBCXY/MAKE_FASTQS_CS/fork0/files
+131669734      4 drwxrwxr-x   2  debojyoti debojyoti     4096 Aug 18 10:20 H35KCBCXY/MAKE_FASTQS_CS/fork0/join/files
+131669805      4 drwxrwxr-x   2  debojyoti debojyoti     4096 Aug 18 10:20 H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/MAKE_FASTQS_PREFLIGHT_LOCAL/fork0/split/files
+131669792      0 lrwxrwxrwx   1  debojyoti debojyoti       23 Aug 18 10:20 H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/MAKE_FASTQS_PREFLIGHT_LOCAL/fork0/files -> chnk0-u9accc1aeb9/files
+131669857      4 drwxrwxr-x   2  debojyoti debojyoti     4096 Aug 18 10:20 H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/MAKE_FASTQS_PREFLIGHT_LOCAL/fork0/chnk0-u9accc1aeb9/files
+131669815      4 drwxrwxr-x   2  debojyoti debojyoti     4096 Aug 18 10:20 H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/MAKE_FASTQS_PREFLIGHT_LOCAL/fork0/join/files
+131669787      4 drwxrwxr-x   2  debojyoti debojyoti     4096 Aug 18 10:20 H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/MAKE_FASTQS_PREFLIGHT/fork0/split/files
+131669785      0 lrwxrwxrwx   1  debojyoti debojyoti       23 Aug 18 10:20 H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/MAKE_FASTQS_PREFLIGHT/fork0/files -> chnk0-u9accc1aeb9/files
+131669829      4 drwxrwxr-x   2  debojyoti debojyoti     4096 Aug 18 10:20 H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/MAKE_FASTQS_PREFLIGHT/fork0/chnk0-u9accc1aeb9/files
+131669789      4 drwxrwxr-x   2  debojyoti debojyoti     4096 Aug 18 10:20 H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/MAKE_FASTQS_PREFLIGHT/fork0/join/files
+131669902      4 drwxrwxr-x   2  debojyoti debojyoti     4096 Aug 18 10:20 H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/PREPARE_SAMPLESHEET/fork0/split/files
+131669890      0 lrwxrwxrwx   1  debojyoti debojyoti       23 Aug 18 10:20 H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/PREPARE_SAMPLESHEET/fork0/files -> chnk0-u9accc1aeba/files
+131670137      4 drwxrwxr-x   2  debojyoti debojyoti     4096 Aug 18 10:20 H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/PREPARE_SAMPLESHEET/fork0/chnk0-u9accc1aeba/files
+131677679      0 lrwxrwxrwx   1  debojyoti debojyoti       44 Aug 18 10:20 H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/PREPARE_SAMPLESHEET/fork0/chnk0-u9accc1aeba/files/input_samplesheet.csv -> ../../../../../../outs/input_samplesheet.csv
+131669909      4 drwxrwxr-x   2  debojyoti debojyoti     4096 Aug 18 10:20 H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/PREPARE_SAMPLESHEET/fork0/join/files
+131670195      0 lrwxrwxrwx   1  debojyoti debojyoti       22 Aug 18 10:20 H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/BCL2FASTQ_WITH_SAMPLESHEET/fork0/files -> join-u9accc1aebb/files
+131670206      4 drwxrwxr-x   2  debojyoti debojyoti     4096 Aug 18 10:20 H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/BCL2FASTQ_WITH_SAMPLESHEET/fork0/chnk0-u9accc1aebc/files
+131670225      4 drwxrwxr-x   2  debojyoti debojyoti     4096 Aug 18 10:20 H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/BCL2FASTQ_WITH_SAMPLESHEET/fork0/join-u9accc1aebb/files
+131670593      0 lrwxrwxrwx   1  debojyoti debojyoti       35 Aug 18 10:20 H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/BCL2FASTQ_WITH_SAMPLESHEET/fork0/join-u9accc1aebb/files/interop_path -> ../../../../../../outs/interop_path
+131670201      4 drwxrwxr-x   2  debojyoti debojyoti     4096 Aug 18 10:20 H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/BCL2FASTQ_WITH_SAMPLESHEET/fork0/split-u9accc1aebb/files
+131729341      4 drwxrwxr-x   2  debojyoti debojyoti     4096 Aug 18 10:20 H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/fork0/split/files
+131729339      4 drwxrwxr-x   2  debojyoti debojyoti     4096 Aug 18 10:20 H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/fork0/files
+131729343      4 drwxrwxr-x   2  debojyoti debojyoti     4096 Aug 18 10:20 H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/fork0/join/files
+131729349      4 drwxrwxr-x   2  debojyoti debojyoti     4096 Aug 18 10:20 H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/MERGE_FASTQS_BY_LANE_SAMPLE/fork0/split-u9accc1aec3/files
+131729346      0 lrwxrwxrwx   1  debojyoti debojyoti       22 Aug 18 10:20 H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/MERGE_FASTQS_BY_LANE_SAMPLE/fork0/files -> join-u9accc1aec3/files
+131729353      4 drwxrwxr-x   2  debojyoti debojyoti     4096 Aug 18 10:20 H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/MERGE_FASTQS_BY_LANE_SAMPLE/fork0/join-u9accc1aec3/files
+131729479      4 drwxrwxr-x   2  debojyoti debojyoti     4096 Aug 18 10:20 H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/MERGE_FASTQS_BY_LANE_SAMPLE/fork0/chnk0-u9accc1aec4/files

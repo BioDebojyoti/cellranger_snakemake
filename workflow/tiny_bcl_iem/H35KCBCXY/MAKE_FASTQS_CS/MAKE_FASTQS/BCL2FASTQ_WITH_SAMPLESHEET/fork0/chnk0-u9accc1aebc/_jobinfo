@@ -1,0 +1,134 @@
+{
+    "name": "ID.H35KCBCXY.MAKE_FASTQS_CS.MAKE_FASTQS.BCL2FASTQ_WITH_SAMPLESHEET.fork0.chnk0",
+    "type": "local",
+    "cwd": "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/BCL2FASTQ_WITH_SAMPLESHEET/fork0/chnk0-u9accc1aebc/files",
+    "python": {
+        "binpath": "/opt/cellranger-8.0.1/external/anaconda/bin/python3",
+        "version": "3.10.8 | packaged by conda-forge | (main, Nov 22 2022, 08:23:14) [GCC 10.4.0]"
+    },
+    "rusage": {
+        "self": {
+            "ru_maxrss": 15208,
+            "ru_ixrss": 0,
+            "ru_idrss": 0,
+            "ru_minflt": 806,
+            "ru_majflt": 0,
+            "ru_nswap": 0,
+            "ru_utime": 0.013317,
+            "ru_stime": 0.003511,
+            "ru_inblock": 0,
+            "ru_oublock": 40,
+            "ru_msgsnd": 0,
+            "ru_msgrcv": 0,
+            "ru_nsignals": 0,
+            "ru_nivcsw": 1
+        },
+        "children": {
+            "ru_maxrss": 982888,
+            "ru_ixrss": 0,
+            "ru_idrss": 0,
+            "ru_minflt": 399331,
+            "ru_majflt": 0,
+            "ru_nswap": 0,
+            "ru_utime": 23.546914,
+            "ru_stime": 1.111603,
+            "ru_inblock": 0,
+            "ru_oublock": 439704,
+            "ru_msgsnd": 0,
+            "ru_msgrcv": 0,
+            "ru_nsignals": 0,
+            "ru_nivcsw": 89
+        }
+    },
+    "used_bytes": {
+        "rss": 992948224,
+        "shared": 14987264,
+        "vmem": 3699814400,
+        "text": 8351744,
+        "stack": 1320402944,
+        "proc_count": 19
+    },
+    "io": {
+        "total": {
+            "read": {
+                "sysc": 596,
+                "bytes": 45056
+            },
+            "write": {
+                "sysc": 6807,
+                "bytes": 0
+            }
+        },
+        "max": {
+            "read": {
+                "sysc": 1775.7947505985064,
+                "bytes": 57022.924213912476
+            },
+            "write": {
+                "sysc": 9623.811742156895,
+                "bytes": 0
+            }
+        },
+        "dev": {
+            "read": {
+                "sysc": 340.29756000130556,
+                "bytes": 15480.514515714147
+            },
+            "write": {
+                "sysc": 2658.5035209513353,
+                "bytes": 0
+            }
+        }
+    },
+    "wallclock": {
+        "start": "2024-08-18T10:20:12.198667202+02:00",
+        "end": "2024-08-18T10:20:19.03497322+02:00",
+        "duration_seconds": 6.836306017
+    },
+    "profile_mode": "disable",
+    "stackvars_flag": "disable",
+    "monitor_flag": "disable",
+    "invocation": {
+        "call": "MAKE_FASTQS_CS",
+        "args": {
+            "all_mkfastq_args": "--run=/home/debojyoti/Projects/core_facility/cellranger_snakemake/test/cellranger-tiny-bcl-1.2.0 --output-dir=tiny_bcl_iem --samplesheet=../test/cellranger-tiny-bcl-samplesheet-1.2.0.csv --localcores=4 --localmem=32",
+            "barcode_whitelist": "/opt/cellranger-8.0.1/lib/python/cellranger/barcodes/737K-august-2016.txt,/opt/cellranger-8.0.1/lib/python/cellranger/barcodes/3M-february-2018.txt.gz",
+            "bases_mask": null,
+            "bc_length": 16,
+            "bc_read_type": "R1",
+            "bc_start_index": 0,
+            "bcl2fastq1_args": " --mismatches=1",
+            "bcl2fastq2_args": " -p 4 -d 4 -r 4 -w 4 --barcode-mismatches 1",
+            "delete_undetermined": false,
+            "filter_dual_index": false,
+            "filter_single_index": false,
+            "force_single_index": false,
+            "interop_output_path": null,
+            "lanes": null,
+            "max_bcl2fastq_threads": 4,
+            "output_path": "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/tiny_bcl_iem",
+            "project": "H35KCBCXY",
+            "rc_i2_override": null,
+            "run_path": "/home/debojyoti/Projects/core_facility/cellranger_snakemake/test/cellranger-tiny-bcl-1.2.0",
+            "si_read_type": "I1",
+            "specs": [
+                {
+                    "csv": "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/../test/cellranger-tiny-bcl-samplesheet-1.2.0.csv"
+                }
+            ],
+            "umi_length": 10,
+            "umi_read_type": "R1",
+            "umi_start_index": 16
+        },
+        "mro_file": "tenkit/make_fastqs_cs.mro"
+    },
+    "version": {
+        "martian": "v4.0.12",
+        "pipelines": "cellranger-8.0.1"
+    },
+    "host": "z6g4",
+    "pid": 957245,
+    "threads": 4,
+    "memGB": 32,
+    "vmemGB": 35
+}

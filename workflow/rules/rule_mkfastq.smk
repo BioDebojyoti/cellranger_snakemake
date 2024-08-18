@@ -32,9 +32,17 @@ if (config["IEM_samplesheet"] == True):
     keyword_line = find_keyword_line(config['samples_csv'], '(\[Cloud_Data\]|\[Data\])')
     samples_df = pd.read_csv(config['samples_csv'], skiprows=keyword_line)
     samples = samples_df['Sample_Name'].tolist()
+    sample_names = samples_df['Sample_ID'].tolist()
+    sample_names = list(map(str.upper, sample_names))
+    lanes = samples_df['Lane'].tolist()
+    lanes = list(map(str, lanes))
 else:
     samples_df = pd.read_csv(config['samples_csv'])
     samples = samples_df['Sample'].tolist()
+    sample_names = list(map(str.upper, samples))
+    lanes = samples_df['Lane'].tolist()
+    lanes = list(map(str, lanes))
+
 
 
 
@@ -50,7 +58,7 @@ rule mkfastq:
     input:
         os.path.abspath(bcl_folder)
     output:
-        flag = os.path.join(outdir, "mkfastq.sucess.txt")
+        flag = os.path.join(outdir, "mkfastq.sucess.csv")
     resources:
         cores = lambda wc, attempt: min(mkfastq_cores * attempt, max_cores),
         memory = lambda wc, attempt: min(mkfastq_memory * attempt, max_memory)   
@@ -65,7 +73,7 @@ rule mkfastq:
     log:
         os.path.join(outdir, "logs","mkfastq.log")    
     benchmark:
-        os.path.join(outdir, "benchmarks", "benchmarks_mkfastq.txt")
+        os.path.join(outdir, "benchmarks", "benchmarks_mkfastq.csv")
     shell:
         """
         cellranger mkfastq --run={input} \
@@ -75,7 +83,7 @@ rule mkfastq:
         --localcores={resources.cores} \
         --localmem={resources.memory} \
         2>&1 | tee -a {log}; 
-        find {params.outdir2use} -iname "*gz" | grep -Ev "Undetermined|\_I1_|\_I2_" | xargs -I {{}} mv {{}} {params.outdir2use};
+        #find {params.outdir2use} -iname "*gz" | grep -Ev "Undetermined|\_I1_|\_I2_" | xargs -I {{}} mv {{}} {params.outdir2use};
         bash scripts/get_fastq_csv.sh {params.outdir2use} "\""{params.lib_type}"\"" > {params.file2create}; \
         bash scripts/move_pipestance_dir.sh {log} {params.outdir2use};
         """

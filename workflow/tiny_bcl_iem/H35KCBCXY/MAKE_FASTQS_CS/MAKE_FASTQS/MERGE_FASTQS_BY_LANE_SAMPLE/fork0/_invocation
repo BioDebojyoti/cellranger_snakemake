@@ -1,0 +1,9 @@
+@include "tenkit/_make_fastqs_stages.mro"
+
+call MERGE_FASTQS_BY_LANE_SAMPLE(
+    fastq_path                 = "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/tiny_bcl_iem",
+    samplesheet_path           = "/home/debojyoti/Projects/core_facility/cellranger_snakemake/workflow/H35KCBCXY/MAKE_FASTQS_CS/MAKE_FASTQS/PREPARE_SAMPLESHEET/fork0/chnk0-u9accc1aeba/files/samplesheet.csv",
+    remove_undetermined_fastqs = false,
+    remove_split_fastqs        = true,
+    bcl2fastq_version          = "2.20.0.422",
+)
