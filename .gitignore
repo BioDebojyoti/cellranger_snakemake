@@ -8,4 +8,5 @@ workflow/tiny_bcl
 workflow/tiny_bcl_attempt2
 workflow/tiny_bcl_attempt3
 workflow/tiny_bcl_simple
+workflow/tiny_bcl_iem
 workflow/.snakemake
