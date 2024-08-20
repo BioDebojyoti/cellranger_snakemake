@@ -50,7 +50,7 @@ rule cellranger_count:
     log:
         os.path.join("logs","count_{sample}.log")
     benchmark:
-        os.path.join(outdir, "benchmarks", "benchmarks_{sample}_count.csv")             
+        os.path.join("benchmarks", "benchmarks_{sample}_count.csv")             
         # if [ "{params.use_feature_ref}" == "True" ] && [ -n "{params.feature_ref}" ]; then
         # cellranger count --id={params.sample} \
         #     --transcriptome={input.transcriptome} \
