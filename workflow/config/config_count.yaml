@@ -1,13 +1,7 @@
-samples_csv:  "/test/SampleSheet.csv"
+output_count: "../gosia_single_cell_runs/output_240227/count_results" # A unique run id and output folder name [a-zA-Z0-9_-]+
 
-start_with_bcl: true  # Set to False if starting with FASTQ files
-bcl_folder: "test/bcl"
-flowcell_id: "H35KCBCXY" # directory name one level above "/outs/fastq_path"
-
-output_count: "" # A unique run id and output folder name [a-zA-Z0-9_-]+
-
-fastq_path: #"/path/to/fastqs"  # Only used if start_with_bcl is False
-transcriptome: "refdata-cellranger-hg19-1.2.0"
+paths2fastq_file: "../gosia_single_cell_runs/output_240227/mkfastq.sucess.csv"  # Only used if start_with_bcl is False
+transcriptome: "/home/debojyoti/Projects/core_facility/refdata-gex-GRCh38-2020-A"
 
 
 resources:
@@ -15,8 +9,8 @@ resources:
   localmem: 64  # Set the amount of memory to use in GB
 
 
-feature_ref: "feature_ref.csv" #"/path/to/feature_ref.csv"  # Path to the Feature Reference CSV file (optional)
-libraries_csv: "libraries.csv" #"/path/to/libraries.csv"  # Path to the Libraries CSV file (optional)
+feature_ref: # "/path/to/feature_ref.csv"  # Path to the Feature Reference CSV file (optional)
+libraries_csv: # "/path/to/libraries.csv"  # Path to the Libraries CSV file (optional)
 
 additional_arguments: "--create-bam true" # required 
 # additional but optional arguments are 
