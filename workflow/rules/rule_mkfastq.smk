@@ -64,7 +64,7 @@ opt_sample_sheet = " --samplesheet="+config["samples_csv"] if (config["IEM_sampl
 #         expand(os.path.join(outdir, project,"{sample}"), sample=samples)   
 
 # Rule to generate FASTQ files if starting from BCL files
-rule mkfastq:
+rule cellranger_mkfastq:
     input:
         os.path.abspath(bcl_folder)
     output:
@@ -95,7 +95,7 @@ rule mkfastq:
         2>&1 | tee -a {log}; 
         #find {params.outdir2use} -iname "*gz" | grep -Ev "Undetermined|\_I1_|\_I2_" | xargs -I {{}} mv {{}} {params.outdir2use};
         bash scripts/get_fastq_csv.sh {params.outdir2use} "\""{params.lib_type}"\"" > {params.file2create}; \
-        bash scripts/move_pipestance_dir.sh {log} {params.outdir2use};
+        bash scripts/move_pipestance_mkfastq_dir.sh {log} {params.outdir2use};
         """
 
 # get quality control of fastq files 

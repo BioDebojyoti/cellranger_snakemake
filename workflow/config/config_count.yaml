@@ -1,18 +1,18 @@
 output_count: "../gosia_single_cell_runs/output_240227/count_results" # A unique run id and output folder name [a-zA-Z0-9_-]+
 
 paths2fastq_file: "../gosia_single_cell_runs/output_240227/mkfastq.sucess.csv"  # Only used if start_with_bcl is False
-transcriptome: "/home/debojyoti/Projects/core_facility/refdata-gex-GRCh38-2020-A"
+transcriptome: "../refdata-gex-GRCh38-2020-A"
 
 
 resources:
   localcores: 8  # Set the number of cores to use (e.g., 16)
-  localmem: 64  # Set the amount of memory to use in GB
+  localmem: 32  # Set the amount of memory to use in GB
 
 
 feature_ref: # "/path/to/feature_ref.csv"  # Path to the Feature Reference CSV file (optional)
 libraries_csv: # "/path/to/libraries.csv"  # Path to the Libraries CSV file (optional)
 
-additional_arguments: "--create-bam true" # required 
+additional_arguments: "--create-bam=false" # required 
 # additional but optional arguments are 
 # "--jobmode local" # Job manager to use. Valid options: local (default), sge, lsf, slurm or path to a .template file. 
 #         or  

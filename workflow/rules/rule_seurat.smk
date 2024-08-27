@@ -3,14 +3,13 @@ import os, sys
 import pandas as pd 
 
 # Configuration
-configfile: os.path.join("config", "config_aggregate.yaml")
+configfile: os.path.join("config", "config_seurat.yaml")
 
-aggr_input_file = config['aggr_input_file']
-# aggr_csv = aggr_input_file if aggr_input_file != None else rules.all.output.aggr_input_csv
+count_matrix_file = config['count_matrix_file'] if config['count_matrix_file'] != None else if rules.
 
 
 # Rule to aggregate libraries (optional)
-rule cellranger_aggr:
+rule seurat:
     input:
         csv = aggr_input_file if aggr_input_file != None else rules.b4all.output.aggr_input_csv
     output:
@@ -19,7 +18,7 @@ rule cellranger_aggr:
         cores = config["resources"]["localcores"],
         memory = config["resources"]["localmem"]        
     container:
-        "docker://litd/docker-cellranger:v8.0.1" 
+        "docker://biodebojyoti/crossplatformcellranger:8.0.1"
     params:
         aggr_id = config["aggregation_id"],
         aggr_outdir = "{count_outdir}/aggr_results"
