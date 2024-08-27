@@ -10,3 +10,5 @@ workflow/tiny_bcl_attempt3
 workflow/tiny_bcl_simple
 workflow/tiny_bcl_iem
 workflow/.snakemake
+workflow/test_seurat
+refdata-gex-GRCh38-2020-A 
