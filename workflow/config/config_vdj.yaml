@@ -1,44 +1,12 @@
-samples_csv:  "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/240220_VH01167_29_AAFHTGTM5/SampleSheet.csv"
+output_vdj: "../gosia_single_cell_runs/output_240220/vdj_results"
 
-start_with_bcl: true  # Set to False if starting with FASTQ files
-bcl_folder: "cellranger-tiny-bcl-1.2.0"
-flowcell_id: "H35KCBCXY"
-
-fastq_path: #"/path/to/fastqs"  # Only used if start_with_bcl is False
-transcriptome: "refdata-cellranger-hg19-1.2.0"
-
-pass_expect_cells: False # true  # This is where you specify the expected cell count
-expect_cells: 3000  # This is where you specify the expected cell count
-pass_force_cells: False #2000   # Optional: This can also be specified
-force_cells:  #2000   # Optional: This can also be specified
-
-create_bam: True  # Set to true if you want to create BAM files during count
+vdj_reference: "../refdata_cellranger_vdj_GRCh38_alts_ensembl_710"
+paths2fastq4vdj_file: "../gosia_single_cell_runs/output_240220/mkfastq.sucess.csv"
 
 resources:
-  localcores: 8  # Set the number of cores to use (e.g., 16)
-  localmem: 64  # Set the amount of memory to use in GB
+  localcores: 4
+  localmem: 8
+  max_cores: 8
+  max_memory: 16
 
-use_feature_ref: False  # Indicates whether to use the --feature-ref parameter
-use_libraries: False  # Indicates whether to use the --libraries parameter
-
-feature_ref: "feature_ref.csv" #"/path/to/feature_ref.csv"  # Path to the Feature Reference CSV file (optional)
-libraries_csv: "libraries.csv" #"/path/to/libraries.csv"  # Path to the Libraries CSV file (optional)
-
-# Important
-# cellranger aggr is NOT designed for aggregating multiple sequencing runs of the same library, 
-# for example, resequencing the same library to increase read depth.
-# In this scenario, you must specify all FASTQ files (fastqs field) in a single analysis of either cellranger count or multi.
-
-aggregate: False # Set to False if you do not want to run cellranger aggr
-aggregation_id: "test" # Required. A unique run ID string: e.g. AGG123
-aggregation_csv: "aggregation.csv" # Required. Path to the aggregation CSV file containing the list of molecule_info.h5 files.
-reanalyze: False  # Set to False if you do not want to run cellranger reanalyze
-
-
-# VDJ Making a genome-based reference package
-make_vdjref: False #Path to FASTA file containing your genome reference
-# folder with vdjreference
-vdjref_folder: "/mnt/WD1/home/debojyoti/refdata-cellranger-vdj-GRCh38-alts-ensembl-7.1.0" # else run "cellranger mkvdjref" and create a directory whose name is specified by the --genome argument.
-genome_fasta: # path to genome fasta file to be used by cellranger mkvdjref
-annotation_gtf: # path to genome annotation gtf file to be used by cellranger mkvdjref
-vdj_seqs: # Path to a FASTA file that directly specifies V(D)J sequences. This is mutually exclusive with the "fasta" and "genes" args
+additional_arguments: "" # required
