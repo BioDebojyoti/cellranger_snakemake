@@ -1,18 +1,17 @@
 ---
 snakefile: Snakefile
 cores: 32
-latency-wait: 
+latency-wait:
 reason: True
 show-failed-logs: True
 keep-going: True
 printshellcmds: True
 rerun-incomplete: True
-restart-times: 
+restart-times:
 
 # singularity
 use-singularity: True
 singularity-args: "--bind /home/debojyoti/Projects/core_facility/cellranger_snakemake"
-
 # # Cluster submission
 # jobname: "{rule}.{jobid}"              # Provide a custom name for the jobscript that is submitted to the cluster.
 # max-jobs-per-second: 1                 #Maximal number of cluster/drmaa jobs per second, default is 10, fractions allowed.

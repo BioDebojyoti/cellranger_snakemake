@@ -1,9 +1,8 @@
-
 resources:
-  localcores: 8  # Set the number of cores to use (e.g., 16)
-  localmem: 64  # Set the amount of memory to use in GB
-
+  localcores: 8 # Set the number of cores to use (e.g., 16)
+  localmem: 64 # Set the amount of memory to use in GB
 
 aggr_input_file: #
-aggregation_id: "aggr_gex_4_samples" # Required. A unique run ID string: e.g. AGG123
+aggregation_id: "aggr_gex_vdj_4_samples" # Required. A unique run ID string: e.g. AGG123
 
+aggr_outdir:

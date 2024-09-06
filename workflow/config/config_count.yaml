@@ -1,21 +1,20 @@
-output_count: "../gosia_single_cell_runs/output_240227/count_results" # A unique run id and output folder name [a-zA-Z0-9_-]+
+output_count: "../gosia_single_cell_runs/output_240227/count_results_test" # A unique run id and output folder name [a-zA-Z0-9_-]+
 
-paths2fastq_file: "../gosia_single_cell_runs/output_240227/mkfastq.sucess.csv"  # Only used if start_with_bcl is False
+paths2fastq_file: # "../gosia_single_cell_runs/output_240227/mkfastq.sucess.csv" # Only used if start_with_bcl is False
 transcriptome: "../refdata-gex-GRCh38-2020-A"
 
-
 resources:
-  localcores: 8  # Set the number of cores to use (e.g., 16)
-  localmem: 32  # Set the amount of memory to use in GB
-
+  localcores: 8 # Set the number of cores to use (e.g., 16)
+  localmem: 32 # Set the amount of memory to use in GB
 
 feature_ref: # "/path/to/feature_ref.csv"  # Path to the Feature Reference CSV file (optional)
 libraries_csv: # "/path/to/libraries.csv"  # Path to the Libraries CSV file (optional)
 
-additional_arguments: "--create-bam=false" # required 
-# additional but optional arguments are 
-# "--jobmode local" # Job manager to use. Valid options: local (default), sge, lsf, slurm or path to a .template file. 
-#         or  
+additional_arguments: "--create-bam=false" # required
+
+# additional but optional arguments are
+# "--jobmode local" # Job manager to use. Valid options: local (default), sge, lsf, slurm or path to a .template file.
+#         or
 # "--chemistry "fiveprime" or something else
 # Assay configuration. NOTE: by default the assay configuration is detected automatically, which is the recommended mode. You usually will not need to specify a chemistry. Options are: 'auto' for autodetection,
 # 'threeprime' for Single Cell 3', 'fiveprime' for  Single Cell 5', 'SC3Pv1' or 'SC3Pv2' or 'SC3Pv3' or 'SC3Pv4' for Single Cell 3' v1/v2/v3/v4, 'SC3Pv3LT' for Single Cell 3' v3 LT, 'SC3Pv3HT' for Single Cell 3'
@@ -27,8 +26,8 @@ additional_arguments: "--create-bam=false" # required
 #         or
 # "--lanes 12"           # Only use FASTQs from selected lanes
 #         or
-# "--project <TEXT>"         
-# Name of the project folder within a mkfastq or bcl2fastq-generated folder 
+# "--project <TEXT>"
+# Name of the project folder within a mkfastq or bcl2fastq-generated folder
 # # from which to pick FASTQs
 #         or
 # "--nosecondary                  # Disable secondary analysis, e.g. clustering. Optional

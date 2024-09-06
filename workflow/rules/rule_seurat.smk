@@ -5,15 +5,16 @@ import pandas as pd
 # Configuration
 configfile: os.path.join("config", "config_seurat.yaml")
 
-count_matrix_file = config['count_matrix_file'] if config['count_matrix_file'] != None else if rules.
 
+count_matrix_file = rules.aggr_all.input.aggr_h5 if rules.aggr_all.input.aggr_h5 != None else config['count_matrix_file']
+count_matrix_file = count_matrix_file if count_matrix_file != None else rules.cellranger_count.output.FilteredBCmatricesHDF5
 
 # Rule to aggregate libraries (optional)
 rule seurat:
     input:
-        csv = aggr_input_file if aggr_input_file != None else rules.b4all.output.aggr_input_csv
+        csv = count_matrix_file
     output:
-        aggr_h5 = "{count_outdir}/aggr_results/outs/count/filtered_feature_bc_matrix.h5"
+        seurat_rds = "{seurat_outdir}/"
     resources:
         cores = config["resources"]["localcores"],
         memory = config["resources"]["localmem"]        
