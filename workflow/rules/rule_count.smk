@@ -2,19 +2,43 @@
 import os, sys
 import pandas as pd
 
-
 # Configuration
 # configfile: os.path.join("config", "config_count.yaml")
 
+count_outdir = config_count["output_count"]
 
 # fastq_df = pd.read_csv(config_count["paths2fastq_file"])
-fastq_df = pd.read_csv(input_for_cellranger_count(""))
+if config_count.get("paths2fastq_file", None):
+    fastq_file_path = config_count["paths2fastq_file"]
+else:
+    bcl_run_index1 = [
+        i
+        for i, v in feature_type_dict.items()
+        if v
+        in [
+            "Gene Expression",
+            "gene expression",
+            "gene-expression",
+            "Gene-Expression",
+        ]
+    ]
+    # print(bcl_run_index1)
+    fastq_file_path = (
+        fastq_outdirectory_dict[bcl_run_index1[0]]
+        + "/mkfastq_success_"
+        + bcl_run_index1[0]
+        + ".csv"
+    )
+    # print(fastq_file_path)
+
+
+fastq_df = pd.read_csv(fastq_file_path)
 samples_seqs = fastq_df["sample"].tolist()
 samples_paths = fastq_df["fastq"].tolist()
 fastq_dict = {s: samples_paths[i] for i, s in enumerate(samples_seqs)}
 
 
-count_outdir = config_count["output_count"]
+# count_outdir = config_count["output_count"]
 
 
 rule cellranger_count_b4aggr:

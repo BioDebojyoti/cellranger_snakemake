@@ -8,7 +8,30 @@ import pandas as pd
 
 
 # fastq_df_vdj = pd.read_csv(config_vdj["paths2fastq4vdj_file"])
-fastq_df_vdj = pd.read_csv(input_for_cellranger_vdj(" "))
+# fastq_df = pd.read_csv(config_vdj["paths2fastq_file"])
+if config_vdj.get("paths2fastq4vdj_file", None):
+    vdj_fastq_file_path = config_vdj["paths2fastq4vdj_file"]
+else:
+    bcl_run_index_vdj = [
+        i
+        for i, v in feature_type_dict.items()
+        if v
+        in [
+            "VDJ",
+            "vdj",
+            "Vdj",
+        ]
+    ]
+    # print(bcl_run_index1)
+    vdj_fastq_file_path = (
+        fastq_outdirectory_dict[bcl_run_index_vdj[0]]
+        + "/mkfastq_success_"
+        + bcl_run_index_vdj[0]
+        + ".csv"
+    )
+    # print(fastq_file_path)
+
+fastq_df_vdj = pd.read_csv(vdj_fastq_file_path)
 vdj_samples_seqs = fastq_df_vdj["sample"].tolist()
 vdj_samples_paths = fastq_df_vdj["fastq"].tolist()
 vdj_fastq_dict = {s: vdj_samples_paths[i] for i, s in enumerate(vdj_samples_seqs)}
@@ -26,14 +49,12 @@ max_memory = config_vdj["resources"]["max_memory"]
 
 rule cellranger_vdj_b4aggr:
     output:
-        aggr_input_csv=expand(
-            "{vdj_outdir}/aggregation_count.csv", vdj_outdir=vdj_outdir
-        ),
+        aggr_input_csv=expand("{vdj_outdir}/aggregation_vdj.csv", vdj_outdir=vdj_outdir),
     input:
         # dummy inputs to create csv for cellranger_aggr  
         # flag=os.path.join(outdir, "mkfastq.sucess.csv"),
         count_info_h5=expand(
-            "{vdj_outdir}/{sample}_count/outs/molecule_info.h5",
+            "{vdj_outdir}/{sample}_vdj/outs/vdj_contig_info.pb",
             sample=list(vdj_fastq_dict.keys()),
             vdj_outdir=vdj_outdir,
         ),
@@ -42,8 +63,8 @@ rule cellranger_vdj_b4aggr:
         additional_info_aggr=config_vdj["add_info_aggr"],
     shell:
         """
-        bash scripts/get_vdj_aggr_csv.sh {params.vdjdir} > {params.vdjdir}/aggregation_count.csv;
-        python scripts/add_info_aggr.py {params.vdjdir}/aggregation_count.csv {params.additional_info_aggr}
+        bash scripts/get_vdj_aggr_csv.sh {params.vdjdir} > {params.vdjdir}/aggregation_vdj.csv;
+        python scripts/add_info_aggr.py {params.vdjdir}/aggregation_vdj.csv {params.additional_info_aggr}
         """
 
 

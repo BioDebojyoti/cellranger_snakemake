@@ -6,29 +6,23 @@ import pandas as pd
 # Configuration
 # configfile: os.path.join("config", "config_count.yaml")
 
-
-# fastq_df = pd.read_csv(config_count["paths2fastq_file"])
-fastq_df = pd.read_csv(input_for_cellranger_count(""))
-samples_seqs = fastq_df["sample"].tolist()
-samples_paths = fastq_df["fastq"].tolist()
-fastq_dict = {s: samples_paths[i] for i, s in enumerate(samples_seqs)}
-
-
 multi_outdir = config_count["output_multi"]
 
 
 # Rule to count features for single library
-rule cellranger_count:
+rule cellranger_multi:
     input:
-        fastq_folder=lambda wc: fastq_dict[wc.sample],
-        transcriptome=config_count["transcriptome"],
+        id2use=config_multi["id"],
+        csv=input_for_cellranger_multi,
     output:
-        Permoleculereadinformation="{count_outdir}/{sample}_count/outs/molecule_info.h5",
-        FilteredBCmatricesHDF5="{count_outdir}/{sample}_count/outs/filtered_feature_bc_matrix.h5",
+        count="{multi_outdir}/outs/per_sample_outs/{input.id2use}/count/sample_filtered_feature_bc_matrix.h5",
+        count_dir=directory(
+            "{multi_outdir}/outs/per_sample_outs/{input.id2use}/count/sample_filtered_feature_bc_matrix"
+        ),
+        vdj_b="{multi_outdir}/outs/per_sample_outs/{input.id2use}/vdj_b/vdj_contig_info.pb",
+        vdj_t="{multi_outdir}/outs/per_sample_outs/{input.id2use}/vdj_t/vdj_contig_info.pb",
     params:
-        id2use="pipestance_{sample}",
-        sample="{sample}",
-        count_outdir2use="{count_outdir}/{sample}_count",
+        multi_outdir2use="{multi_outdir}",
         add_arguments=config_count["additional_arguments"],
     resources:
         cores=config_count["resources"]["localcores"],
@@ -36,19 +30,16 @@ rule cellranger_count:
     container:
         "docker://litd/docker-cellranger:v8.0.1"
     log:
-        file="{count_outdir}/logs/count_{sample}.log",
+        file="{multi_outdir}/logs/count_{sample}.log",
     benchmark:
-        "{count_outdir}/benchmarks/benchmarks_{sample}_count.csv"
+        "{multi_outdir}/benchmarks/benchmarks_{input.id2use}_multi.csv"
     shell:
         """   
-        cellranger count \
-        --id={params.id2use} \
-        --transcriptome={input.transcriptome} \
-        --fastqs={input.fastq_folder} \
-        --sample={params.sample} \
+        cellranger multi \
+        --id={input.id2use} \
         --localcores={resources.cores} \
         --localmem={resources.memory} \
         {params.add_arguments} \
         2>&1 | tee -a {log.file}; \
-        bash scripts/move_pipestance_count_dir.sh {log.file} {params.count_outdir2use}; 
+        bash scripts/move_pipestance_multi_dir.sh {log.file} {params.multi_outdir2use}; 
         """

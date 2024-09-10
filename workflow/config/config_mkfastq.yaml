@@ -1,18 +1,27 @@
-bcl_folder: "../gosia_single_cell_runs/240220_VH01167_29_AAFHTGTM5"
-# "../test/cellranger-tiny-bcl-1.2.0" # "../gosia_single_cell_runs/240227_VH01167_32_AAFH5GKM5"
-
-outputdir: "../gosia_single_cell_runs/output_240220/"
-# "tiny_bcl_iem" # "../gosia_single_cell_runs/output_240227"
+bcl_folder_paths: "../gosia_single_cell_runs/bcl_folder_paths.csv"
 
 resources:
-  localcores: 16
-  localmem: 64
+  localcores: 8
+  localmem: 32
   max_cores: 48
   max_memory: 128
 
-IEM_samplesheet: False
-samples_csv: "../gosia_single_cell_runs/240220_VH01167_29_AAFHTGTM5_sample_sheet.csv"
-# "../test/cellranger-tiny-bcl-samplesheet-1.2.0.csv" # "../gosia_single_cell_runs/240227_VH01167_32_AAFH5GKM5_sample_sheet.csv"
-library_type: "Gene Expression"
-
 additional_arguments:
+# # bcl_folder: "../gosia_single_cell_runs/240220_VH01167_29_AAFHTGTM5"
+# bcl_folder: "../test/cellranger-tiny-bcl-1.2.0" # "../gosia_single_cell_runs/240227_VH01167_32_AAFH5GKM5"
+
+# # outputdir: "../gosia_single_cell_runs/output_240220/"
+# outputdir: "../tiny_bcl_iem" # "../gosia_single_cell_runs/output_240227"
+
+# resources:
+#   localcores: 8
+#   localmem: 32
+#   max_cores: 48
+#   max_memory: 128
+
+# IEM_samplesheet: True
+# # samples_csv: "../gosia_single_cell_runs/240220_VH01167_29_AAFHTGTM5_sample_sheet.csv"
+# samples_csv: "../test/cellranger-tiny-bcl-samplesheet-1.2.0.csv" # "../gosia_single_cell_runs/240227_VH01167_32_AAFH5GKM5_sample_sheet.csv"
+# library_type: "Gene Expression"
+
+# additional_arguments:

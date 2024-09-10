@@ -4,25 +4,27 @@ import pandas as pd
 
 
 include: "common.smk"
+include: os.path.join("rules", "rule_mkfastq.smk")
 
 
 # print(list(rules.__dict__.keys()))
 
 
-include: os.path.join("rules", "rule_mkfastq.smk")
 # one the below three needs to run depending on the experimental design followed by optional aggregate rule
+# include: os.path.join("rules", "rule_count.smk")
+
+
 include: os.path.join("rules", "rule_count.smk")
+include: os.path.join("rules", "rule_vdj.smk")
 
 
-# include: os.path.join("rules", "rule_vdj.smk")
 # include: os.path.join("rules", "rule_multi.smk")
 
-
-include: os.path.join("rules", "rule_aggregate.smk")
+# include: os.path.join("rules", "rule_aggregate.smk")
 
 
 # print(input_for_cellranger_vdj("here"))
-rules_list = list(rules.__dict__.keys())  # list(workflow.__dict__.keys())
+# rules_list = list(rules.__dict__.keys())  # list(workflow.__dict__.keys())
 # for k in rules_list:
 #     print(k + getattr())
 # print(getattr(workflow, k))
@@ -36,26 +38,67 @@ rules_list = list(rules.__dict__.keys())  # list(workflow.__dict__.keys())
 #             vdj_outdir=vdj_outdir,
 #         ),
 
+# print(rules.cellranger_mkfastq.params.lib_type)
 
-# include: "rules/rule_mkvdjref.smk"
-# print("bcl folder  : " + bcl_folder)
-# print(samples_df)
-# print(samples)
-# print(expand("{s}_{s_n}_L00{l}_R{read}.fastq.gz", s=samples, s_n=sample_names, l=lanes, read=[1,2]))
-# print(lanes)
-# print(rules.cellranger_count.output.summary_html)
+
+# rule collect_count_results:
+#     input:
+#         aggr_input_csv=expand(
+#             "{count_outdir}/aggregation_count.csv", count_outdir=count_outdir
+#         ),
+
+
+# print(
+#     expand(
+#         "{fastq_outdirectory}/mkfastq_success_{bcl_run_index}.csv",
+#         zip,
+#         fastq_outdirectory=list(fastq_outdirectory_dict.values()),
+#         bcl_run_index=list(fastq_outdirectory_dict.keys()),
+#     ),
+# )
+
+# print(
+#     expand(
+#         "{fastq_outdirectory}/mkfastq_success_{bcl_run_index}.csv",
+#         zip,
+#         fastq_outdirectory=list(fastq_outdirectory_dict.values()),
+#         bcl_run_index=list(fastq_outdirectory_dict.keys()),
+#     ),
+# )
 
 
 # Define rules
+
+
 rule aggr_all:
     input:
-        flag=os.path.join(outdir, "mkfastq.sucess.csv"),
-        aggr_h5=expand(
-            "{count_outdir}/aggr_results/outs/count/filtered_feature_bc_matrix.h5",
-            count_outdir=count_outdir,
+        aggr_count_input_csv=expand(
+            "{count_outdir}/aggregation_count.csv", count_outdir=count_outdir
+        ),
+        aggr_vdj_input_csv=expand(
+            "{vdj_outdir}/aggregation_vdj.csv", vdj_outdir=vdj_outdir
         ),
 
 
+rule demultiplex:
+    input:
+        fastq_paths=expand(
+            "{fastq_outdirectory}/mkfastq_success_{bcl_run_index}.csv",
+            zip,
+            fastq_outdirectory=list(fastq_outdirectory_dict.values()),
+            bcl_run_index=list(fastq_outdirectory_dict.keys()),
+        ),
+
+
+# flag = (os.path.join(outdir, "mkfastq.sucess.csv"),)
+# aggr_h5 = (
+#     (
+#         expand(
+#             "{count_outdir}/aggr_results/outs/count/filtered_feature_bc_matrix.h5",
+#             count_outdir=count_outdir,
+#         ),
+#     ),
+# )
 # rule cellranger_count_b4all:
 #     output:
 #         aggr_input_csv=expand(
