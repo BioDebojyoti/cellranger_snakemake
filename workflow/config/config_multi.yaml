@@ -1,17 +1,36 @@
-samples_csv: "../gosia_single_cell_runs/240220_VH01167_29_AAFHTGTM5/SampleSheet.csv"
+output_multi: "../gosia_single_cell_runs/multi_results"
 
-output_multi: ""
-
-transcriptome: "../refdata-gex-GRCh38-2020-A"
-vdj_reference: "../refdata_cellranger_vdj_GRCh38_alts_ensembl_710"
-
+additional_info_aggr: "../gosia_single_cell_runs/additional_info.csv"
+input_csvs:
+  [
+    "../gosia_single_cell_runs/vdj_240220/mkfastq_success_run1.csv",
+    "../gosia_single_cell_runs/gex_240227/mkfastq_success_run2.csv",
+  ]
+gene_expression:
+  transcriptome: "../refdata-gex-GRCh38-2020-A"
+  create_bam: False
+  probe_set:
+  filter_probes:
+  r1_length:
+  r2_length:
+  chemistry:
+  expect_cells:
+  force_cells:
+  no_secondary:
+  check_compatibility:
+  include_introns:
+vdj:
+  reference: "../refdata_cellranger_vdj_GRCh38_alts_ensembl_710"
+  primers:
+  r1_length:
+  r2_length:
 resources:
   localcores: 8 # Set the number of cores to use (e.g., 16)
   localmem: 64 # Set the amount of memory to use in GB
 
-use_feature_ref: False # Indicates whether to use the --feature-ref parameter
-use_libraries: False # Indicates whether to use the --libraries parameter
+# use_feature_ref: False # Indicates whether to use the --feature-ref parameter
+# use_libraries: False # Indicates whether to use the --libraries parameter
 
-feature_ref: "feature_ref.csv" # # Path to the Feature Reference CSV file (optional)
-libraries_csv: "libraries.csv" # Path to the Libraries CSV file (optional)
+# feature_ref: "feature_ref.csv" # # Path to the Feature Reference CSV file (optional)
+# libraries_csv: "libraries.csv" # Path to the Libraries CSV file (optional)
 

@@ -16,9 +16,10 @@ include: os.path.join("rules", "rule_mkfastq.smk")
 
 include: os.path.join("rules", "rule_count.smk")
 include: os.path.join("rules", "rule_vdj.smk")
+include: os.path.join("rules", "rule_multi.smk")
 
 
-# include: os.path.join("rules", "rule_multi.smk")
+# print(get_input_multi_csv(" "))
 
 # include: os.path.join("rules", "rule_aggregate.smk")
 

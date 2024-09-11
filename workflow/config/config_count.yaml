@@ -1,6 +1,6 @@
 output_count: "../gosia_single_cell_runs/gex_240227/count_results" # A unique run id and output folder name [a-zA-Z0-9_-]+
 
-add_info_aggr: # if additional information is needed to add
+add_info_aggr: "../gosia_single_cell_runs/additional_info.csv" # if additional information is needed to add
 
 paths2fastq_file: # "../gosia_single_cell_runs/gex_240227/mkfastq_success_run2.csv" # Only used if start_with_bcl is False
 transcriptome: "../refdata-gex-GRCh38-2020-A"
