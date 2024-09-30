@@ -1,13 +1,13 @@
-output_multi: "../gosia_single_cell_runs/multi_results"
+output_multi: "/home/debojyoti/Projects/core_facility/beam_t/runs" # "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/multi_results"
 
-additional_info_aggr: "../gosia_single_cell_runs/additional_info.csv"
-input_csvs:
-  [
-    "../gosia_single_cell_runs/vdj_240220/mkfastq_success_run1.csv",
-    "../gosia_single_cell_runs/gex_240227/mkfastq_success_run2.csv",
-  ]
+multi_config_csv: "/home/debojyoti/Projects/core_facility/beam_t/5k_BEAM-T_Human_A0201_B0702_PBMC_5pv2_Multiplex_config.csv"
+
+additional_info_aggr: #  "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/additional_info.csv"
+input_csvs: []
+# "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/vdj_240220/mkfastq_success_run1.csv",
+# "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/gex_240227/mkfastq_success_run2.csv",
 gene_expression:
-  transcriptome: "../refdata-gex-GRCh38-2020-A"
+  reference: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/refdata_gex_GRCh38_2020_A"
   create_bam: False
   probe_set:
   filter_probes:
@@ -20,7 +20,7 @@ gene_expression:
   check_compatibility:
   include_introns:
 vdj:
-  reference: "../refdata_cellranger_vdj_GRCh38_alts_ensembl_710"
+  reference: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/refdata_cellranger_vdj_GRCh38_alts_ensembl_710"
   primers:
   r1_length:
   r2_length:

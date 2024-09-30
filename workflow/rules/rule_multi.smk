@@ -1,27 +1,44 @@
 # Snakemake pipeline for scRNA-seq data using Cell Ranger and Seurat with Docker containers
 import os, sys
 import pandas as pd
-from scripts import create_multi_csv
-from scripts import create_donor_dict
-
+from scripts import create_multi_csv as cmc
+from scripts import concat_for_multi as cfm
+import shutil
+import re
 
 # Configuration
 # configfile: os.path.join("config", "config_count.yaml")
 
 multi_outdir = config_multi["output_multi"]
 
-if config_multi.get("input_csvs", None):
-    input_csvs = config_multi["input_csvs"]
+if config_multi.get("multi_config_csv", None) != None:
+    config_file_for_multi = config_multi["multi_config_csv"]
+
+    print(config_file_for_multi)
+
+    donor_list = os.path.dirname(config_file_for_multi)
+    donor_list = donor_list.split("/")[-1]
+    donor_list = [re.sub("-", "_", donor_list)]
+
+    target_file = donor_list[0] + "_multi_samplesheet.csv"
+    # print(donor_list)
+    # print(config_file_for_multi)
+    # print(multi_outdir)
+    # print(target_file)
+    # print(os.path.join(multi_outdir, target_file))
+
+    shutil.copyfile(
+        config_file_for_multi,
+        os.path.join(multi_outdir, target_file),
+    )
 else:
-    input_csvs = list(rules.demultiplex_all.input.fastq_paths)
+    input_csvs = config_multi["input_csvs"]
 
-additional_info_aggr = config_multi["additional_info_aggr"]
+    additional_info_aggr = config_multi["additional_info_aggr"]
 
-donor_list = create_donor_dict(additional_info_aggr, input_csvs, multi_outdir)
+    donor_list = cfm.create_donor_dict(additional_info_aggr, input_csvs, multi_outdir)
 
-
-# write a multi csv input file
-def get_input_multi_csv(donor_id):
+    # print(donor_list)
 
     gene_expression_args = (
         {
@@ -54,26 +71,19 @@ def get_input_multi_csv(donor_id):
         if config_multi["vdj"]["reference"]
         else None
     )
-    new_multi_csv = (
-        config_multi["output_multi"] + "/" + donor_id + "_multi_samplesheet.csv"
-    )
 
-    create_multi_csv(
-        input_csvs=input_csvs,
-        gene_expression_args=gene_expression_args,
-        vdj_args=vdj_args,
-        output_file=new_multi_csv,
-    )
+    for donor_id in donor_list:
+        input_multi_csv = multi_outdir + "/" + donor_id + "_multi.csv"
+        output_multi_csv = multi_outdir + "/" + donor_id + "_multi_samplesheet.csv"
+        # print(output_multi_csv)
+        # print(input_multi_csv)
 
-    return new_multi_csv
-
-
-# Define the function to determine input for cellranger_aggr
-# def input_for_cellranger_multi(wc):
-#     if config_multi.get("csv", None):
-#         return config_aggr["csv"]
-#     else:
-#         return multi_csv(rules)
+        cmc.create_multi_csv(
+            input_csvs=input_multi_csv,
+            gene_expression_args=gene_expression_args,
+            vdj_args=vdj_args,
+            output_file=output_multi_csv,
+        )
 
 
 # rule cellranger_multi_input:
@@ -87,34 +97,38 @@ rule cellranger_multi_b4aggr:
             "{multi_outdir}/aggregation_multi.csv", multi_outdir=multi_outdir
         ),
     input:
-        multi_info_folder=expand(
-            directory("{multi_outdir}/outs/per_sample_outs/{donor_id}"),
+        multi_web_summary=expand(
+            "{multi_outdir}/outs/per_sample_outs/{donor_id}/web_summary.html",
             donor_id=donor_list,
             multi_outdir=multi_outdir,
         ),
     params:
         multidir=multi_outdir,
-        additional_info_aggr=config_count["add_info_aggr"],
+        additional_info_aggr=config_multi["additional_info_aggr"],
     shell:
         """
-        bash scripts/get_count_aggr_csv.sh {params.multidir} > {params.multidir}/aggregation_count.csv;
-        python scripts/add_info_aggr.py {params.multidir}/aggregation_count.csv {params.additional_info_aggr}
+        bash scripts/get_multi_aggr_csv.sh {params.multidir} > {output.aggr_input_csv};
+        python scripts/add_info_aggr_multi.py {output.aggr_input_csv} {params.additional_info_aggr}
         """
 
 
 # Rule to count features for single library
 rule cellranger_multi:
     input:
-        id2use="{donor_id}",
-        csv=get_input_multi_csv,
+        csv=os.path.join("{multi_outdir}", "{donor_id}_multi_samplesheet.csv"),
     output:
-        multi_count_sample_info="{multi_outdir}/outs/per_sample_outs/{input.id2use}/count/sample_molecule_info.h5",
+        multi_web_summary="{multi_outdir}/outs/per_sample_outs/{donor_id}/web_summary.html",
+        # multi_directory_output=directory(
+        #     "{multi_outdir}/outs/per_sample_outs/{donor_id}"
+        # ),
+        multi_count_sample_info="{multi_outdir}/outs/per_sample_outs/{donor_id}/count/sample_molecule_info.h5",
         multi_count_dir=directory(
-            "{multi_outdir}/outs/per_sample_outs/{input.id2use}/count/sample_filtered_feature_bc_matrix"
+            "{multi_outdir}/outs/per_sample_outs/{donor_id}/count/sample_filtered_feature_bc_matrix"
         ),
-        multi_vdj_b="{multi_outdir}/outs/per_sample_outs/{input.id2use}/vdj_b/vdj_contig_info.pb",
-        multi_vdj_t="{multi_outdir}/outs/per_sample_outs/{input.id2use}/vdj_t/vdj_contig_info.pb",
+        # multi_vdj_b="{multi_outdir}/outs/per_sample_outs/{donor_id}/vdj_b/vdj_contig_info.pb",
+        # multi_vdj_t="{multi_outdir}/outs/per_sample_outs/{donor_id}/vdj_t/vdj_contig_info.pb",
     params:
+        id2use="{donor_id}",
         multi_outdir2use="{multi_outdir}",
     resources:
         cores=config_count["resources"]["localcores"],
@@ -122,16 +136,16 @@ rule cellranger_multi:
     container:
         "docker://litd/docker-cellranger:v8.0.1"
     log:
-        file="{multi_outdir}/logs/multi_{input.id2use}.log",
+        file="{multi_outdir}/logs/multi_{donor_id}.log",
     benchmark:
-        "{multi_outdir}/benchmarks/benchmarks_{input.id2use}_multi.csv"
+        "{multi_outdir}/benchmarks/benchmarks_{donor_id}_multi.csv"
     shell:
         """   
         cellranger multi \
-        --id={input.id2use} \
+        --id={params.id2use} \
         --csv={input.csv} \
         --localcores={resources.cores} \
         --localmem={resources.memory} \
-        2>&1 | tee -a {log.file}; \
+        2>&1 | tee -a "{log.file}"; \
         bash scripts/move_pipestance_multi_dir.sh {log.file} {params.multi_outdir2use}; 
         """

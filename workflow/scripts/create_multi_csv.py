@@ -11,61 +11,84 @@ def create_multi_csv(
     # Combine all rows from multiple CSVs
     libraries_data = []
 
+    # print(input_csvs)
+
     # Process each input CSV file provided
-    if input_csvs:
-        for input_csv in input_csvs:
-            with open(input_csv, "r") as f:
-                reader = csv.DictReader(f)
-                libraries_data.extend(list(reader))  # Read all rows and accumulate
+    # if input_csvs:
+    #     for input_csv in input_csvs:
+    #         print(input_csv)
+    #         with open(input_csv, "r") as f:
+    #             reader = csv.DictReader(f)
+    #             libraries_data.extend(list(reader))  # Read all rows and accumulate
+    with open(input_csvs, "r") as f:
+        reader = csv.DictReader(f)
+        libraries_data.extend(list(reader))  # Read all rows and accumulate
 
     # Add Gene Expression block if gene_expression_args is provided
     if gene_expression_args:
-        csv_content.append("[gene-expression]")
+        csv_content.append("[gene-expression],,")
         if gene_expression_args.get("reference"):
-            csv_content.append(f"reference,{gene_expression_args['reference']}")
-            csv_content.append(f"create-bam,{gene_expression_args['create_bam']}")
+            csv_content.append(f"reference,\"{gene_expression_args['reference']}\",")
+            csv_content.append(f"create-bam,{gene_expression_args['create_bam']},")
+            csv_content.append(f",,")
         if gene_expression_args.get("probe_set"):
-            csv_content.append(f"probe-set,{gene_expression_args['probe_set']}")
+            csv_content.append(f"probe-set,{gene_expression_args['probe_set']},")
+            csv_content.append(f",,")
         if gene_expression_args.get("filter_probes"):
-            csv_content.append(f"filter-probes,{gene_expression_args['filter_probes']}")
+            csv_content.append(
+                f"filter-probes,{gene_expression_args['filter_probes']},"
+            )
+            csv_content.append(f",,")
         if gene_expression_args.get("r1_length"):
-            csv_content.append(f"r1-length,{gene_expression_args['r1_length']}")
+            csv_content.append(f"r1-length,{gene_expression_args['r1_length']},")
+            csv_content.append(f",,")
         if gene_expression_args.get("r2_length"):
-            csv_content.append(f"r2-length,{gene_expression_args['r2_length']}")
+            csv_content.append(f"r2-length,{gene_expression_args['r2_length']},")
+            csv_content.append(f",,")
         if gene_expression_args.get("chemistry"):
-            csv_content.append(f"chemistry,{gene_expression_args['chemistry']}")
+            csv_content.append(f"chemistry,{gene_expression_args['chemistry']},")
+            csv_content.append(f",,")
         if gene_expression_args.get("expect_cells"):
-            csv_content.append(f"expect-cells,{gene_expression_args['expect_cells']}")
+            csv_content.append(f"expect-cells,{gene_expression_args['expect_cells']},")
+            csv_content.append(f",,")
         if gene_expression_args.get("force_cells"):
-            csv_content.append(f"force-cells,{gene_expression_args['force_cells']}")
+            csv_content.append(f"force-cells,{gene_expression_args['force_cells']},")
+            csv_content.append(f",,")
         if gene_expression_args.get("no_secondary"):
-            csv_content.append(f"no-secondary,{gene_expression_args['no_secondary']}")
+            csv_content.append(f"no-secondary,{gene_expression_args['no_secondary']},")
+            csv_content.append(f",,")
         if gene_expression_args.get("check_compatibility"):
             csv_content.append(
-                f"check-library-compatibility,{gene_expression_args['check_compatibility']}"
+                f"check-library-compatibility,{gene_expression_args['check_compatibility']},"
             )
+            csv_content.append(f",,")
         if gene_expression_args.get("include_introns"):
             csv_content.append(
-                f"include-introns,{gene_expression_args['include_introns']}"
+                f"include-introns,{gene_expression_args['include_introns']},"
             )
+            csv_content.append(f",,")
         csv_content.append("")
 
     # Add VDJ block if vdj_args is provided
     if vdj_args:
         csv_content.append("[vdj]")
         if vdj_args.get("reference"):
-            csv_content.append(f"reference,{vdj_args['reference']}")
+            csv_content.append(f"reference,\"{vdj_args['reference']}\",")
+            csv_content.append(f",,")
         if vdj_args.get("primers"):
-            csv_content.append(f"inner-enrichment-primers,{vdj_args['primers']}")
+            csv_content.append(f"inner-enrichment-primers,{vdj_args['primers']},")
+            csv_content.append(f",,")
         if vdj_args.get("r1_length"):
-            csv_content.append(f"r1-length,{vdj_args['r1_length']}")
+            csv_content.append(f"r1-length,{vdj_args['r1_length']},")
+            csv_content.append(f",,")
         if vdj_args.get("r2_length"):
-            csv_content.append(f"r2-length,{vdj_args['r2_length']}")
+            csv_content.append(f"r2-length,{vdj_args['r2_length']},")
+            csv_content.append(f",,")
         csv_content.append("")
 
     # Add the Libraries block only if there are any libraries present
     if libraries_data:
-        csv_content.append("[libraries]")
+        csv_content.append("[libraries],,")
         # Add the header line for the libraries block only once
         csv_content.append("fastq_id,fastqs,feature_types")
 
@@ -76,6 +99,8 @@ def create_multi_csv(
             csv_content.append(f"{fastq_id},{fastqs},{feature_type}")
         csv_content.append("")
 
+    # print(output_file)
+    # print(csv_content)
     # Write the final structure to the output file
     with open(output_file, "w") as f:
         f.write("\n".join(csv_content))

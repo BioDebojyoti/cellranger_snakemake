@@ -36,13 +36,16 @@ rule cellranger_aggr:
     params:
         aggr_id=config_aggr["aggregation_id"],
         aggr_outdir="{aggr_outdir}",
+        aggr_normalize=config_aggr.get("normalize", "none"),
     log:
         file="{aggr_outdir}/logs/aggr.log",
+    benchmark:
+        "{aggr_outdir}/benchmarks/benchmark_{params.aggr_id}.csv"
     shell:
         """
-        cellranger aggr --id={params.aggr_id} --csv={input.csv} --normalize=mapped \
+        cellranger aggr --id={params.aggr_id} --csv={input.csv} --normalize={params.aggr_normalize} \
         --localcores={resources.cores} \
         --localmem={resources.memory} \
         2>&1 | tee -a {log.file};
-        bash scripts/move_pipestance_count_dir.sh {log.file} {params.aggr_outdir}; 
+        bash scripts/move_pipestance_aggr_dir.sh {log.file} {params.aggr_outdir}; 
         """

@@ -28,6 +28,9 @@ def create_donor_dict(additional_info_csv, fastq_csv_files, multi_csv_directory)
             :, ["fastq", "sample", "library_type"]
         ]
         output_path = multi_csv_directory + "/" + donor + "_multi.csv"
+
+        # print(output_path)
+
         donor_df.to_csv(output_path, index=False)
 
     return list(donor_dict.keys())
