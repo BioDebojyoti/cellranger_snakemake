@@ -11,4 +11,11 @@ workflow/tiny_bcl_simple
 workflow/tiny_bcl_iem
 workflow/.snakemake
 workflow/test_seurat
-refdata-gex-GRCh38-2020-A 
+refdata-gex-GRCh38-2020-A multi_template.csv
+test.py
+refdata_cellranger_vdj_GRCh38_alts_ensembl_710
+test
+test_seurat
+tiny_bcl_iem
+tiny_bcl_simple
+refdata-gex-GRCh38-2020-A
