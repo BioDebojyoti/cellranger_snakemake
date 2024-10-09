@@ -21,12 +21,16 @@ libraries2use <- c(
   "hdf5r", "leidenAlg", "igraph", "patchwork", "ggplot2",
   "Seurat", "optparse", "dplyr", "remotes", "celldex", "SingleR",
   "writexl", "seuratter", "Seurat", "SeuratObject", "harmony",
-  "seuratHelper"
+  "seuratHelper", "this.path"
 )
 
 # Load all libraries
 invisible(sapply(libraries2use, load_library))
 
+# get directory for the present file
+script_path <- this.path::this.path()
+print(script_path)
+source(paste0(dirname(script_path), "/useful.R", collapse = ""))
 # Set options for command-line arguments
 option_list <- list(
   make_option(
@@ -149,21 +153,13 @@ seurat_analysis <- function(
   }
 
   # Load dataset
-  if (dir.exists(data_dir)) {
-    data_10_x <- Seurat::Read10X(data.dir = data_dir)
-  } else {
-    data_10_x <- Seurat::Read10X_h5(filename = data_file)
-  }
+  data_10_x <- load_data_10X(data_dir, data_file)
 
   # Load metadata if applicable
-  sample_identity <- if (file.exists(aggr_csv_file)) {
-    seuratHelper::metadata(data_10_x, aggr_csv_file)
-  } else {
-    NULL
-  }
+  sample_identity <- metadata(data_10_x, aggr_csv_file)
 
   # Create Seurat object with multiple layers
-  seurat_obj <- seuratHelper::create_seurat_object(
+  seurat_obj <- create_seurat_object(
     data_10_x,
     sample_identity,
     min_cells,
@@ -171,32 +167,26 @@ seurat_analysis <- function(
     project_name
   )
 
-  # Add mitochondrial and ribosomal percentages
-  seurat_obj[["percent.mt"]] <- Seurat::PercentageFeatureSet(
-    seurat_obj,
-    pattern = "^MT-"
-  )
-  seurat_obj[["percent.rb"]] <- Seurat::PercentageFeatureSet(
-    seurat_obj,
-    pattern = "^RP[SL]"
-  )
-  browser()
-  # split if  datasets ran across experimental batches, donors, or condition
-  if (layer_column != "") {
-    seurat_obj[["RNA"]] <- S4Vectors::split(
-      seurat_obj[["RNA"]],
-      f = seurat_obj@meta.data[[layer_column]]
-    )
-  }
+  # Add V(D)J-T and B annotations if applicable
+  seurat_obj <- add_clonotype(tcr_file, seurat_obj, "t")
+  seurat_obj <- add_clonotype(bcr_file, seurat_obj, "b")
 
-  seurat_obj <- Seurat::NormalizeData(seurat_obj)
-  seurat_obj <- Seurat::FindVariableFeatures(seurat_obj)
-  seurat_obj <- Seurat::ScaleData(seurat_obj)
-  seurat_obj <- Seurat::RunPCA(seurat_obj)
+
+  # Quality control
+  seurat_obj <- seurat_qc(seurat_obj, ncol, seurat_out_dir, project_name)
+
+  # split if  datasets ran across experimental batches, donors, or condition
+  seurat_obj <- split_seurat_by_layer(
+    seurat_obj, 
+    assay= "RNA", 
+    layer_column = layer_column
+    )
+  seurat_obj <- seurat_normalization(seurat_obj, sct = enable_SCT)
+  seurat_obj <- seurat_dimensional_reduction(seurat_obj)
 
   # Integrative analysis using the specified method
   if (integration_method != "") {
-    seurat_obj <- seuratHelper::integrate_seurat_layers(
+    seurat_obj <- integrate_seurat_layers(
       seurat_obj,
       layer_column,
       integration_method
@@ -259,7 +249,7 @@ seurat_analysis <- function(
 
     # if grouping variable exists add it to the list
     if (layer_column != "") {
-      group_by <- c(layer_column, group_by_list)
+      group_by_list <- c(layer_column, group_by_list)
     }
 
     umap <- Seurat::DimPlot(
@@ -283,14 +273,21 @@ seurat_analysis <- function(
 
 
   # Save Seurat object
+  if (integration_method != "") {
+    file2save <- paste0(
+      seurat_out_dir, "/", project_name, "_integrated_seurat.rds"
+    )
+  } else {
+    file2save <- paste0(seurat_out_dir, "/", project_name, "_seurat.rds")
+  }
   saveRDS(
     seurat_obj,
-    file = paste0(seurat_out_dir, "/", project_name, "_integrated_seurat.rds")
+    filename = file2save
   )
 
   # Visualization and QC plots
   violin_plots <- Seurat::VlnPlot(
-    integrated_obj,
+    seurat_obj,
     features = c(
       "nFeature_RNA", "nCount_RNA",
       "percent.mt", "percent.rb"
@@ -302,7 +299,7 @@ seurat_analysis <- function(
   dev.off()
 
   umap_plot <- Seurat::DimPlot(
-    integrated_obj,
+    seurat_obj,
     reduction = "umap",
     combine = TRUE
   )
@@ -312,7 +309,7 @@ seurat_analysis <- function(
 
   # Save final integrated Seurat object
   saveRDS(
-    integrated_obj,
+    seurat_obj,
     file = paste0(
       seurat_out_dir, "/", project_name,
       "_final_integrated_analysis.Rds"

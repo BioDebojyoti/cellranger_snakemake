@@ -1,3 +1,15 @@
+load_data_10X <- function(data_dir="", data_file=""){
+   if (dir.exists(data_dir)) {
+    data_10_x <- Seurat::Read10X(data.dir = data_dir)
+    return(data_10_x)
+  } 
+  if (dir.exists(data_file)) {
+    data_10_x <- Seurat::Read10X_h5(filename = data_file)
+    return(data_10_x)
+  }
+  print("10X data not found!")
+}
+
 # Function to load metadata and integrate cell data
 metadata <- function(data_10_x, aggregate_csv_file) {
   if (file.exists(aggregate_csv_file)) {
@@ -17,25 +29,6 @@ metadata <- function(data_10_x, aggregate_csv_file) {
   } else {
     return(NULL)
   }
-}
-
-method_dict <- list(
-  "CCAIntegration" = c("pca", "integrated.cca"),
-  "RPCAIntegration" = c("pca", "integrated.rpca"),
-  "HarmonyIntegration" = c("pca", "harmony"),
-  "JointPCAIntegration" = c("pca", "integrated.dr")
-)
-
-# Function to integrate Seurat layers using specified method
-integrate_seurat_layers <- function(seurat_obj, layer_column, method) {
-  seurat_obj <- Seurat::IntegrateLayers(
-    seurat_obj,
-    method = method,
-    orig.reduction = method_dict[[method]][1],
-    new.reduction = method_dict[[method]][2]
-  )
-
-  return(seurat_obj)
 }
 
 acronym <- function(name_list) {
@@ -72,4 +65,159 @@ create_seurat_object <- function(
   }
 
   return(seurat_obj)
+}
+
+seurat_qc <- function(seurat_obj) {
+  # Add mitochondrial and ribosomal percentages
+  seurat_obj[["percent.mt"]] <- Seurat::PercentageFeatureSet(
+    seurat_obj,
+    pattern = "^MT-"
+  )
+  seurat_obj[["percent.rb"]] <- Seurat::PercentageFeatureSet(
+    seurat_obj,
+    pattern = "^RP[SL]"
+  )
+  return(seurat_obj)
+}
+
+split_seurat_by_layer <- function(seurat_obj, assay = "RNA", layer_column = ""){
+  if(layer_column == ""){
+  seurat_obj[["RNA"]] <- S4Vectors::split(
+      seurat_obj[["RNA"]],
+      f = seurat_obj@meta.data[[layer_column]]
+    )
+    }
+  return(seurat_obj)   
+}
+
+method_dict <- list(
+  "CCAIntegration" = c("pca", "integrated.cca"),
+  "RPCAIntegration" = c("pca", "integrated.rpca"),
+  "HarmonyIntegration" = c("pca", "harmony"),
+  "JointPCAIntegration" = c("pca", "integrated.dr")
+)
+
+# Function to integrate Seurat layers using specified method
+integrate_seurat_layers <- function(seurat_obj, layer_column, method) {
+  if(layer_colum ==""){
+    return(seurat_obj)
+  } else {
+  seurat_obj <- Seurat::IntegrateLayers(
+    seurat_obj,
+    method = method,
+    orig.reduction = method_dict[[method]][1],
+    new.reduction = method_dict[[method]][2]
+  )
+  return(seurat_obj)
+  }
+}
+
+seurat_normalization <- function(seurat_obj, sct = FALSE) {
+  if(sct) {
+    seurat_obj <- Seurat::SCTransform(seurat_obj, verbose = FALSE)
+    return(seurat_obj)
+    } else {
+    seurat_obj <- Seurat::NormalizeData(seurat_obj)
+    seurat_obj <- Seurat::FindVariableFeatures(seurat_obj)
+    seurat_obj <- Seurat::ScaleData(seurat_obj)
+    return(seurat_obj)
+    }
+}
+
+seurat_dimensional_reduction <- function(seurat_obj) {
+  seurat_obj <- Seurat::RunPCA(seurat_obj, verbose = FALSE)
+  seurat_obj <- Seurat::RunUMAP(seurat_obj, verbose = FALSE)
+}
+
+
+
+add_clonotype <- function(tcr_file, seurat_obj, type = "t") {
+  if (tcr_file == "") {
+    return(seurat_obj)
+  }
+
+  tcr_prefix <- dirname(normalizePath(tcr_file))
+  tcr <- read.csv(
+    paste(tcr_prefix, "filtered_contig_annotations.csv", sep = "/")
+  )
+
+  # Remove the -1 at the end of each barcode.
+  # Subsets so only the first line of each barcode is kept,
+  # as each entry for given barcode will have same clonotype.
+  tcr <- tcr[!duplicated(tcr$barcode), ]
+
+  # Only keep the barcode and clonotype columns.
+  # We'll get additional clonotype info from the clonotype table.
+  tcr <- tcr[, c("barcode", "raw_clonotype_id")]
+  names(tcr)[names(tcr) == "raw_clonotype_id"] <- "clonotype_id"
+
+  # Clonotype-centric info.
+  clono <- read.csv(paste(tcr_prefix, "clonotypes.csv", sep = "/"))
+
+  # Slap the AA sequences onto our original table by clonotype_id.
+  tcr <- merge(tcr, clono[, c("clonotype_id", "cdr3s_aa")])
+  names(tcr)[names(tcr) == "cdr3s_aa"] <- "cdr3s_aa"
+
+  # Reorder so barcodes are first column and set them as rownames.
+  tcr <- tcr[, c(2, 1, 3)]
+  rownames(tcr) <- tcr[, 1]
+  tcr[, 1] <- NULL
+  colnames(tcr) <- paste(type, colnames(tcr), sep = "_")
+  # Add to the Seurat object's metadata.
+  seurat_obj <- SeuratObject::AddMetaData(object = seurat_obj, metadata = tcr)
+  return(seurat_obj)
+}
+
+
+# Plot Functions 
+Plot_QC <- function(seurat_obj, ncol, seurat_out_dir, project_name) {
+  vp <- Seurat::VlnPlot(
+    seurat_obj,
+    features = c(
+      "nFeature_RNA", "nCount_RNA",
+      "percent.mt", "percent.rb"
+    ),
+    group.by = "orig.ident",
+    ncol = ncol,
+    pt.size = 0.1
+  ) & theme(plot.title = element_text(size = 16))
+  fs_1 <- FeatureScatter(
+    seurat_obj,
+    feature1 = "nCount_RNA",
+    feature2 = "percent.mt",
+    group.by = "orig.ident"
+  )
+  fs_2 <- Seurat::FeatureScatter(
+    seurat_obj,
+    feature1 = "nCount_RNA",
+    feature2 = "nFeature_RNA",
+    group.by = "orig.ident"
+  )
+  fs_3 <- Seurat::FeatureScatter(
+    seurat_obj,
+    feature1 = "nCount_RNA",
+    feature2 = "percent.rb",
+    group.by = "orig.ident"
+  )
+  fs_4 <- Seurat::FeatureScatter(
+    seurat_obj,
+    feature1 = "percent.rb",
+    feature2 = "percent.mt",
+    group.by = "orig.ident"
+  )
+  fs_all <- cowplot::plot_grid(
+    fs_1, fs_2, fs_3, fs_4,
+    labels = c("A", "B", "C", "D"),
+    ncol = 2,
+    align = c("h", "v"),
+    label_size = 20
+  )
+
+  pdf(
+    file = paste0(seurat_out_dir, "/", project_name, "_QC_plots.pdf"),
+    height = 14.4, width = 27.3
+  )
+  print(vp)
+  print(fs_all)
+  invisible(dev.off())
 }

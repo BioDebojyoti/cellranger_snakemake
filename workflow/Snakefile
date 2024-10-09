@@ -14,9 +14,10 @@ include: os.path.join("rules", "rule_mkfastq.smk")
 # include: os.path.join("rules", "rule_count.smk")
 
 
-include: os.path.join("rules", "rule_count.smk")
-include: os.path.join("rules", "rule_vdj.smk")
+# include: os.path.join("rules", "rule_count.smk")
+# include: os.path.join("rules", "rule_vdj.smk")
 include: os.path.join("rules", "rule_multi.smk")
+include: os.path.join("rules", "rule_aggregate.smk")
 
 
 # print(get_input_multi_csv(" "))
@@ -68,29 +69,50 @@ include: os.path.join("rules", "rule_multi.smk")
 # )
 
 
+# print(multi_outdir)
+# print(input_for_cellranger_aggr(" "))
+# print(donor_list)
+# print(
+#     expand("{multi_outdir}/aggregation_multi.csv", multi_outdir=multi_outdir),
+#     expand(
+#         "{multi_outdir}/outs/per_sample_outs/{donor_id}/web_summary.html",
+#         donor_id=donor_list,
+#         multi_outdir=multi_outdir,
+#     ),
+# )
 # Define rules
-
-
-rule aggr_all:
+# rule aggr_all:
+#     input:
+#         expand(
+#             "{aggr_outdir}/outs/count/filtered_feature_bc_matrix.h5",
+#             aggr_outdir=aggr_outdir,
+#         ),
+rule aggr_inputs:
     input:
-        aggr_count_input_csv=expand(
-            "{count_outdir}/aggregation_count.csv", count_outdir=count_outdir
+        aggr_input_csv=expand(
+            "{multi_outdir}/aggregation_multi.csv", multi_outdir=multi_outdir
         ),
-        aggr_vdj_input_csv=expand(
-            "{vdj_outdir}/aggregation_vdj.csv", vdj_outdir=vdj_outdir
-        ),
-
-
-rule demultiplex:
-    input:
-        fastq_paths=expand(
-            "{fastq_outdirectory}/mkfastq_success_{bcl_run_index}.csv",
-            zip,
-            fastq_outdirectory=list(fastq_outdirectory_dict.values()),
-            bcl_run_index=list(fastq_outdirectory_dict.keys()),
+        multi_web_summary=expand(
+            "{multi_outdir}/outs/per_sample_outs/{donor_id}/web_summary.html",
+            donor_id=donor_list,
+            multi_outdir=multi_outdir,
         ),
 
 
+# aggr_count_input_csv=expand(
+#     "{count_outdir}/aggregation_count.csv", count_outdir=count_outdir
+# ),
+# aggr_vdj_input_csv=expand(
+#     "{vdj_outdir}/aggregation_vdj.csv", vdj_outdir=vdj_outdir
+# ),
+# rule demultiplex:
+#     input:
+#         fastq_paths=expand(
+#             "{fastq_outdirectory}/mkfastq_success_{bcl_run_index}.csv",
+#             zip,
+#             fastq_outdirectory=list(fastq_outdirectory_dict.values()),
+#             bcl_run_index=list(fastq_outdirectory_dict.keys()),
+#         ),
 # flag = (os.path.join(outdir, "mkfastq.sucess.csv"),)
 # aggr_h5 = (
 #     (
