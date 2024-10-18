@@ -1,11 +1,9 @@
 #!/opt/sw/bioinfo-tools/sources/anaconda3/envs/d_seurat510/bin/Rscript
 
-
-
 # Function to load libraries silently
 load_library <- function(x) {
   invisible(
-    suppressMessages(
+    suppressPackageStartupMessages(
       library(
         x,
         character.only = TRUE,
@@ -18,97 +16,131 @@ load_library <- function(x) {
 
 # List of required libraries
 libraries2use <- c(
-  "hdf5r", "leidenAlg", "igraph", "patchwork", "ggplot2",
-  "Seurat", "optparse", "dplyr", "remotes", "celldex", "SingleR",
-  "writexl", "seuratter", "Seurat", "SeuratObject", "harmony",
-  "seuratHelper", "this.path"
+"hdf5r", "leidenAlg", "igraph", "patchwork", "ggplot2",
+"Seurat", "optparse", "dplyr", "remotes", "celldex", "SingleR",
+"writexl", "seuratter", "Seurat", "SeuratObject", "harmony",
+"seuratHelper", "this.path", "future"
 )
 
 # Load all libraries
 invisible(sapply(libraries2use, load_library))
 
+# 16*1024^3 = 17179869184
+options(future.globals.maxSize = 17179869184)
+options(mc.cores = 8)
+# plan("multisession", workers = 1L)
+suppressMessages(plan())
+# message("Number of parallel workers: ", nbrOfWorkers())
+
 # get directory for the present file
 script_path <- this.path::this.path()
-print(script_path)
+
 source(paste0(dirname(script_path), "/useful.R", collapse = ""))
+source(paste0(dirname(script_path), "/generalized_vdj.R", collapse = ""))
 # Set options for command-line arguments
 option_list <- list(
   make_option(
     c("-f", "--file"),
-    type = "character", default = "",
-    help = "count matrix data h5 file name",
+    type = "character", 
+    help = "count matrix data h5 file name  [default= %default]",
     dest = "count_matrix_file"
   ),
   make_option(
     c("-a", "--aggregate-csv"),
-    type = "character", default = "",
-    help = "aggregate csv file", dest = "aggregate_csv_file"
+    type = "character",
+    help = "aggregate csv file [default= %default]- file with sample_id used to aggregate using cellranger. Order must be same as in cellranger aggregate. Additional columns with information about donor, condition etc should be supplied here",
+    dest = "aggregate_csv_file"
   ),
   make_option(
     c("-d", "--directory"),
-    type = "character", default = "",
-    help = "count matrix data directory name",
+    type = "character",
+    help = "count matrix data directory name [default= %default]",
     dest = "count_matrix_dir"
   ),
   make_option(
     c("-o", "--out-directory"),
-    type = "character", default = "seurat_out",
-    help = "output directory", dest = "outdir"
+    type = "character", 
+    default = "seurat_out",
+    help = "output directory [default= %default]",
+    dest = "outdir"
   ),
   make_option(
     c("--min-cells"),
-    type = "integer", default = as.integer(3),
-    help = "minimum cells [default= %default]", dest = "min.cells"
+    type = "integer",
+    default = as.integer(3),
+    help = "minimum cells [default= %default]",
+    dest = "min.cells"
   ),
   make_option(
     c("--min-features"),
-    type = "integer", default = as.integer(200),
-    help = "minimum features [default= %default]", dest = "min.features"
+    type = "integer",
+    default = as.integer(100),
+    help = "minimum features [default= %default]",
+    dest = "min.features"
   ),
   make_option(
     c("--max-features"),
-    type = "integer", default = as.integer(2500),
-    help = "maximum features [default= %default]", dest = "max.features"
+    type = "integer", default = as.integer(3000),
+    help = "maximum features [default= %default]",
+    dest = "max.features"
   ),
   make_option(
     c("--percent-mt"),
-    type = "double", default = as.double(5),
-    help = "threshold percent mitochondrial [default= %default]",
+    type = "double", 
+    #default = as.double(100),
+    help = "threshold percent mitochondrial [default= %default]
+    - default filtering is done using 95th quantile",
     dest = "cutoff.percent.mt"
   ),
   make_option(
     c("--percent-rb"),
-    type = "double", default = as.double(5),
-    help = "threshold percent ribosomal [default= %default]",
+    type = "double",
+    #default = as.double(100),
+    help = "threshold percent ribosomal [default= %default]
+    - default filtering is done using 95th quantile",
     dest = "cutoff.percent.rb"
   ),
   make_option(
     c("--project"),
-    type = "character", default = "singleCell",
-    help = "output file name [default= %default]", dest = "project"
+    type = "character",
+    default = "singleCell",
+    help = "output file name [default= %default]",
+    dest = "project"
   ),
   make_option(
     c("--vdj-t"),
-    type = "character", default = "",
-    help = "V(D)J-T annotations", dest = "vdj_t"
+    type = "character",
+    help = "V(D)J-T annotations [default= %default]",
+    dest = "vdj_t"
   ),
   make_option(
     c("--vdj-b"),
-    type = "character", default = "",
-    help = "V(D)J-B annotations", dest = "vdj_b"
+    type = "character", 
+    help = "V(D)J-B annotations [default= %default]",
+    dest = "vdj_b"
   ),
   make_option(
     c("--layer-column"),
     type = "character",
-    default = ""
+    help = "describes experimental batches, donors, or conditions [default= %default]"
+  ),
+  make_option(
+    c("--condition-column"),
+    type = "character",
+    help = "main condition for comparision  [default= %default](can be same as batch variable)"
   ),
   make_option(
     c("--integration-method"),
-    type = "character", default = "RPCAIntegration",
-    help = "integration method
-    (CCAIntegration, RPCAIntegration, HarmonyIntegration,
-    FastMNNIntegration, scVIIntegration)",
+    type = "character",
+    help = "integration method  [default= %default](CCAIntegration, RPCAIntegration, HarmonyIntegration, FastMNNIntegration, scVIIntegration)",
     dest = "integration_method"
+  ),
+  make_option(
+    c("--enable-SCTransform"),
+    type = "logical",
+    default = TRUE,
+    help = "sctransform normalization [default= %default]",
+    dest = "enable_sct"
   )
 )
 
@@ -130,7 +162,9 @@ aggr_csv_file <- opt$aggregate_csv_file
 tcr_file <- opt$vdj_t
 bcr_file <- opt$vdj_b
 layer_column <- opt$layer_column
+condition_column <- opt$condition_column
 integration_method <- opt$integration_method
+enable_sct <- opt$enable_sct
 
 # Main Seurat analysis function
 seurat_analysis <- function(
@@ -147,7 +181,10 @@ seurat_analysis <- function(
     tcr_file,
     bcr_file,
     layer_column,
-    integration_method) {
+    condition_column,
+    integration_method,
+    enable_sct) {
+      start_time = Sys.time()
   if (!dir.exists(seurat_out_dir)) {
     dir.create(seurat_out_dir)
   }
@@ -162,10 +199,10 @@ seurat_analysis <- function(
   seurat_obj <- create_seurat_object(
     data_10_x,
     sample_identity,
-    min_cells,
-    min_features,
     project_name
   )
+
+  seurat_obj <- seurat_set_orig_ident(seurat_obj, sample_identity)
 
   # Add V(D)J-T and B annotations if applicable
   seurat_obj <- add_clonotype(tcr_file, seurat_obj, "t")
@@ -173,167 +210,182 @@ seurat_analysis <- function(
 
 
   # Quality control
-  seurat_obj <- seurat_qc(seurat_obj, ncol, seurat_out_dir, project_name)
+  seurat_obj <- seurat_qc(seurat_obj)
 
+  seurat_qc_plot(seurat_obj, ncol = 4, seurat_out_dir, "pre_filter")
+
+  # Save Raw Seurat object
+  file2save <- paste0(seurat_out_dir, "/", project_name, "_raw_seurat.rds")
+  saveRDS(
+    seurat_obj,
+    file = file2save
+  )
+
+  seurat_obj <- seurat_filtering(
+    seurat_obj,
+    min_cells,
+    min_features,
+    max_features,
+    percent_mt,
+    percent_rb
+  )
+  seurat_qc_plot(seurat_obj, ncol = 4, seurat_out_dir, "post_filter")
   # split if  datasets ran across experimental batches, donors, or condition
   seurat_obj <- split_seurat_by_layer(
-    seurat_obj, 
-    assay= "RNA", 
+    seurat_obj,
+    assay = "RNA",
     layer_column = layer_column
+  )
+
+  message("Number of parallel workers: ", nbrOfWorkers())
+
+  seurat_obj <- seurat_normalization(seurat_obj, sct = enable_sct)
+  seurat_obj <- seurat_dim_reduction_linear(seurat_obj)
+  seurat_plot_pca(
+    seurat_obj, 
+    seurat_out_dir, 
+    project_name, 
+    layer_column = layer_column,
+    condition_column = condition_column
     )
-  seurat_obj <- seurat_normalization(seurat_obj, sct = enable_SCT)
-  seurat_obj <- seurat_dimensional_reduction(seurat_obj)
+
+  if(!is.null(layer_column)){
+  seurat_obj <- seurat_dim_reduction_nonlinear(
+    seurat_obj,
+    integration_method = NULL
+    )
+  seurat_plot_umap(
+    seurat_obj, 
+    seurat_out_dir, 
+    paste0(project_name,"_no_integration"), 
+    group_by = layer_column, 
+    integration_method = NULL,
+    split_by = condition_column
+  )
+  }
 
   # Integrative analysis using the specified method
-  if (integration_method != "") {
-    seurat_obj <- integrate_seurat_layers(
-      seurat_obj,
-      layer_column,
-      integration_method
-    )
+  seurat_obj <- integrate_seurat_layers(
+    seurat_obj = seurat_obj,
+    integration_method = integration_method,
+    enable_sct = enable_sct
+  )
 
-    seurat_obj[["RNA"]] <- SeuratObject::JoinLayers(
-      seurat_obj[["RNA"]]
-    )
+  if(!is.null(integration_method)){
+    seurat_obj <- seurat_dim_reduction_nonlinear(
+    seurat_obj, 
+    integration_method = integration_method)
 
-    seurat_obj <- Seurat::FindNeighbors(
-      seurat_obj,
-      reduction = method_dict[[integration_method]][2],
-      dims = 1:30
+    seurat_plot_umap(
+    seurat_obj, 
+    seurat_out_dir, 
+    paste0(project_name,"_",integration_method,"_integrated"), 
+    group_by = layer_column, 
+    integration_method = integration_method,
+    split_by = condition_column
     )
-    seurat_obj <- Seurat::FindClusters(
-      seurat_obj,
-      resolution = 0.8,
-      random.seed = 234
-    )
+  }
 
-    seurat_obj <- Seurat::RunUMAP(
-      seurat_obj,
-      dims = 1:30,
-      reduction = method_dict[[integration_method]][2],
-      reduction.name = "umap.integrated"
-    )
-    umap <- Seurat::DimPlot(
-      seurat_obj,
-      reduction = "umap.integrated",
-      group.by = c(layer_column, "seurat_clusters"),
-      combine = TRUE
-    )
+  assay <- SeuratObject::DefaultAssay(seurat_obj)
 
-    umap_by_condition <- Seurat::DimPlot(
-      seurat_obj,
-      reduction = "umap.integrated",
-      split.by = layer_column
-    )
+  seurat_obj <- join_seurat_layers(
+    seurat_obj,
+    assay = "RNA",
+    layer_column = layer_column
+  )
+
+  SeuratObject::DefaultAssay(seurat_obj) <- assay
+  seurat_obj <- seurat_clustering(seurat_obj, integration_method)
+  seurat_obj <- seurat_dim_reduction_nonlinear(seurat_obj)
+
+  
+  seurat_plot_umap(
+    seurat_obj, 
+    seurat_out_dir, 
+    prefix = paste0(
+      project_name,
+      ifelse(is.null(layer_column),"",paste0("_",layer_column,"_integrated")),"_final"), 
+    group_by = NULL, 
+    integration_method = integration_method,
+    split_by = NULL
+  )
+
+  seurat_obj <- seurat_annotation(seurat_obj)
+
+  if("seurat_clusters" %in% names(seurat_obj@meta.data)){
+    group_by = c("seurat_clusters", "SingleR.labels")
   } else {
-    seurat_obj <- Seurat::FindNeighbors(
-      seurat_obj,
-      dims = 1:30,
-      reduction = "pca"
-    )
-    seurat_obj <- Seurat::FindClusters(
-      seurat_obj,
-      resolution = 0.8,
-      random.seed = 234,
-      cluster.name = "unintegrated_clusters"
-    )
+    group_by = c("SingleR.labels")
+  }
 
-    seurat_obj <- Seurat::RunUMAP(
-      seurat_obj,
-      dims = 1:30,
-      reduction = "pca",
-      reduction.name = "umap"
-    )
+  seurat_plot_umap(
+    seurat_obj, 
+    seurat_out_dir, 
+    prefix = paste0(project_name,"_annotated"), 
+    group_by = group_by, 
+    integration_method = integration_method,
+    split_by = condition_column 
+  )
+  
+  assay <- SeuratObject::DefaultAssay(seurat_obj)
+  
+  for(group_column in group_by){
+      seurat_markers <- seurat_all_markers(
+        seurat_obj, 
+        assay = assay,
+        cluster_column = group_column,
+        prefix = project_name, 
+        seurat_out_dir = seurat_out_dir
+        )
 
-    group_by_list <- c("seurat_clusters")
-
-    # if grouping variable exists add it to the list
-    if (layer_column != "") {
-      group_by_list <- c(layer_column, group_by_list)
-    }
-
-    umap <- Seurat::DimPlot(
-      seurat_obj,
-      reduction = "umap",
-      group.by = group_by_list,
-      combine = TRUE
-    )
-
-    # if grouping variable batch/condition/donor exists
-    if (layer_column != "") {
-      umap_by_condition <- Seurat::DimPlot(
-        seurat_obj,
-        reduction = "umap",
-        split.by = layer_column,
-        ncol = 2,
-        combine = TRUE
-      )
-    }
+      plot_markers(
+        seurat_obj, 
+        assay,
+        seurat_out_dir, 
+        project_name, 
+        seurat_markers, 
+        group_column,
+        condition_column
+        )
   }
 
 
   # Save Seurat object
-  if (integration_method != "") {
-    file2save <- paste0(
-      seurat_out_dir, "/", project_name, "_integrated_seurat.rds"
+  file2save <- paste0(
+    seurat_out_dir, "/", project_name, "_analysed_seurat.rds"
     )
-  } else {
-    file2save <- paste0(seurat_out_dir, "/", project_name, "_seurat.rds")
-  }
+
   saveRDS(
     seurat_obj,
-    filename = file2save
+    file = file2save
   )
 
-  # Visualization and QC plots
-  violin_plots <- Seurat::VlnPlot(
-    seurat_obj,
-    features = c(
-      "nFeature_RNA", "nCount_RNA",
-      "percent.mt", "percent.rb"
-    ),
-    ncol = 2
-  )
-  pdf(paste0(seurat_out_dir, "/", project_name, "_violin_features.pdf"))
-  print(violin_plots)
-  dev.off()
+  end_time <- Sys.time()
+  print("Seurat analysis complete!!")
+  print(end_time - start_time)
 
-  umap_plot <- Seurat::DimPlot(
-    seurat_obj,
-    reduction = "umap",
-    combine = TRUE
-  )
-  pdf(paste0(seurat_out_dir, "/", project_name, "_umap.pdf"))
-  print(umap_plot)
-  dev.off()
-
-  # Save final integrated Seurat object
-  saveRDS(
-    seurat_obj,
-    file = paste0(
-      seurat_out_dir, "/", project_name,
-      "_final_integrated_analysis.Rds"
-    )
-  )
 }
 
 
-data_dir <- "count/sample_filtered_feature_bc_matrix"
-data_file <- ""
+data_dir <- "count/filtered_feature_bc_matrix"
+# data_dir <- "count/sample_filtered_feature_bc_matrix"
+data_file <- NULL
 project_name <- "test"
 seurat_out_dir <- "seurat_out"
 min_cells <- 3
-min_features <- 3
-max_features <- 2500
-percent_mt <- 5.0
-percent_rb <- 5.0
-aggr_csv_file <- ""
+min_features <- 100
+max_features <- 3000
+percent_mt <- NULL
+percent_rb <- NULL
+aggr_csv_file <- "aggregation.csv"
 tcr_file <- "vdj_t/filtered_contig_annotations.csv"
-bcr_file <- ""
-layer_column <- ""
-integration_method <- "" # "RPCAIntegration"
+bcr_file <- "vdj_b/filtered_contig_annotations.csv"
+layer_column <- "donor"
+condition_column <- "health_status"
+integration_method <- "RPCAIntegration"
 # CCAIntegration, RPCAIntegration, HarmonyIntegration,
 # FastMNNIntegration, scVIIntegration
+enable_sct <- FALSE
 
 # Run Seurat analysis
 seurat_analysis(
@@ -350,5 +402,7 @@ seurat_analysis(
   tcr_file,
   bcr_file,
   layer_column,
-  integration_method
+  condition_column,
+  integration_method,
+  enable_sct
 )
