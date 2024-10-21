@@ -326,13 +326,30 @@ seurat_analysis <- function(
     integration_method = integration_method,
     split_by = condition_column 
   )
-  
-  assay <- SeuratObject::DefaultAssay(seurat_obj)
+
+# revert to "RNA" assay for DE analysis
+  SeuratObject::DefaultAssay(seurat_obj) <- "RNA"
+    
+ saveRDS(
+    seurat_obj,
+    file = paste0(seurat_out_dir,"/before_DE.rds")
+  )
+
+  if (sum(c("data","scale.data") %in% SeuratObject::Layers(seurat_obj@assays$RNA)) == 2) {
+  cat("The \"RNA\" assay is already normalized.\n")
+  } else {
+  cat("The RNA assay is not normalized.\n")
+  cat("Normalizing RNA assay ...\n")
+  seurat_obj <- seurat_normalization(seurat_obj, sct = FALSE)
+  }
   
   for(group_column in group_by){
+    
+    cat(paste0("processing ",group_column," for DE\n"))
+
       seurat_markers <- seurat_all_markers(
         seurat_obj, 
-        assay = assay,
+        assay = "RNA",
         cluster_column = group_column,
         prefix = project_name, 
         seurat_out_dir = seurat_out_dir
@@ -340,13 +357,39 @@ seurat_analysis <- function(
 
       plot_markers(
         seurat_obj, 
-        assay,
+        "RNA",
         seurat_out_dir, 
         project_name, 
         seurat_markers, 
         group_column,
         condition_column
         )
+
+      seurat_de(
+        seurat_obj,
+        annotation_column = group_column,
+        assay = "RNA",
+        seurat_out_dir
+      )
+
+      seurat_de_across_condition_same_cell_type(
+        seurat_obj,
+        annotation_column = group_column,
+        condition_column = condition_column,
+        assay = "RNA",
+        seurat_out_dir
+      )
+
+    groups_to_use <- if (is.null(layer_column)) c(condition_column, group_column) else c(condition_column,layer_column, group_column)
+
+      seurat_de_pseudo_bulk_across_condition(
+      seurat_obj,
+      annotation_column = group_column,
+      condition_column = condition_column,
+      group_by = groups_to_use,
+      assay = "RNA",
+      seurat_out_dir
+      )    
   }
 
 

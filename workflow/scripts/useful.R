@@ -261,6 +261,9 @@ seurat_obj <- Seurat::SCTransform(
   vars.to.regress = "percent.mt",
   verbose = TRUE
 )
+
+seurat_obj <- Seurat::PrepSCTFindMarkers(seurat_obj)
+
 return(seurat_obj)
 } else {
 seurat_obj <- Seurat::NormalizeData(
@@ -346,8 +349,7 @@ labels=ref.data$label.main,
 num.threads = num_threads
 )
 
-
-# print(table(predictions$labels))
+print(table(predictions$labels))
 
 seurat_obj[["SingleR.labels"]] <- predictions$labels
 
@@ -360,10 +362,6 @@ assay = "RNA",
 cluster_column = "seurat_clusters", 
 prefix, seurat_out_dir) {
 Idents(object = seurat_obj) <- seurat_obj@meta.data[[cluster_column]]
-
-if(assay == "SCT"){
-seurat_obj <- Seurat::PrepSCTFindMarkers(seurat_obj)
-}
 
 all_markers <- Seurat::FindAllMarkers(
 seurat_obj,
@@ -402,6 +400,101 @@ return(l)
 }
 
 # Perform DE analysis within the same cell type across conditions
+seurat_de <- function(
+  seurat_obj,
+  annotation_column = NULL,
+  assay = "RNA",
+  seurat_out_dir
+){
+  original_idents <- SeuratObject::Idents(seurat_obj)
+
+SeuratObject::Idents(seurat_obj) <- annotation_column
+
+celltypes <- unique(seurat_obj@meta.data[[annotation_column]])
+celltypepairs <- combn(celltypes,2)
+
+# Prepare to save volcano plots to a single PDF
+  pdf(file = paste0(seurat_out_dir, "/volcano_plots_de_for_", annotation_column, "_annotations.pdf"))
+
+
+for(i in 1:ncol(celltypepairs)){
+
+  pair <- celltypepairs[,i]
+
+  ident_1 <- pair[1]  
+  ident_2 <- pair[2]
+
+  # Get the cells corresponding to ident_1 and ident_2
+  cells_1 <- SeuratObject::WhichCells(seurat_obj, idents = ident_1)
+  cells_2 <- SeuratObject::WhichCells(seurat_obj, idents = ident_2)
+  
+  # Check if both groups have at least 3 cells
+  if (!(length(cells_1) >= 3 & length(cells_2) >= 3)) {
+    next
+  }
+  
+
+  curr_celltype_de <- Seurat::FindMarkers(
+    seurat_obj,
+    assay = assay,
+    only.pos = TRUE,
+    min.pct = 0.25,
+    logfc.threshold = 0.25,
+    ident.1 = ident_1,
+    ident.2 = ident_2)
+
+  curr_celltype_de["Comparison"] = paste0(ident_1,"_Vs_",ident_2)
+  curr_celltype_de["Gene"] = rownames(curr_celltype_de)
+
+  rownames(curr_celltype_de) <- c(1:nrow(curr_celltype_de))
+
+  curr_celltype_de <- curr_celltype_de %>%
+  dplyr::select(
+  all_of(
+    c("Gene", "Comparison", "p_val", "avg_log2FC", "pct.1","pct.2","p_val_adj")
+    )
+  )
+
+  if(i==1){
+  all_celltype_de <- curr_celltype_de
+  } else {
+  all_celltype_de <- rbind(all_celltype_de, curr_celltype_de)
+  }
+
+  # Generate volcano plot
+  volcano_plot <- ggplot2::ggplot(
+  curr_celltype_de, ggplot2::aes(x = avg_log2FC, y = -log10(p_val_adj))) +
+  ggplot2::geom_point(alpha = 0.6) +
+  ggplot2::theme_minimal() +
+  ggplot2::labs(
+    title = paste0("Volcano Plot: Cluster ", ident_1, " vs Cluster ", ident_2),
+    x = "Log2[FC]",
+    y = "-Log10 [Adjusted p-value]"
+  ) +
+  ggplot2::geom_vline(xintercept = c(-0.25, 0.25), linetype = "dashed", color = "red") +
+  ggplot2::geom_hline(yintercept = -log10(0.05), linetype = "dashed", color = "blue")
+
+  # Print the volcano plot to the PDF (one plot per page)
+  print(volcano_plot)
+
+  }
+invisible(dev.off())
+
+SeuratObject::Idents(seurat_obj) <- original_idents
+print(Idents(seurat_obj))
+
+
+  file2save = paste0(
+    seurat_out_dir,"/de_for_",annotation_column,"_annotations.csv")
+
+  write.csv(
+    all_celltype_de,
+    file = file2save,
+    row.names = FALSE)
+}
+
+
+# Perform DE analysis within the same cell type across conditions
 seurat_de_across_condition_same_cell_type <- function(
   seurat_obj,
   annotation_column = NULL,
@@ -419,17 +512,16 @@ seurat_obj$celltype.condition <- comprehenr::to_vec(
   paste0(annotation_list[i],"_",condition_list[i])
   )
 
-print(levels(seurat_obj))
 SeuratObject::Idents(seurat_obj) <- "celltype.condition"
-print(levels(seurat_obj))
 
 celltypes <- unique(seurat_obj@meta.data[[annotation_column]])
 conditions <- levels(factor(unique(seurat_obj@meta.data[[condition_column]])))
 
-print(celltypes)
-print(conditions)
+ident_levels <- levels(SeuratObject::Idents(seurat_obj))
 
-ident_levels <- levels(Idents(seurat_obj))
+# Prepare to save volcano plots to a single PDF
+  pdf(
+    file = paste0(seurat_out_dir, "/volcano_plots_de_across_same_cell_across_for_",annotation_column,"_across_",condition_column,".pdf"))
 
 for(icelltype in seq_along(celltypes)){
 
@@ -438,7 +530,7 @@ for(icelltype in seq_along(celltypes)){
   ident_1 <- paste0(celltype,"_",conditions[1])  
   ident_2 <- paste0(celltype,"_",conditions[2])
 
-  if((!(ident_1 %in% ident_levels))||((!ident_2 %in% ident_levels))){
+  if((!(ident_1 %in% ident_levels))||(!(ident_2 %in% ident_levels))){
   next
   }
 
@@ -480,15 +572,30 @@ for(icelltype in seq_along(celltypes)){
   all_celltype_de <- rbind(all_celltype_de, curr_celltype_de)
   }
 
+  # Generate volcano plot
+  volcano_plot <- ggplot2::ggplot(
+  curr_celltype_de, ggplot2::aes(x = avg_log2FC, y = -log10(p_val_adj))) +
+  ggplot2::geom_point(alpha = 0.6) +
+  ggplot2::theme_minimal() +
+  ggplot2::labs(
+    title = paste0("Volcano Plot: Cluster ", ident_1, " vs Cluster ", ident_2),
+    x = "Log2[FC]",
+    y = "-Log10 [Adjusted p-value]"
+  ) +
+  ggplot2::geom_vline(xintercept = c(-0.25, 0.25), linetype = "dashed", color = "red") +
+  ggplot2::geom_hline(yintercept = -log10(0.05), linetype = "dashed", color = "blue")
+
+  # Print the volcano plot to the PDF (one plot per page)
+  print(volcano_plot)  
+
   }
 
+invisible(dev.off())
 
 SeuratObject::Idents(seurat_obj) <- original_idents
-print(Idents(seurat_obj))
-
 
   file2save = paste0(
-    seurat_out_dir,"/de_same_cell_across_",condition_column,".csv")
+    seurat_out_dir,"/de_same_cell_for_",annotation_column,"_across_",condition_column,".csv")
 
   write.csv(
     all_celltype_de,
@@ -506,20 +613,7 @@ seurat_de_pseudo_bulk_across_condition <- function(
   assay = "RNA",
   seurat_out_dir
 ){
-  original_idents <- SeuratObject::Idents(seurat_obj)
-
-annotation_list <- seurat_obj[[annotation_column]][[1]]
-condition_list <- seurat_obj[[condition_column]][[1]]
-
-seurat_obj$celltype.condition <- comprehenr::to_vec(
-  for(i in seq_along(annotation_list))
-  paste0(annotation_list[i],"_",condition_list[i])
-  )
-
-SeuratObject::Idents(seurat_obj) <- "celltype.condition"
-
-celltypes <- unique(seurat_obj@meta.data[[annotation_column]])
-conditions <- levels(factor(unique(seurat_obj@meta.data[[condition_column]])))
+  
 
 # pseudobulk the counts based on donor-condition-celltype
 pseudo_seurat_obj <- AggregateExpression(
@@ -528,92 +622,111 @@ pseudo_seurat_obj <- AggregateExpression(
   return.seurat = T, 
   group.by = group_by)
 
-for(icelltype in seq_along(celltypes)){
+annotation_list <- pseudo_seurat_obj[[annotation_column]][[1]]
+condition_list <- pseudo_seurat_obj[[condition_column]][[1]]  
 
-  celltype <- celltypes[icelltype]
+pseudo_seurat_obj$celltype.condition <- comprehenr::to_vec(
+  for(i in seq_along(condition_list))
+  paste0(condition_list[i],"_",annotation_list[i])
+  )
 
-  ident_1 <- paste0(celltype,"_",conditions[1])  
-  ident_2 <- paste0(celltype,"_",conditions[2])
+SeuratObject::Idents(pseudo_seurat_obj) <- "celltype.condition"
 
-  if((!(ident_1 %in% ident_levels))||((!ident_2 %in% ident_levels))){
+ident_levels <- levels(SeuratObject::Idents(pseudo_seurat_obj))
+
+celltypes <- unique(pseudo_seurat_obj@meta.data[[annotation_column]])
+conditions <- levels(factor(unique(pseudo_seurat_obj@meta.data[[condition_column]])))
+
+pdf(
+  file = paste0(
+    seurat_out_dir,"/volcano_plot_de_pseudo_bulk_for_",annotation_column,"_across_",
+    condition_column,".pdf")
+)
+
+for(i in seq_along(celltypes)){
+
+  celltype <- celltypes[i]
+
+  ident_1 <- paste0(conditions[1],"_",celltype)  
+  ident_2 <- paste0(conditions[2],"_",celltype)
+
+  if((!(ident_1 %in% ident_levels))||(!(ident_2 %in% ident_levels))){
   next
   }
 
   # Get the cells corresponding to ident_1 and ident_2
-  cells_1 <- SeuratObject::WhichCells(seurat_obj, idents = ident_1)
-  cells_2 <- SeuratObject::WhichCells(seurat_obj, idents = ident_2)
+  cells_1 <- SeuratObject::WhichCells(
+    pseudo_seurat_obj, 
+    idents = ident_1)
+  cells_2 <- SeuratObject::WhichCells(
+    pseudo_seurat_obj, 
+    idents = ident_2)
   
   # Check if both groups have at least 3 cells
   if (!(length(cells_1) >= 3 & length(cells_2) >= 3)) {
     next
   }
   
-  curr_celltype_de <- Seurat::FindMarkers(
+  curr_celltype_de_pseudobulk <- Seurat::FindMarkers(
     pseudo_seurat_obj,
     assay = assay,
     only.pos = TRUE,
     min.pct = 0.25,
     logfc.threshold = 0.25,    
     ident.1 = ident_1,
-    ident.2 = ident_2)
+    ident.2 = ident_2,
+    # min.cells.group = 1,
+    test.use = "DESeq2")
 
-  curr_celltype_de["Celltype"] = celltype
-  curr_celltype_de["Comparison"] = paste0(conditions[1],"_Vs_",conditions[2])
-  curr_celltype_de["Gene"] = rownames(curr_celltype_de)
+  curr_celltype_de_pseudobulk["Celltype"] = celltype
+  curr_celltype_de_pseudobulk["Comparison"] = paste0(conditions[1],"_Vs_",conditions[2])
+  curr_celltype_de_pseudobulk["Gene"] = rownames(curr_celltype_de_pseudobulk)
 
-  rownames(curr_celltype_de) <- c(1:nrow(curr_celltype_de))
+  rownames(curr_celltype_de_pseudobulk) <- c(1:nrow(curr_celltype_de_pseudobulk))
 
-  curr_celltype_de <- curr_celltype_de %>%
+  curr_celltype_de_pseudobulk <- curr_celltype_de_pseudobulk %>%
   dplyr::select(
   all_of(
     c("Gene", "Celltype", "Comparison", "p_val", "avg_log2FC", "pct.1","pct.2","p_val_adj")
     )
   )
 
-  if(icelltype==1){
-  all_celltype_de <- curr_celltype_de
+  if(i==1){
+  all_celltype_de_pseudo_bulk <- curr_celltype_de_pseudobulk
   } else {
-  all_celltype_de <- rbind(all_celltype_de, curr_celltype_de)
+  all_celltype_de_pseudo_bulk <- rbind(all_celltype_de_pseudo_bulk, curr_celltype_de_pseudobulk)
   }
 
+# Generate volcano plot
+  volcano_plot <- ggplot2::ggplot(
+  curr_celltype_de_pseudobulk, ggplot2::aes(x = avg_log2FC, y = -log10(p_val_adj))) +
+  ggplot2::geom_point(alpha = 0.6) +
+  ggplot2::theme_minimal() +
+  ggplot2::labs(
+    title = paste0("Volcano Plot: Cluster", ident_1, " vs Cluster ", ident_2),
+    x = "Log2[FC]",
+    y = "-Log10 [Adjusted p-value]"
+  ) +
+  ggplot2::geom_vline(xintercept = c(-0.25, 0.25), linetype = "dashed", color = "red") +
+  ggplot2::geom_hline(yintercept = -log10(0.05), linetype = "dashed", color = "blue")
+
+  # Print the volcano plot to the PDF (one plot per page)
+  print(volcano_plot)
+
   }
 
-SeuratObject::Idents(seurat_obj) <- original_idents
+invisible(dev.off())
 
-  file2save = paste0(
-    seurat_out_dir,"/de_pseudo_bulk_across_",condition_column,".csv")
+file2save = paste0(
+  seurat_out_dir,"/de_pseudo_bulk_for_",annotation_column,"_across_",condition_column,".csv")
 
-  write.csv(
-    all_celltype_de,
-    file = file2save,
-    row.names = FALSE)
+write.csv(
+  all_celltype_de_pseudo_bulk,
+  file = file2save,
+  row.names = FALSE)
 }
 
-check_and_scale_genes <- function(seurat_obj, genes, assay = "RNA") {
-  # Extract the scaled data matrix from the specified assay
-  scaled_genes <- rownames(seurat_obj[[assay]]@scale.data)
-  
-  # Check which genes are missing from scale.data
-  missing_genes <- setdiff(genes, scaled_genes)
-  
-  # If any genes are missing, rerun ScaleData
-  if (length(missing_genes) > 0) {
-    message("Running ScaleData because the following genes are missing: ", paste(missing_genes, collapse = ", "))
-    
-    # Scale the data and update the scale.data slot
-    seurat_obj <- Seurat::ScaleData(
-      seurat_obj, 
-      assay = assay, 
-      features = c(scaled_genes, missing_genes),
-      vars.to.regress = "percent.mt"
-      )
-  } else {
-    message("All genes are already present in the scaled data.")
-  }
-  
-  # Return the updated Seurat object
-  return(seurat_obj)
-}
+
 
 
 # Plot Functions
@@ -790,16 +903,34 @@ DimPlot(
   seurat_obj,
   reduction = reduction_name,
   group.by = group_by,
+  label = TRUE,
+)
+)
+
+if(!is.null(split_by)) {
+print(
+DimPlot(
+  seurat_obj,
+  reduction = reduction_name,
+  group.by = group_by,
   split.by = split_by,
   label = TRUE,
 )
 )
+}
+
 invisible(dev.off())
 }
 
 
 plot_markers <- function(
-seurat_obj, assay, seurat_out_dir, prefix, markers, group_by, split_by) {
+seurat_obj, 
+assay, 
+seurat_out_dir, 
+prefix, 
+markers, 
+group_by, 
+split_by) {
   seurat_obj@meta.data[[split_by]] = factor(seurat_obj@meta.data[[split_by]])
 
 top1 <- unique(markers[[2]]$gene)
@@ -815,7 +946,7 @@ filename = paste0(
 }
 
 l_top1 <- length(top1)
-max_genes_per_page = ifelse(is.null(split_by),5,1)
+max_genes_per_page = ifelse(is.null(split_by),5,2)
 
 pdf(file = filename,height = 14.4, width = 27.3)
 
@@ -837,7 +968,7 @@ while(genes_plot <= l_top1){
 print(
 DoHeatmap(
   seurat_obj, 
-  features = top10$gene,
+  features = top10,
   assay = assay,
   cells = 1:500,
   group.by = group_by,
@@ -849,7 +980,7 @@ DoHeatmap(
 print(
 DotPlot(
   seurat_obj, 
-  features = rev(as.character(unique(top6$gene))),
+  features = rev(as.character(top6)),
   group.by = group_by,
   split.by = split_by) + 
   coord_flip() + 
