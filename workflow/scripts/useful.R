@@ -275,7 +275,10 @@ seurat_obj <- Seurat::FindVariableFeatures(
   seurat_obj,
   selection.method = "vst", nfeatures = 2000
 )
-seurat_obj <- Seurat::ScaleData(seurat_obj, vars.to.regress = "percent.mt")
+seurat_obj <- Seurat::ScaleData(
+  seurat_obj,
+  features = rownames(seurat_obj), 
+  vars.to.regress = "percent.mt")
 return(seurat_obj)
 }
 }
@@ -481,16 +484,14 @@ for(i in 1:ncol(celltypepairs)){
 invisible(dev.off())
 
 SeuratObject::Idents(seurat_obj) <- original_idents
-print(Idents(seurat_obj))
 
+file2save = paste0(
+  seurat_out_dir,"/de_for_",annotation_column,"_annotations.csv")
 
-  file2save = paste0(
-    seurat_out_dir,"/de_for_",annotation_column,"_annotations.csv")
-
-  write.csv(
-    all_celltype_de,
-    file = file2save,
-    row.names = FALSE)
+write.csv(
+  all_celltype_de,
+  file = file2save,
+  row.names = FALSE)
 }
 
 
@@ -717,13 +718,18 @@ for(i in seq_along(celltypes)){
 
 invisible(dev.off())
 
-file2save = paste0(
+
+if(exists("all_celltype_de_pseudo_bulk")){
+  file2save = paste0(
   seurat_out_dir,"/de_pseudo_bulk_for_",annotation_column,"_across_",condition_column,".csv")
 
-write.csv(
+  write.csv(
   all_celltype_de_pseudo_bulk,
   file = file2save,
   row.names = FALSE)
+
+}
+
 }
 
 

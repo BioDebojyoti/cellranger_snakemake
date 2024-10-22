@@ -19,15 +19,20 @@ libraries2use <- c(
 "hdf5r", "leidenAlg", "igraph", "patchwork", "ggplot2",
 "Seurat", "optparse", "dplyr", "remotes", "celldex", "SingleR",
 "writexl", "seuratter", "Seurat", "SeuratObject", "harmony",
-"seuratHelper", "this.path", "future"
+"seuratHelper", "this.path", "future", "comprehenr", "DESeq2",
+"yaml"
 )
 
 # Load all libraries
 invisible(sapply(libraries2use, load_library))
 
+RhpcBLASctl::blas_set_num_threads(32)
+RhpcBLASctl::omp_set_num_threads(16)
+
+
 # 16*1024^3 = 17179869184
 options(future.globals.maxSize = 17179869184)
-options(mc.cores = 8)
+options(mc.cores = 4)
 # plan("multisession", workers = 1L)
 suppressMessages(plan())
 # message("Number of parallel workers: ", nbrOfWorkers())
@@ -304,7 +309,7 @@ seurat_analysis <- function(
     seurat_out_dir, 
     prefix = paste0(
       project_name,
-      ifelse(is.null(layer_column),"",paste0("_",layer_column,"_integrated")),"_final"), 
+      ifelse(is.null(layer_column),"",paste0("_",layer_column,"_integrated")),"_seurat_clusters_final"), 
     group_by = NULL, 
     integration_method = integration_method,
     split_by = NULL
@@ -330,10 +335,10 @@ seurat_analysis <- function(
 # revert to "RNA" assay for DE analysis
   SeuratObject::DefaultAssay(seurat_obj) <- "RNA"
     
- saveRDS(
-    seurat_obj,
-    file = paste0(seurat_out_dir,"/before_DE.rds")
-  )
+#  saveRDS(
+#     seurat_obj,
+#     file = paste0(seurat_out_dir,"/before_DE.rds")
+#   )
 
   if (sum(c("data","scale.data") %in% SeuratObject::Layers(seurat_obj@assays$RNA)) == 2) {
   cat("The \"RNA\" assay is already normalized.\n")
@@ -407,6 +412,10 @@ seurat_analysis <- function(
   print("Seurat analysis complete!!")
   print(end_time - start_time)
 
+  sink(paste0(seurat_out_dir,"/session_info.txt"))
+  session_info()
+  sink()
+
 }
 
 
@@ -428,7 +437,7 @@ condition_column <- "health_status"
 integration_method <- "RPCAIntegration"
 # CCAIntegration, RPCAIntegration, HarmonyIntegration,
 # FastMNNIntegration, scVIIntegration
-enable_sct <- FALSE
+enable_sct <- TRUE
 
 # Run Seurat analysis
 seurat_analysis(
