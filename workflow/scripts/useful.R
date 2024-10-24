@@ -409,16 +409,12 @@ seurat_de <- function(
   assay = "RNA",
   seurat_out_dir
 ){
-  original_idents <- SeuratObject::Idents(seurat_obj)
+  original_idents <- get_idents_column_name(seurat_obj)
 
 SeuratObject::Idents(seurat_obj) <- annotation_column
 
 celltypes <- unique(seurat_obj@meta.data[[annotation_column]])
 celltypepairs <- combn(celltypes,2)
-
-# Prepare to save volcano plots to a single PDF
-  pdf(file = paste0(seurat_out_dir, "/volcano_plots_de_for_", annotation_column, "_annotations.pdf"))
-
 
 for(i in 1:ncol(celltypepairs)){
 
@@ -464,27 +460,11 @@ for(i in 1:ncol(celltypepairs)){
   all_celltype_de <- rbind(all_celltype_de, curr_celltype_de)
   }
 
-  # Generate volcano plot
-  volcano_plot <- ggplot2::ggplot(
-  curr_celltype_de, ggplot2::aes(x = avg_log2FC, y = -log10(p_val_adj))) +
-  ggplot2::geom_point(alpha = 0.6) +
-  ggplot2::theme_minimal() +
-  ggplot2::labs(
-    title = paste0("Volcano Plot: Cluster ", ident_1, " vs Cluster ", ident_2),
-    x = "Log2[FC]",
-    y = "-Log10 [Adjusted p-value]"
-  ) +
-  ggplot2::geom_vline(xintercept = c(-0.25, 0.25), linetype = "dashed", color = "red") +
-  ggplot2::geom_hline(yintercept = -log10(0.05), linetype = "dashed", color = "blue")
-
-  # Print the volcano plot to the PDF (one plot per page)
-  print(volcano_plot)
-
-  }
-invisible(dev.off())
+}
 
 SeuratObject::Idents(seurat_obj) <- original_idents
 
+if(exists("all_celltype_de")){
 file2save = paste0(
   seurat_out_dir,"/de_for_",annotation_column,"_annotations.csv")
 
@@ -492,6 +472,17 @@ write.csv(
   all_celltype_de,
   file = file2save,
   row.names = FALSE)
+}
+
+plot_de_genes(
+  seurat_obj,
+  all_celltype_de,
+  annotation_column,
+  NULL,
+  seurat_out_dir,
+  paste0("de_between_",annotation_column,"_levels"),
+  assay)
+  
 }
 
 
@@ -503,7 +494,7 @@ seurat_de_across_condition_same_cell_type <- function(
   assay = "RNA",
   seurat_out_dir
 ){
-  original_idents <- SeuratObject::Idents(seurat_obj)
+  original_idents <- get_idents_column_name(seurat_obj)
 
 annotation_list <- seurat_obj[[annotation_column]][[1]]
 condition_list <- seurat_obj[[condition_column]][[1]]
@@ -519,10 +510,6 @@ celltypes <- unique(seurat_obj@meta.data[[annotation_column]])
 conditions <- levels(factor(unique(seurat_obj@meta.data[[condition_column]])))
 
 ident_levels <- levels(SeuratObject::Idents(seurat_obj))
-
-# Prepare to save volcano plots to a single PDF
-  pdf(
-    file = paste0(seurat_out_dir, "/volcano_plots_de_across_same_cell_across_for_",annotation_column,"_across_",condition_column,".pdf"))
 
 for(icelltype in seq_along(celltypes)){
 
@@ -573,27 +560,11 @@ for(icelltype in seq_along(celltypes)){
   all_celltype_de <- rbind(all_celltype_de, curr_celltype_de)
   }
 
-  # Generate volcano plot
-  volcano_plot <- ggplot2::ggplot(
-  curr_celltype_de, ggplot2::aes(x = avg_log2FC, y = -log10(p_val_adj))) +
-  ggplot2::geom_point(alpha = 0.6) +
-  ggplot2::theme_minimal() +
-  ggplot2::labs(
-    title = paste0("Volcano Plot: Cluster ", ident_1, " vs Cluster ", ident_2),
-    x = "Log2[FC]",
-    y = "-Log10 [Adjusted p-value]"
-  ) +
-  ggplot2::geom_vline(xintercept = c(-0.25, 0.25), linetype = "dashed", color = "red") +
-  ggplot2::geom_hline(yintercept = -log10(0.05), linetype = "dashed", color = "blue")
-
-  # Print the volcano plot to the PDF (one plot per page)
-  print(volcano_plot)  
-
-  }
-
-invisible(dev.off())
+ }
 
 SeuratObject::Idents(seurat_obj) <- original_idents
+
+if(exists("all_celltype_de")){
 
   file2save = paste0(
     seurat_out_dir,"/de_same_cell_for_",annotation_column,"_across_",condition_column,".csv")
@@ -602,6 +573,17 @@ SeuratObject::Idents(seurat_obj) <- original_idents
     all_celltype_de,
     file = file2save,
     row.names = FALSE)
+
+  plot_de_genes(
+  seurat_obj,
+  all_celltype_de,
+  annotation_column,
+  condition_column,
+  seurat_out_dir,
+  paste0("de_within_",annotation_column,"_levels_across_",condition_column),
+  assay)
+}
+
 }
 
 
@@ -637,12 +619,6 @@ ident_levels <- levels(SeuratObject::Idents(pseudo_seurat_obj))
 
 celltypes <- unique(pseudo_seurat_obj@meta.data[[annotation_column]])
 conditions <- levels(factor(unique(pseudo_seurat_obj@meta.data[[condition_column]])))
-
-pdf(
-  file = paste0(
-    seurat_out_dir,"/volcano_plot_de_pseudo_bulk_for_",annotation_column,"_across_",
-    condition_column,".pdf")
-)
 
 for(i in seq_along(celltypes)){
 
@@ -698,25 +674,7 @@ for(i in seq_along(celltypes)){
   all_celltype_de_pseudo_bulk <- rbind(all_celltype_de_pseudo_bulk, curr_celltype_de_pseudobulk)
   }
 
-# Generate volcano plot
-  volcano_plot <- ggplot2::ggplot(
-  curr_celltype_de_pseudobulk, ggplot2::aes(x = avg_log2FC, y = -log10(p_val_adj))) +
-  ggplot2::geom_point(alpha = 0.6) +
-  ggplot2::theme_minimal() +
-  ggplot2::labs(
-    title = paste0("Volcano Plot: Cluster", ident_1, " vs Cluster ", ident_2),
-    x = "Log2[FC]",
-    y = "-Log10 [Adjusted p-value]"
-  ) +
-  ggplot2::geom_vline(xintercept = c(-0.25, 0.25), linetype = "dashed", color = "red") +
-  ggplot2::geom_hline(yintercept = -log10(0.05), linetype = "dashed", color = "blue")
-
-  # Print the volcano plot to the PDF (one plot per page)
-  print(volcano_plot)
-
-  }
-
-invisible(dev.off())
+}
 
 
 if(exists("all_celltype_de_pseudo_bulk")){
@@ -728,11 +686,18 @@ if(exists("all_celltype_de_pseudo_bulk")){
   file = file2save,
   row.names = FALSE)
 
-}
+  plot_de_genes(
+  seurat_obj,
+  all_celltype_de_pseudo_bulk,
+  annotation_column,
+  condition_column,
+  seurat_out_dir,
+  paste0("pseudo_bulk_de_within_",annotation_column,"_levels_across_",condition_column),
+  assay)
 
 }
 
-
+}
 
 
 # Plot Functions
@@ -1017,3 +982,87 @@ get_idents_column_name <- function(seurat_obj) {
 # matching_column <- get_idents_column_name(seurat_obj)
 # print(matching_column)
 
+# plot de genes 
+plot_de_genes <- function(
+  seurat_obj,
+  de_table,
+  ident_column_to_use,
+  condition_column,
+  seurat_out_dir,
+  prefix,
+  assay = "RNA"
+){
+original_ident_column <- get_idents_column_name(seurat_obj)
+
+SeuratObject::Idents(seurat_obj) <- ident_column_to_use
+
+within_cluster_de <- "Celltype" %in% names(de_table)
+if(within_cluster_de){
+contrast_list <- unique(de_table[["Celltype"]])
+filter_column <- "Celltype"
+} else {
+contrast_list <- unique(de_table[["Comparison"]])
+filter_column <- "Comparison"
+}
+
+
+violin_plot_de_genes <- list()
+for(contrast in contrast_list){
+  
+  de_genes <- de_table %>% 
+    dplyr::filter(!!sym(filter_column) == contrast) %>%
+    dplyr::filter(p_val_adj<0.05) %>% 
+    dplyr::arrange(desc(avg_log2FC)) %>%
+    dplyr::pull(Gene) %>%
+    head(10)
+
+    if(!(length(de_genes)>= 1)){
+      print(de_genes)
+      next
+    }
+
+idents_to_use <- ifelse(
+    within_cluster_de,
+    contrast,
+    as.vector(stringr::str_split(contrast,"_Vs_"))
+    )[[1]]
+
+ncolumns <- ifelse(length(de_genes)<5,length(de_genes),5)
+vln_plots <- VlnPlot(
+  seurat_obj, 
+  features = de_genes, 
+idents = idents_to_use, 
+group.by = ident_column_to_use,
+split.by = condition_column,
+raster = TRUE, 
+ncol = ncolumns, 
+combine = FALSE) 
+
+vln_plots <- lapply(vln_plots, function(p) {
+  p + theme(
+    axis.title.x = element_blank(),
+    legend.position = "none"
+  )
+})
+
+# Combine the modified plots using patchwork
+combined_plot <- wrap_plots(vln_plots, ncol=ncolumns) + 
+  plot_layout(guides = "collect") +  # Collect all legends into one
+  theme(legend.position = "bottom")  # Place the unified legend at the bottom
+
+violin_plot_de_genes[[as.character(contrast)]] <-combined_plot
+
+
+}
+
+SeuratObject::Idents(seurat_obj) <- original_ident_column
+
+file2save = paste0(seurat_out_dir,"/de_",prefix,".pdf")
+pdf(file = file2save,height = 14.4, width = 27.3)
+for(contrast in contrast_list){
+print(violin_plot_de_genes[[as.character(contrast)]])
+}
+
+invisible(dev.off())
+
+}

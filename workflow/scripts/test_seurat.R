@@ -413,7 +413,7 @@ seurat_analysis <- function(
   print(end_time - start_time)
 
   sink(paste0(seurat_out_dir,"/session_info.txt"))
-  session_info()
+  sessionInfo()
   sink()
 
 }
