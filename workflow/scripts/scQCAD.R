@@ -156,7 +156,7 @@ option_list <- list(
   ),
   make_option(
     c("--species"),
-    type = "string",
+    type = "character",
     default = "human",
     help = "annotation for species [default= %default]",
     dest = "species"
