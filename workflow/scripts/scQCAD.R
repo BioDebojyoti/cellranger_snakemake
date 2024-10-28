@@ -3,12 +3,14 @@
 # Function to load libraries silently
 load_library <- function(x) {
   invisible(
-    suppressPackageStartupMessages(
-      library(
-        x,
-        character.only = TRUE,
-        quietly = TRUE,
-        warn.conflicts = FALSE
+    suppressWarnings(
+      suppressPackageStartupMessages(
+        library(
+          x,
+          character.only = TRUE,
+          quietly = TRUE,
+          warn.conflicts = FALSE
+        )
       )
     )
   )
@@ -34,7 +36,7 @@ RhpcBLASctl::omp_set_num_threads(16)
 options(future.globals.maxSize = 17179869184)
 options(mc.cores = 4)
 # plan("multisession", workers = 1L)
-suppressMessages(plan())
+invisible(plan())
 # message("Number of parallel workers: ", nbrOfWorkers())
 
 # get directory for the present file
@@ -164,7 +166,10 @@ option_list <- list(
 )
 
 # Parse command-line arguments
-opt_parser <- OptionParser(option_list = option_list)
+opt_parser <- OptionParser(
+  option_list = option_list,
+  description = "This script processes single-cell RNA sequencing data. Performs quality control, filtering, normalization, batch-correction(optional), clustering and annotation. Optionally it also does differential expression analysis. It integrates various Seurat functions and provides pertinent figures, and tables for an exhaustive investigation."
+)
 opt <- parse_args(opt_parser)
 
 # Define user inputs

@@ -1,4 +1,4 @@
-## README for scQCAD
+# scQCAD
 
 This pipeline takes aggregated cellranger output, and performs:
 
@@ -113,3 +113,69 @@ species <- "human"
 ```
 
 ## CLI options
+
+```bash
+$ Rscript scQCAD.R --help
+Usage: scQCAD.R [options]
+This script processes single-cell RNA sequencing data. Performs quality control, filtering, normalization, batch-correction(optional), clustering and annotation. Optionally it also does differential expression analysis. It integrates various Seurat functions and provides pertinent figures, and tables for an exhaustive investigation.
+
+Options:
+	-f FILE, --file=FILE
+		count matrix data h5 file name  [default= NULL]
+
+	-a AGGREGATE-CSV, --aggregate-csv=AGGREGATE-CSV
+		aggregate csv file [default= NULL]- file with sample_id used to aggregate using cellranger. Order must be same as in cellranger aggregate. Additional columns with information about donor, condition etc should be supplied here
+
+	-d DIRECTORY, --directory=DIRECTORY
+		count matrix data directory name [default= NULL]
+
+	-o OUT-DIRECTORY, --out-directory=OUT-DIRECTORY
+		output directory [default= seurat_out]
+
+	--min-cells=MIN-CELLS
+		minimum cells [default= 3]
+
+	--min-features=MIN-FEATURES
+		minimum features [default= 100]
+
+	--max-features=MAX-FEATURES
+		maximum features [default= 3000]
+
+	--percent-mt=PERCENT-MT
+		threshold percent mitochondrial [default= NULL]
+    - default filtering is done using 95th quantile
+
+	--percent-rb=PERCENT-RB
+		threshold percent ribosomal [default= NULL]
+    - default filtering is done using 95th quantile
+
+	--project=PROJECT
+		output file name [default= singleCell]
+
+	--vdj-t=VDJ-T
+		V(D)J-T annotations [default= NULL]
+
+	--vdj-b=VDJ-B
+		V(D)J-B annotations [default= NULL]
+
+	--layer-column=LAYER-COLUMN
+		describes experimental batches, donors, or conditions [default= NULL]
+
+	--condition-column=CONDITION-COLUMN
+		main condition for comparision  [default= NULL](can be same as batch variable)
+
+	--integration-method=INTEGRATION-METHOD
+		integration method  [default= NULL](CCAIntegration, RPCAIntegration, HarmonyIntegration, FastMNNIntegration, scVIIntegration)
+
+	--enable-SCTransform=ENABLE-SCTRANSFORM
+		sctransform normalization [default= TRUE]
+
+	--perform-DE=PERFORM-DE
+		differential expression analysis [default= FALSE]
+
+	--species=SPECIES
+		annotation for species [default= human]
+
+	-h, --help
+		Show this help message and exit
+```
