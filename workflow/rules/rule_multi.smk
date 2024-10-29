@@ -6,12 +6,9 @@ from scripts import concat_for_multi as cfm
 import shutil
 import re
 
-# Configuration
-# configfile: os.path.join("config", "config_count.yaml")
-
 multi_outdir = config_multi["output_multi"]
 
-if config_multi.get("multi_config_csv", None) != None:
+if config_multi.get("multi_config_csv") is not None:
     config_file_for_multi = config_multi["multi_config_csv"]
 
     print(config_file_for_multi)
@@ -21,11 +18,6 @@ if config_multi.get("multi_config_csv", None) != None:
     donor_list = [re.sub("-", "_", donor_list)]
 
     target_file = donor_list[0] + "_multi_samplesheet.csv"
-    # print(donor_list)
-    # print(config_file_for_multi)
-    # print(multi_outdir)
-    # print(target_file)
-    # print(os.path.join(multi_outdir, target_file))
 
     shutil.copyfile(
         config_file_for_multi,

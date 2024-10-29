@@ -830,7 +830,11 @@ seurat_qc_plot <- function(seurat_obj, ncol, seurat_out_dir, prefix_file) {
 
 
 seurat_plot_pca <- function(
-    seurat_obj, seurat_out_dir, prefix, layer_column = NULL, condition_column = NULL) {
+    seurat_obj,
+    seurat_out_dir,
+    prefix,
+    layer_column = NULL,
+    condition_column = NULL) {
   pdf(
     file = paste0(seurat_out_dir, "/", prefix, "_pca_plots.pdf"),
     height = 14.4,

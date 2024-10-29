@@ -4,7 +4,9 @@ import pandas as pd
 
 
 include: "common.smk"
-include: os.path.join("rules", "rule_mkfastq.smk")
+
+
+# include: os.path.join("rules", "rule_mkfastq.smk")
 
 
 # print(list(rules.__dict__.keys()))
@@ -16,8 +18,9 @@ include: os.path.join("rules", "rule_mkfastq.smk")
 
 # include: os.path.join("rules", "rule_count.smk")
 # include: os.path.join("rules", "rule_vdj.smk")
-include: os.path.join("rules", "rule_multi.smk")
-include: os.path.join("rules", "rule_aggregate.smk")
+# include: os.path.join("rules", "rule_multi.smk")
+# include: os.path.join("rules", "rule_aggregate.smk")
+include: os.path.join("rules", "rule_seurat.smk")
 
 
 # print(get_input_multi_csv(" "))

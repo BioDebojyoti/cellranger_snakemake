@@ -11,72 +11,140 @@ def input_gex_for_seurat(wc):
 
     rules_available = list(rules.__dict__.keys())
 
-    if config_seurat.get("count_matrix_file", None):
-        return config_seurat["count_matrix_file"]
-    if c("cellranger_multi", "cellranger_aggr") in rules_available:
+    if config_seurat.get("count_file") is not None:
+        return config_seurat["count_file"]
+    elif c("cellranger_aggr") in rules_available:
         return os.path.join(
             rules.cellranger_aggr.params.aggr_outdir,
             "outs",
             "count",
             "filtered_feature_bc_matrix.h5",
         )
+    else:
+        return print("Error: File not found or unsupported file type.")
+
+
+def seurat_input_aggr_csv(wc):
+
+    rules_available = list(rules.__dict__.keys())
+
+    if config_seurat.get("aggr_csv_file") is not None:
+        return config_seurat["aggr_csv_file"]
+    elif c("cellranger_aggr") in rules_available:
+        return rules.cellranger_aggr.input.csv
+    else:
+        return print("Error: aggregate CSV file missing!!")
+
+
+def list1_isin_list2(list1, list2):
+    present_in_list2 = [elem in list2 for elem in list1]
+    if all(present_in_list2):
+        return True
+    else:
+        return False
+
 
 def vdj_t_flag(wc):
-    
     rules_available = list(rules.__dict__.keys())
-    if c("cellranger_multi", "cellranger_aggr") in rules_available:
-        if os.path.exists(
-            rules.cellranger_aggr.params.aggr_outdir
-            + "/outs/vdj_t/filtered_contig_annotations.csv"
-        ):
-            return "--vdj-t " os.path.join(
-                    rules.cellranger_aggr.params.aggr_outdir,
-                    "outs",
-                    "vdj_t",
-                    "filtered_contig_annotations.csv",
-                ) 
+    if list1_isin_list2(["cellranger_multi", "cellranger_aggr"], rules_available):
+        vdj_t_path = os.path.join(
+            rules.cellranger_aggr.params.aggr_outdir,
+            "outs",
+            "vdj_t",
+            "filtered_contig_annotations.csv",
+        )
+        if os.path.exists(vdj_t_path):
+            return f"--vdj-t {vdj_t_path}"
         else:
-        return ""
+            return None
+
 
 def vdj_b_flag(wc):
-    
+    # Check if specific rules are available
     rules_available = list(rules.__dict__.keys())
-    if c("cellranger_multi", "cellranger_aggr") in rules_available:
-        if os.path.exists(
-            rules.cellranger_aggr.params.aggr_outdir
-            + "/outs/vdj_b/filtered_contig_annotations.csv"
-        ):
-            return "--vdj-b " os.path.join(
-                    rules.cellranger_aggr.params.aggr_outdir,
-                    "outs",
-                    "vdj_b",
-                    "filtered_contig_annotations.csv",
-                ) 
+    if list1_isin_list2(["cellranger_multi", "cellranger_aggr"], rules_available):
+        vdj_b_path = os.path.join(
+            rules.cellranger_aggr.params.aggr_outdir,
+            "outs",
+            "vdj_b",
+            "filtered_contig_annotations.csv",
+        )
+        if os.path.exists(vdj_b_path):
+            return f"--vdj-b {vdj_b_path}"
         else:
-        return ""
+            return None
 
 
-# Rule to aggregate libraries (optional)
+def extra_args_for_seurat(wc, config_seurat):
+
+    # Map config keys to command-line arguments
+    arg_mapping = {
+        "out_directory": "--out-directory",
+        "min_cells": "--min-cells",
+        "min_features": "--min-features",
+        "max_features": "--max-features",
+        "percent_mt": "--percent-mt",
+        "percent_rb": "--percent-rb",
+        "project": "--project",
+        "vdj_t": "--vdj-t",
+        "vdj_b": "--vdj-b",
+        "layer_column": "--layer-column",
+        "condition_column": "--condition-column",
+        "integration_method": "--integration-method",
+        "enable_SCTransform": "--enable-SCTransform",
+        "perform_DE": "--perform-DE",
+        "species": "--species",
+    }
+
+    # Construct command-line arguments, ensuring missing keys use default values
+    additional_args_for_seurat = []
+    for param, flag_to_use in arg_mapping.items():
+        value = config_seurat.get(param)
+        if value is not None:
+            # Format logicals as TRUE/FALSE, non-numeric values with quotes, and missing values as NULL
+            if isinstance(value, bool):
+                formatted_value = "TRUE" if value else "FALSE"
+            elif isinstance(value, str):
+                formatted_value = f'"{value}"'
+            else:
+                formatted_value = value
+
+            # Add the formatted argument to the list
+            additional_args_for_seurat.append(f"{arg_mapping[param]}={formatted_value}")
+
+    # Join all arguments into a single string
+    return " ".join(additional_args_for_seurat)
+
+
+project_name = config_seurat.get("project") or "singleCell"
+final_rds = project_name + "_analysed_seurat.rds"
+
+seurat_outdir = config_seurat.get("out_directory") or "seurat_out"
+
+
+# Rule to run seurat on cellranger output
 rule seurat:
     input:
-        gex =le,
+        gex=input_gex_for_seurat,
+        aggr_csv=rules.cellranger_aggr.input.csv,
     output:
-        seurat_rds="{seurat_outdir}/",
+        seurat_rds=os.path.join("{seurat_outdir}", "{final_rds}"),
     resources:
-        cores=config["resources"]["localcores"],
-        memory=config["resources"]["localmem"],
-    container:
-        "docker://biodebojyoti/crossplatformcellranger:8.0.1"
+        cores=config_seurat["resources"]["localcores"],
+        threads=config_seurat["resources"]["localthreads"],
+        memory=config_seurat["resources"]["localmem"],
+    conda:
+        "d_seurat510"
     params:
-        aggr_id=config["aggregation_id"],
-        aggr_outdir="{count_outdir}/aggr_results",
+        extra_args=lambda wc, config_seurat: extra_args_for_seurat(wc, config_seurat),
+        vdj_t_args=lambda wc: vdj_t_flag(wc),
+        vdj_b_args=lambda wc: vdj_b_flag(wc),
     log:
-        file="{count_outdir}/logs/aggr.log",
+        file=os.path.join("{seurat_outdir}", "logs", "seurat.log"),
     shell:
         """
-        cellranger aggr --id={params.aggr_id} --csv={input.csv} --normalize=mapped \
-        --localcores={resources.cores} \
-        --localmem={resources.memory} \
-        2>&1 | tee -a {log.file};
-        bash scripts/move_pipestance_count_dir.sh {log.file} {params.aggr_outdir}; 
+        Rscript scripts/scQCAD.R -f {input.gex} -a {input.aggr_csv} \
+        {params.extra_args} {params.vdj_t_args} {params.vdj_t_args} \
+        --num-cores={resources.cores} --num-threads={resources.threads} \
+        --memory-usage={resources.memory} 2>&1 | tee -a {log.file}; 
         """

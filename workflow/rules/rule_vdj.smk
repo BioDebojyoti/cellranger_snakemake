@@ -9,7 +9,7 @@ import pandas as pd
 
 # fastq_df_vdj = pd.read_csv(config_vdj["paths2fastq4vdj_file"])
 # fastq_df = pd.read_csv(config_vdj["paths2fastq_file"])
-if config_vdj.get("paths2fastq4vdj_file", None):
+if config_vdj.get("paths2fastq4vdj_file") is not None:
     vdj_fastq_file_path = config_vdj["paths2fastq4vdj_file"]
 else:
     bcl_run_index_vdj = [

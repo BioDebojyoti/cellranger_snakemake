@@ -22,6 +22,10 @@ with open("config/config_vdj.yaml") as f:
 with open("config/config_multi.yaml") as f:
     config_multi = yaml.safe_load(f)
 
+# Load config for cellranger_multi
+with open("config/config_seurat.yaml") as f:
+    config_seurat = yaml.safe_load(f)
+
 
 # Define the function to determine output for cellranger_aggr
 def output_dir_for_cellranger_aggr(wc):

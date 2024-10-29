@@ -28,17 +28,6 @@ libraries2use <- c(
 # Load all libraries
 invisible(sapply(libraries2use, load_library))
 
-RhpcBLASctl::blas_set_num_threads(32)
-RhpcBLASctl::omp_set_num_threads(16)
-
-
-# 16*1024^3 = 17179869184
-options(future.globals.maxSize = 17179869184)
-options(mc.cores = 4)
-# plan("multisession", workers = 1L)
-invisible(plan())
-# message("Number of parallel workers: ", nbrOfWorkers())
-
 # get directory for the present file
 script_path <- this.path::this.path()
 
@@ -162,6 +151,27 @@ option_list <- list(
     default = "human",
     help = "annotation for species [default= %default]",
     dest = "species"
+  ),
+  make_option(
+    c("--num-cores"),
+    type = "integer",
+    default = as.integer(4L),
+    help = "number of cores to use [default= %default]",
+    dest = "num_cores"
+  ),
+  make_option(
+    c("--num-threads"),
+    type = "integer",
+    default = as.integer(16L),
+    help = "number of cores to use [default= %default]",
+    dest = "num_threads"
+  ),
+  make_option(
+    c("--memory-usage"),
+    type = "double",
+    default = as.double(16.0),
+    help = "memory available to use in [default= %default Gb]",
+    dest = "memory_usage"
   )
 )
 
@@ -191,27 +201,42 @@ integration_method <- opt$integration_method
 enable_sct <- opt$enable_sct
 perform_de <- opt$perform_de
 species <- opt$species
+cores <- opt$num_cores
+threads <- opt$num_threads
+memory <- opt$memory_usage
+
+
+# resources
+RhpcBLASctl::blas_set_num_threads(threads)
+RhpcBLASctl::omp_set_num_threads(threads)
+
+memory_to_use <- memory * 1024^3
+# 16*1024^3 = 17179869184
+options(future.globals.maxSize = memory_to_use)
+options(mc.cores = cores)
+
+invisible(plan())
 
 # Main Seurat analysis function
 seurat_analysis <- function(
-    data_dir,
-    data_file,
-    project_name,
-    seurat_out_dir,
-    min_cells,
-    min_features,
-    max_features,
-    percent_mt,
-    percent_rb,
-    aggr_csv_file,
-    tcr_file,
-    bcr_file,
-    layer_column,
-    condition_column,
-    integration_method,
-    enable_sct,
-    perform_de,
-    species) {
+    data_dir = NULL,
+    data_file = NULL,
+    project_name = "singleCell",
+    seurat_out_dir = "seurat_out",
+    min_cells = 3L,
+    min_features = 100L,
+    max_features = 3000L,
+    percent_mt = NULL,
+    percent_rb = NULL,
+    aggr_csv_file = NULL,
+    tcr_file = NULL,
+    bcr_file = NULL,
+    layer_column = NULL,
+    condition_column = NULL,
+    integration_method = NULL,
+    enable_sct = TRUE,
+    perform_de = FALSE,
+    species = "human") {
   start_time <- Sys.time()
   if (!dir.exists(seurat_out_dir)) {
     dir.create(seurat_out_dir)
@@ -442,27 +467,27 @@ seurat_analysis <- function(
 }
 
 
-data_dir <- "count/filtered_feature_bc_matrix"
-# data_dir <- "count/sample_filtered_feature_bc_matrix"
-data_file <- NULL
-project_name <- "test"
-seurat_out_dir <- "seurat_out"
-min_cells <- 3
-min_features <- 100
-max_features <- 3000
-percent_mt <- NULL
-percent_rb <- NULL
-aggr_csv_file <- "aggregation.csv"
-tcr_file <- "vdj_t/filtered_contig_annotations.csv"
-bcr_file <- "vdj_b/filtered_contig_annotations.csv"
-layer_column <- "donor"
-condition_column <- "health_status"
-integration_method <- "RPCAIntegration"
-# CCAIntegration, RPCAIntegration, HarmonyIntegration,
-# FastMNNIntegration, scVIIntegration
-enable_sct <- TRUE
-perform_de <- FALSE
-species <- "human"
+# data_dir <- "count/filtered_feature_bc_matrix"
+# # data_dir <- "count/sample_filtered_feature_bc_matrix"
+# data_file <- NULL
+# project_name <- "test"
+# seurat_out_dir <- "seurat_out"
+# min_cells <- 3
+# min_features <- 100
+# max_features <- 3000
+# percent_mt <- NULL
+# percent_rb <- NULL
+# aggr_csv_file <- "aggregation.csv"
+# tcr_file <- "vdj_t/filtered_contig_annotations.csv"
+# bcr_file <- "vdj_b/filtered_contig_annotations.csv"
+# layer_column <- "donor"
+# condition_column <- "health_status"
+# integration_method <- "RPCAIntegration"
+# # CCAIntegration, RPCAIntegration, HarmonyIntegration,
+# # FastMNNIntegration, scVIIntegration
+# enable_sct <- TRUE
+# perform_de <- FALSE
+# species <- "human"
 
 # Run Seurat analysis
 seurat_analysis(

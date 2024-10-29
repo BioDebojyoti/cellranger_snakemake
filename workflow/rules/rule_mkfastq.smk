@@ -2,15 +2,6 @@
 import os, sys, re
 import pandas as pd
 
-# Configuration
-# configfile: os.path.join("config", "config_mkfastq.yaml")
-
-# Define paths based on configuration
-# bcl_folder = config_mkfastq["bcl_folder"]
-
-# outdir = config_mkfastq["outputdir"]
-# library_type = config_mkfastq["library_type"]
-
 add_args = [
     (
         config_mkfastq["additional_arguments"]

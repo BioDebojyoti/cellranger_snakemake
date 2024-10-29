@@ -2,13 +2,10 @@
 import os, sys
 import pandas as pd
 
-# Configuration
-# configfile: os.path.join("config", "config_count.yaml")
-
 count_outdir = config_count["output_count"]
 
 # fastq_df = pd.read_csv(config_count["paths2fastq_file"])
-if config_count.get("paths2fastq_file", None):
+if config_count.get("paths2fastq_file") is not None:
     fastq_file_path = config_count["paths2fastq_file"]
 else:
     bcl_run_index1 = [
