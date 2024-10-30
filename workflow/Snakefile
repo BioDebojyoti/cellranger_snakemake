@@ -23,6 +23,11 @@ include: "common.smk"
 include: os.path.join("rules", "rule_seurat.smk")
 
 
+rule de_results:
+    input:
+        os.path.join(seurat_outdir, final_rds),
+
+
 # print(get_input_multi_csv(" "))
 
 # include: os.path.join("rules", "rule_aggregate.smk")
@@ -70,8 +75,6 @@ include: os.path.join("rules", "rule_seurat.smk")
 #         bcl_run_index=list(fastq_outdirectory_dict.keys()),
 #     ),
 # )
-
-
 # print(multi_outdir)
 # print(input_for_cellranger_aggr(" "))
 # print(donor_list)
@@ -90,18 +93,16 @@ include: os.path.join("rules", "rule_seurat.smk")
 #             "{aggr_outdir}/outs/count/filtered_feature_bc_matrix.h5",
 #             aggr_outdir=aggr_outdir,
 #         ),
-rule aggr_inputs:
-    input:
-        aggr_input_csv=expand(
-            "{multi_outdir}/aggregation_multi.csv", multi_outdir=multi_outdir
-        ),
-        multi_web_summary=expand(
-            "{multi_outdir}/outs/per_sample_outs/{donor_id}/web_summary.html",
-            donor_id=donor_list,
-            multi_outdir=multi_outdir,
-        ),
-
-
+# rule aggr_inputs:
+#     input:
+#         aggr_input_csv=expand(
+#             "{multi_outdir}/aggregation_multi.csv", multi_outdir=multi_outdir
+#         ),
+#         multi_web_summary=expand(
+#             "{multi_outdir}/outs/per_sample_outs/{donor_id}/web_summary.html",
+#             donor_id=donor_list,
+#             multi_outdir=multi_outdir,
+#         ),
 # aggr_count_input_csv=expand(
 #     "{count_outdir}/aggregation_count.csv", count_outdir=count_outdir
 # ),

@@ -30,6 +30,7 @@ invisible(sapply(libraries2use, load_library))
 
 # get directory for the present file
 script_path <- this.path::this.path()
+print(script_path)
 
 source(paste0(dirname(script_path), "/useful.R", collapse = ""))
 source(paste0(dirname(script_path), "/generalized_vdj.R", collapse = ""))
@@ -490,23 +491,25 @@ seurat_analysis <- function(
 # species <- "human"
 
 # Run Seurat analysis
-seurat_analysis(
-  data_dir,
-  data_file,
-  project_name,
-  seurat_out_dir,
-  min_cells,
-  min_features,
-  max_features,
-  percent_mt,
-  percent_rb,
-  aggr_csv_file,
-  tcr_file,
-  bcr_file,
-  layer_column,
-  condition_column,
-  integration_method,
-  enable_sct,
-  perform_de,
-  species
-)
+if ((!is.null(data_dir)) | (!is.null(data_file))) {
+  seurat_analysis(
+    data_dir,
+    data_file,
+    project_name,
+    seurat_out_dir,
+    min_cells,
+    min_features,
+    max_features,
+    percent_mt,
+    percent_rb,
+    aggr_csv_file,
+    tcr_file,
+    bcr_file,
+    layer_column,
+    condition_column,
+    integration_method,
+    enable_sct,
+    perform_de,
+    species
+  )
+}

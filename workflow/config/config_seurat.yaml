@@ -1,9 +1,10 @@
-count_file:
-aggr_csv_file:
+count_file: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/multi_results/aggr_results_health_status/outs/count/filtered_feature_bc_matrix.h5"
+aggr_csv_file: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/multi_results/aggr_results_health_status/outs/aggregation.csv"
 
 resources:
-  localcores: 4
-  localmem: 16
+  cores: 4
+  threads: 16
+  memory: 16
 
 out_directory:
 # seurat output directory
