@@ -3,7 +3,7 @@ import os, sys
 import pandas as pd
 
 
-include: "common.smk"
+include: os.path.join("rules", "common.smk")
 
 
 # include: os.path.join("rules", "rule_mkfastq.smk")
@@ -66,7 +66,6 @@ rule de_results:
 #         bcl_run_index=list(fastq_outdirectory_dict.keys()),
 #     ),
 # )
-
 # print(
 #     expand(
 #         "{fastq_outdirectory}/mkfastq_success_{bcl_run_index}.csv",

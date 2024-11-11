@@ -35,9 +35,6 @@ samples_paths = fastq_df["fastq"].tolist()
 fastq_dict = {s: samples_paths[i] for i, s in enumerate(samples_seqs)}
 
 
-# count_outdir = config_count["output_count"]
-
-
 rule cellranger_count_b4aggr:
     output:
         aggr_input_csv=expand(

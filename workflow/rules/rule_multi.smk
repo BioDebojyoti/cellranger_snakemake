@@ -8,95 +8,122 @@ import re
 
 multi_outdir = config_multi["output_multi"]
 
-if config_multi.get("multi_config_csv") is not None:
-    config_file_for_multi = config_multi["multi_config_csv"]
 
-    print(config_file_for_multi)
+def generate_multi_input(wc):
 
-    donor_list = os.path.dirname(config_file_for_multi)
-    donor_list = donor_list.split("/")[-1]
-    donor_list = [re.sub("-", "_", donor_list)]
+    if isinstance(config_multi.get("multi_config_csv"), list):
 
-    target_file = donor_list[0] + "_multi_samplesheet.csv"
+        config_files_for_multi = config_multi["multi_config_csv"]
+        donor_list = []
 
-    shutil.copyfile(
-        config_file_for_multi,
-        os.path.join(multi_outdir, target_file),
-    )
-else:
-    input_csvs = config_multi["input_csvs"]
+        for curr_multi_file in config_files_for_multi:
 
-    additional_info_aggr = config_multi["additional_info_aggr"]
+            curr_donor = os.path.basename(curr_multi_file)
+            curr_donor = re.sub("_multi_samplesheet.csv", "", curr_donor)
+            donor_list.append(curr_donor)
 
-    donor_list = cfm.create_donor_dict(additional_info_aggr, input_csvs, multi_outdir)
+            target_file = f"{curr_donor}_multi_samplesheet.csv"
+            destination_path = os.path.join(multi_outdir, target_file)
+            # print(target_file)
+            # print(destination_path)
 
-    # print(donor_list)
+            if os.path.abspath(curr_multi_file) != os.path.abspath(destination_path):
+                shutil.copyfile(
+                    curr_multi_file,
+                    destination_path,
+                )
+    else:
 
-    gene_expression_args = (
-        {
-            "reference": config_multi["gene_expression"]["reference"],
-            "probe_set": config_multi["gene_expression"]["probe_set"],
-            "filter_probes": config_multi["gene_expression"]["filter_probes"],
-            "r1_length": config_multi["gene_expression"]["r1_length"],
-            "r2_length": config_multi["gene_expression"]["r2_length"],
-            "chemistry": config_multi["gene_expression"]["chemistry"],
-            "expect_cells": config_multi["gene_expression"]["expect_cells"],
-            "force_cells": config_multi["gene_expression"]["force_cells"],
-            "no_secondary": config_multi["gene_expression"]["no_secondary"],
-            "create_bam": config_multi["gene_expression"]["create_bam"],
-            "check_compatibility": config_multi["gene_expression"][
-                "check_compatibility"
-            ],
-            "include_introns": config_multi["gene_expression"]["include_introns"],
-        }
-        if config_multi["gene_expression"]["reference"]
-        else None
-    )
+        if isinstance(config_multi.get("input_csvs"), list):
+            input_csvs = config_multi["input_csvs"]
+        else:
+            input_csvs = rules.demultiplex_all.input.fastq_paths
 
-    vdj_args = (
-        {
-            "reference": config_multi["vdj"]["reference"],
-            "primers": config_multi["vdj"]["primers"],
-            "r1_length": config_multi["vdj"]["r1_length"],
-            "r2_length": config_multi["vdj"]["r2_length"],
-        }
-        if config_multi["vdj"]["reference"]
-        else None
-    )
+        additional_info_aggr = config_multi["additional_info_aggr"]
 
-    for donor_id in donor_list:
-        input_multi_csv = multi_outdir + "/" + donor_id + "_multi.csv"
-        output_multi_csv = multi_outdir + "/" + donor_id + "_multi_samplesheet.csv"
-        # print(output_multi_csv)
-        # print(input_multi_csv)
-
-        cmc.create_multi_csv(
-            input_csvs=input_multi_csv,
-            gene_expression_args=gene_expression_args,
-            vdj_args=vdj_args,
-            output_file=output_multi_csv,
+        donor_list = cfm.create_donor_dict(
+            additional_info_aggr, input_csvs, multi_outdir
         )
 
+        gene_expression_args = (
+            {
+                "reference": config_multi["gene_expression"]["reference"],
+                "probe_set": config_multi["gene_expression"]["probe_set"],
+                "filter_probes": config_multi["gene_expression"]["filter_probes"],
+                "r1_length": config_multi["gene_expression"]["r1_length"],
+                "r2_length": config_multi["gene_expression"]["r2_length"],
+                "chemistry": config_multi["gene_expression"]["chemistry"],
+                "expect_cells": config_multi["gene_expression"]["expect_cells"],
+                "force_cells": config_multi["gene_expression"]["force_cells"],
+                "no_secondary": config_multi["gene_expression"]["no_secondary"],
+                "create_bam": config_multi["gene_expression"]["create_bam"],
+                "check_compatibility": config_multi["gene_expression"][
+                    "check_compatibility"
+                ],
+                "include_introns": config_multi["gene_expression"]["include_introns"],
+            }
+            if config_multi["gene_expression"]["reference"]
+            else None
+        )
+
+        vdj_args = (
+            {
+                "reference": config_multi["vdj"]["reference"],
+                "primers": config_multi["vdj"]["primers"],
+                "r1_length": config_multi["vdj"]["r1_length"],
+                "r2_length": config_multi["vdj"]["r2_length"],
+            }
+            if config_multi["vdj"]["reference"]
+            else None
+        )
+
+        for donor_id in donor_list:
+            input_multi_csv = f"{multi_outdir}/{donor_id}_multi.csv"
+            output_multi_csv = f"{multi_outdir}/{donor_id}_multi_samplesheet.csv"
+            # print(output_multi_csv)
+            # print(input_multi_csv)
+
+            cmc.create_multi_csv(
+                input_csvs=input_multi_csv,
+                gene_expression_args=gene_expression_args,
+                vdj_args=vdj_args,
+                output_file=output_multi_csv,
+            )
+    return donor_list
+
+
+donor_list = generate_multi_input("")
 
 # rule cellranger_multi_input:
 #     input:
-#         csv_files=rules.demultiplex_all.fastq_paths,
+#         csv_files = lambda wc: generate_multi_input
 
 
 rule cellranger_multi_b4aggr:
     output:
         aggr_input_csv=expand(
-            "{multi_outdir}/aggregation_multi.csv", multi_outdir=multi_outdir
+            os.path.join("{multi_outdir}", "aggregation_multi.csv"),
+            multi_outdir=multi_outdir,
         ),
     input:
         multi_web_summary=expand(
-            "{multi_outdir}/outs/per_sample_outs/{donor_id}/web_summary.html",
+            os.path.join(
+                "{multi_outdir}",
+                "outs",
+                "per_sample_outs",
+                "{donor_id}",
+                "web_summary.html",
+            ),
             donor_id=donor_list,
             multi_outdir=multi_outdir,
         ),
+    container:
+        "docker://litd/docker-cellranger:v8.0.1"
     params:
-        multidir=multi_outdir,
+        multidir=lambda wc, output: os.path.dirname(output.aggr_input_csv[0]),
         additional_info_aggr=config_multi["additional_info_aggr"],
+    log:
+        os.path.join(multi_outdir, "logs", "multi_pre_aggr.log"),
     shell:
         """
         bash scripts/get_multi_aggr_csv.sh {params.multidir} > {output.aggr_input_csv};
@@ -109,28 +136,43 @@ rule cellranger_multi:
     input:
         csv=os.path.join("{multi_outdir}", "{donor_id}_multi_samplesheet.csv"),
     output:
-        multi_web_summary="{multi_outdir}/outs/per_sample_outs/{donor_id}/web_summary.html",
-        # multi_directory_output=directory(
-        #     "{multi_outdir}/outs/per_sample_outs/{donor_id}"
-        # ),
-        multi_count_sample_info="{multi_outdir}/outs/per_sample_outs/{donor_id}/count/sample_molecule_info.h5",
-        multi_count_dir=directory(
-            "{multi_outdir}/outs/per_sample_outs/{donor_id}/count/sample_filtered_feature_bc_matrix"
+        multi_web_summary=os.path.join(
+            "{multi_outdir}",
+            "outs",
+            "per_sample_outs",
+            "{donor_id}",
+            "web_summary.html",
         ),
-        # multi_vdj_b="{multi_outdir}/outs/per_sample_outs/{donor_id}/vdj_b/vdj_contig_info.pb",
-        # multi_vdj_t="{multi_outdir}/outs/per_sample_outs/{donor_id}/vdj_t/vdj_contig_info.pb",
+        multi_count_sample_info=os.path.join(
+            "{multi_outdir}",
+            "outs",
+            "per_sample_outs",
+            "{donor_id}",
+            "count",
+            "sample_molecule_info.h5",
+        ),
+        multi_count_dir=directory(
+            os.path.join(
+                "{multi_outdir}",
+                "outs",
+                "per_sample_outs",
+                "{donor_id}",
+                "count",
+                "sample_filtered_feature_bc_matrix",
+            )
+        ),
     params:
-        id2use="{donor_id}",
-        multi_outdir2use="{multi_outdir}",
+        id2use=lambda wc: "{donor_id}",
+        multi_outdir2use=lambda wc: "{multi_outdir}",
     resources:
         cores=config_count["resources"]["localcores"],
         memory=config_count["resources"]["localmem"],
     container:
         "docker://litd/docker-cellranger:v8.0.1"
     log:
-        file="{multi_outdir}/logs/multi_{donor_id}.log",
+        file=os.path.join("{multi_outdir}", "logs", "multi_{donor_id}.log"),
     benchmark:
-        "{multi_outdir}/benchmarks/benchmarks_{donor_id}_multi.csv"
+        os.path.join("{multi_outdir}", "benchmarks", "benchmarks_{donor_id}_multi.csv")
     shell:
         """   
         cellranger multi \

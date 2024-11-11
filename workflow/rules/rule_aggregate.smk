@@ -2,9 +2,6 @@
 import os, sys
 import pandas as pd
 
-# Configuration
-# configfile: os.path.join("config", "config_aggregate.yaml")
-
 aggr_outdir = output_dir_for_cellranger_aggr(" ")
 
 
@@ -27,7 +24,9 @@ rule cellranger_aggr:
         csv=input_for_cellranger_aggr,
         # aggr_input_file if aggr_input_file != None else rules.b4all.output.aggr_input_csv
     output:
-        aggr_h5="{aggr_outdir}/outs/count/filtered_feature_bc_matrix.h5",
+        aggr_h5=os.path.join(
+            "{aggr_outdir}", "outs", "count", "filtered_feature_bc_matrix.h5"
+        ),
     resources:
         cores=config_aggr["resources"]["localcores"],
         memory=config_aggr["resources"]["localmem"],
@@ -35,12 +34,12 @@ rule cellranger_aggr:
         "docker://litd/docker-cellranger:v8.0.1"
     params:
         aggr_id=config_aggr["aggregation_id"],
-        aggr_outdir="{aggr_outdir}",
+        aggr_outdir=aggr_outdir,
         aggr_normalize=config_aggr.get("normalize") or "none",
     log:
-        file="{aggr_outdir}/logs/aggr.log",
+        file=os.path.join("{aggr_outdir}", "logs", "aggr.log"),
     benchmark:
-        "{aggr_outdir}/benchmarks/benchmark_{params.aggr_id}.csv"
+        os.path.join("{aggr_outdir}", "benchmarks", "benchmark_{params.aggr_id}.csv")
     shell:
         """
         cellranger aggr --id={params.aggr_id} --csv={input.csv} --normalize={params.aggr_normalize} \

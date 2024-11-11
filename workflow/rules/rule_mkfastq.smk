@@ -5,7 +5,7 @@ import pandas as pd
 add_args = [
     (
         config_mkfastq["additional_arguments"]
-        if config_mkfastq["additional_arguments"] != None
+        if config_mkfastq["additional_arguments"] is not None
         else ""
     )
 ]
@@ -56,15 +56,15 @@ rule cellranger_mkfastq:
     input:
         bcl_path=lambda wc: run_bcl_paths_dict[wc.bcl_run_index],
     output:
-        flag="{fastq_outdirectory}/mkfastq_success_{bcl_run_index}.csv",
+        flag=os.path.join("{fastq_outdirectory}", "mkfastq_success_{bcl_run_index}.csv"),
     resources:
         cores=lambda wc, attempt: min(mkfastq_cores * attempt, max_cores),
         memory=lambda wc, attempt: min(mkfastq_memory * attempt, max_memory),
     params:
         sampleinfo=lambda wc: (
-            " --samplesheet=" + samplesheet_4_bcl_dict[wc.bcl_run_index]
+            f" --samplesheet={samplesheet_4_bcl_dict[wc.bcl_run_index]}"
             if iem_samplesheet_dict[wc.bcl_run_index]
-            else " --csv=" + samplesheet_4_bcl_dict[wc.bcl_run_index]
+            else f" --csv={samplesheet_4_bcl_dict[wc.bcl_run_index]}"
         ),
         args2add=add_args[0],
         outdir2use=lambda wc: fastq_outdirectory_dict[wc.bcl_run_index],
@@ -72,10 +72,10 @@ rule cellranger_mkfastq:
     container:
         "docker://litd/docker-cellranger:v8.0.1"
     log:
-        os.path.join("{fastq_outdirectory}/logs/mkfastq_{bcl_run_index}.log"),
+        os.path.join("{fastq_outdirectory}", "logs", "mkfastq_{bcl_run_index}.log"),
     benchmark:
         os.path.join(
-            "{fastq_outdirectory}/benchmarks/benchmark_mkfastq_{bcl_run_index}"
+            "{fastq_outdirectory}", "benchmarks", "benchmark_mkfastq_{bcl_run_index}"
         )
     shell:
         """

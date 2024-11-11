@@ -9,7 +9,7 @@ def input_gex_for_seurat(wc):
 
     if config_seurat.get("count_file") is not None:
         return config_seurat["count_file"]
-    elif c("cellranger_aggr") in rules_available:
+    elif "cellranger_aggr" in rules_available:
         return os.path.join(
             rules.cellranger_aggr.params.aggr_outdir,
             "outs",

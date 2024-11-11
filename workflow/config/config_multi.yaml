@@ -1,9 +1,17 @@
-output_multi: "/home/debojyoti/Projects/core_facility/beam_t/runs" # "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/multi_results"
+#output_multi: "/home/debojyoti/Projects/core_facility/beam_t/runs"
+output_multi: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/multi_results"
 
-multi_config_csv: "/home/debojyoti/Projects/core_facility/beam_t/5k_BEAM-T_Human_A0201_B0702_PBMC_5pv2_Multiplex_config.csv"
+multi_config_csv:
+  [
+    "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/multi_results/S14_multi_samplesheet.csv",
+    "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/multi_results/S22_multi_samplesheet.csv",
+    "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/multi_results/S29_multi_samplesheet.csv",
+    "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/multi_results/S31_multi_samplesheet.csv",
+  ]
+# "/home/debojyoti/Projects/core_facility/beam_t/5k_BEAM-T_Human_A0201_B0702_PBMC_5pv2_Multiplex_config.csv"
 
-additional_info_aggr: #  "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/additional_info.csv"
-input_csvs: []
+additional_info_aggr: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/additional_info.csv"
+input_csvs:
 # "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/vdj_240220/mkfastq_success_run1.csv",
 # "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/gex_240227/mkfastq_success_run2.csv",
 gene_expression:
