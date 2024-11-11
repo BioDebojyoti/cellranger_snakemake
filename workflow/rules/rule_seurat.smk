@@ -112,7 +112,7 @@ def extra_args_for_seurat(wc, config_seurat):
 
 
 project_name = config_seurat.get("project") or "singleCell"
-final_rds = project_name + "_analysed_seurat.rds"
+final_rds = f"{project_name}_analysed_seurat.rds"
 
 two_levels_up = os.path.dirname(os.path.dirname(input_gex_for_seurat(None)))
 seurat_outdir = config_seurat.get("out_directory") or os.path.join(
