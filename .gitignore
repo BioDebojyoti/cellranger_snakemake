@@ -2,20 +2,12 @@ Dockerfile
 gosia_single_cell_runs
 singlecell.tgz
 .snakemake
-test
 workflow/pipestance_dirs
-workflow/tiny_bcl
-workflow/tiny_bcl_attempt2
-workflow/tiny_bcl_attempt3
-workflow/tiny_bcl_simple
-workflow/tiny_bcl_iem
 workflow/.snakemake
-workflow/test_seurat
 refdata-gex-GRCh38-2020-A multi_template.csv
-test.py
 refdata_cellranger_vdj_GRCh38_alts_ensembl_710
-test
-test_seurat
-tiny_bcl_iem
-tiny_bcl_simple
 refdata-gex-GRCh38-2020-A
+workflow/README_SEURAT_files
+workflow/README_SEURAT_files/*
+workflow/workflow.dag.dot
+workflow/dag_cleaned.png
