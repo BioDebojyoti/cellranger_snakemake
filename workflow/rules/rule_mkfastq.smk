@@ -40,11 +40,11 @@ samplesheet_4_bcl_dict = dict(
     zip(combinations_df["bcl_run_index"], combinations_df["samplesheet_4_bcl"])
 )
 
-print(run_bcl_paths_dict.items())
-print(fastq_outdirectory_dict.items())
-print(feature_type_dict.items())
-print(iem_samplesheet_dict.items())
-print(samplesheet_4_bcl_dict.items())
+# print(run_bcl_paths_dict.items())
+# print(fastq_outdirectory_dict.items())
+# print(feature_type_dict.items())
+# print(iem_samplesheet_dict.items())
+# print(samplesheet_4_bcl_dict.items())
 
 
 rule demultiplex_all:

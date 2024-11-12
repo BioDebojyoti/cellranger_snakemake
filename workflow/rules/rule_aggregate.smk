@@ -5,24 +5,10 @@ import pandas as pd
 aggr_outdir = output_dir_for_cellranger_aggr(" ")
 
 
-# Define the function to determine input for cellranger_aggr
-def input_for_cellranger_aggr(wc):
-    rules_available = list(rules.__dict__.keys())
-    if config_aggr.get("aggr_input_file") is not None:
-        return config_aggr["aggr_input_file"]
-    elif "cellranger_count" in rules_available:
-        return rules.cellranger_count_b4aggr.output.aggr_input_csv
-    elif "cellranger_vdj" in rules_available:
-        return rules.cellranger_vdj_b4aggr.output.aggr_input_csv
-    else:
-        return rules.cellranger_multi_b4aggr.output.aggr_input_csv
-
-
 # Rule to aggregate libraries
 rule cellranger_aggr:
     input:
         csv=input_for_cellranger_aggr,
-        # aggr_input_file if aggr_input_file != None else rules.b4all.output.aggr_input_csv
     output:
         aggr_h5=os.path.join(
             "{aggr_outdir}", "outs", "count", "filtered_feature_bc_matrix.h5"
