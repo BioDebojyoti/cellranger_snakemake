@@ -11,3 +11,5 @@ workflow/README_SEURAT_files
 workflow/README_SEURAT_files/*
 workflow/workflow.dag.dot
 workflow/dag_cleaned.png
+.vscode/
+refdata_gex_GRCh38_2020_A/
