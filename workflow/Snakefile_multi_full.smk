@@ -3,16 +3,16 @@ import os, sys
 import pandas as pd
 
 
-include: os.path.join("rules", "rule_common.smk")
+include: os.path.join("rules", "rule_common_config.smk")
 include: os.path.join("rules", "rule_mkfastq.smk")
 include: os.path.join("rules", "rule_multi.smk")
+include: os.path.join("rules", "rule_common_aggr.smk")
 include: os.path.join("rules", "rule_aggregate.smk")
+include: os.path.join("rules", "rule_common_seurat.smk")
 include: os.path.join("rules", "rule_seurat.smk")
 
 
 # print(list(rules.__dict__.keys()))
-
-
 rule de_results:
     input:
         os.path.join(seurat_outdir, final_rds),

@@ -10,6 +10,15 @@ include: os.path.join("Snakefile_multi_full.smk")
 
 rule all:
     input:
+        expand(
+            os.path.join("{multi_outdir}", "{donor_id}_multi_samplesheet.csv"),
+            donor_id=donor_list,
+            multi_outdir=multi_outdir,
+        ),
+        expand(
+            os.path.join("{multi_outdir}", "aggregation_multi.csv"),
+            multi_outdir=multi_outdir,
+        ),
         os.path.join(seurat_outdir, final_rds),
         expand(
             os.path.join(

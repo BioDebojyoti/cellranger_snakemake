@@ -2,8 +2,9 @@ resources:
   localcores: 8 # Set the number of cores to use (e.g., 16)
   localmem: 64 # Set the amount of memory to use in GB
 
-aggr_input_file: #
+aggr_input_file:
+
 aggregation_id: "aggr_gex_vdj_4_samples" # Required. A unique run ID string: e.g. AGG123
 normalize: "mapped"
 
-aggr_outdir: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/multi_results/aggr_results_health_status"
+aggr_outdir: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/new_multi_results/aggr_results_health_status"

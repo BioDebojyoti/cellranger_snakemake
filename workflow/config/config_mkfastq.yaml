@@ -6,4 +6,4 @@ resources:
   max_cores: 48
   max_memory: 128
 
-additional_arguments:
+additional_arguments: " --delete-undetermined "

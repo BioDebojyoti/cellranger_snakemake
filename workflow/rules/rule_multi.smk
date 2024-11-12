@@ -8,20 +8,34 @@ import re
 
 multi_outdir = config_multi["output_multi"]
 
+donor_list = list(
+    set(pd.read_csv(config_multi["additional_info_aggr"])["donor"].tolist())
+)
 
-donor_list = generate_multi_input("")
 
-# rule cellranger_multi_input:
-#     input:
-#         csv_files = lambda wc: generate_multi_input
+rule cellranger_multi_input_prep:
+    output:
+        expand(
+            os.path.join("{multi_outdir}", "{donor_id}_multi_samplesheet.csv"),
+            donor_id=donor_list,
+            multi_outdir=multi_outdir,
+        ),
+    container:
+        "docker://litd/docker-cellranger:v8.0.1"
+    params:
+        config_file=config_multi,
+        multi_outdir=lambda wc, output: os.path.dirname(output[0]),
+    log:
+        os.path.join(multi_outdir, "logs", "multi_input_prep.log"),
+    shell:
+        """
+        python scripts/get_multi_input.py {params.config_file} {params.multi_outdir}
+        """
 
 
 rule cellranger_multi_b4aggr:
     output:
-        aggr_input_csv=expand(
-            os.path.join("{multi_outdir}", "aggregation_multi.csv"),
-            multi_outdir=multi_outdir,
-        ),
+        aggr_input_csv=os.path.join(multi_outdir, "aggregation_multi.csv"),
     input:
         multi_web_summary=expand(
             os.path.join(
