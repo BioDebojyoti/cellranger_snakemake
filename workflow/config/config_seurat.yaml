@@ -1,0 +1,54 @@
+count_file: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/multi_results/aggr_results_health_status/outs/count/filtered_feature_bc_matrix.h5"
+aggr_csv_file: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/multi_results/aggr_results_health_status/outs/aggregation.csv"
+
+resources:
+  cores: 4
+  threads: 16
+  memory: 16
+
+out_directory:
+# seurat output directory
+
+min_cells:
+# minimum cells [default= 3]
+
+min_features:
+# minimum features [default= 100]
+
+max_features:
+# maximum features [default: 3000]
+
+percent_mt:
+# threshold percent mitochondrial [default: NULL]
+# default filtering is done using 95th quantile
+
+percent_rb:
+# threshold percent ribosomal [default: NULL]
+# default filtering is done using 95th quantile
+
+project:
+# output file name [default: singleCell]
+
+vdj_t:
+# V(D)J_T annotations [default: NULL]
+
+vdj_b:
+# V(D)J_B annotations [default: NULL]
+
+layer_column: "donor"
+# describes experimental batches, donors, or conditions [default: NULL]
+
+condition_column:
+# main condition for comparision  [default: NULL](can be same as batch variable)
+
+integration_method:
+# integration method  [default: NULL](CCAIntegration, RPCAIntegration, HarmonyIntegration, FastMNNIntegration, scVIIntegration)
+
+enable_SCTransform:
+# sctransform normalization [default: TRUE]
+
+perform_DE:
+# differential expression analysis [default: FALSE]
+
+species:
+# annotation for species [default: human]

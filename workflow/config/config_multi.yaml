@@ -1,0 +1,44 @@
+#output_multi: "/home/debojyoti/Projects/core_facility/beam_t/runs"
+output_multi: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/multi_results"
+
+multi_config_csv:
+  [
+    "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/multi_results/S14_multi_samplesheet.csv",
+    "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/multi_results/S22_multi_samplesheet.csv",
+    "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/multi_results/S29_multi_samplesheet.csv",
+    "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/multi_results/S31_multi_samplesheet.csv",
+  ]
+# "/home/debojyoti/Projects/core_facility/beam_t/5k_BEAM-T_Human_A0201_B0702_PBMC_5pv2_Multiplex_config.csv"
+
+additional_info_aggr: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/additional_info.csv"
+input_csvs:
+# "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/vdj_240220/mkfastq_success_run1.csv",
+# "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/gex_240227/mkfastq_success_run2.csv",
+gene_expression:
+  reference: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/refdata_gex_GRCh38_2020_A"
+  create_bam: False
+  probe_set:
+  filter_probes:
+  r1_length:
+  r2_length:
+  chemistry:
+  expect_cells:
+  force_cells:
+  no_secondary:
+  check_compatibility:
+  include_introns:
+vdj:
+  reference: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/refdata_cellranger_vdj_GRCh38_alts_ensembl_710"
+  primers:
+  r1_length:
+  r2_length:
+resources:
+  localcores: 8 # Set the number of cores to use (e.g., 16)
+  localmem: 64 # Set the amount of memory to use in GB
+
+# use_feature_ref: False # Indicates whether to use the --feature-ref parameter
+# use_libraries: False # Indicates whether to use the --libraries parameter
+
+# feature_ref: "feature_ref.csv" # # Path to the Feature Reference CSV file (optional)
+# libraries_csv: "libraries.csv" # Path to the Libraries CSV file (optional)
+

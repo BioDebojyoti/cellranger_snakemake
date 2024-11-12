@@ -1,0 +1,9 @@
+bcl_folder_paths: "../gosia_single_cell_runs/bcl_folder_paths.csv"
+
+resources:
+  localcores: 8
+  localmem: 32
+  max_cores: 48
+  max_memory: 128
+
+additional_arguments:

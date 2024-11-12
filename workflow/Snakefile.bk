@@ -1,0 +1,41 @@
+# Snakemake pipeline for scRNA-seq data using Cell Ranger and Seurat with Docker containers
+import os, sys
+import pandas as pd 
+
+include: os.path.join("rules","rule_mkfastq.smk")
+include: os.path.join("rules","rule_count.smk")
+
+
+# include: "rules/rule_mkvdjref.smk"
+
+
+# print("bcl folder  : " + bcl_folder)
+# print(samples_df)
+# print(samples)
+# print(expand("{s}_{s_n}_L00{l}_R{read}.fastq.gz", s=samples, s_n=sample_names, l=lanes, read=[1,2]))
+# print(lanes)
+
+
+# print(rules.cellranger_count.output.summary_html)
+# Define rules
+rule aggr_all:
+    input:
+        aggr_h5 = expand("{count_outdir}/aggr_results/outs/count/filtered_feature_bc_matrix.h5", count_outdir=count_outdir)
+
+rule b4all:
+    output:
+        aggr_input_csv = expand("{count_outdir}/aggregation_count.csv", count_outdir=count_outdir)
+    input:
+        flag = os.path.join(outdir, "mkfastq.sucess.csv"),  
+        count_info_h5 = expand("{count_outdir}/{sample}_count/outs/molecule_info.h5", 
+        sample=list(fastq_dict.keys()), count_outdir=count_outdir)
+    params:
+        countdir = count_outdir
+    shell:
+        """bash scripts/get_aggr_csv.sh {params.countdir} > {params.countdir}/aggregation_count.csv"""  
+
+include: os.path.join("rules","rule_aggregate.smk")
+
+
+
+

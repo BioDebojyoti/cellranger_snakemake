@@ -1,0 +1,21 @@
+# Snakemake pipeline for scRNA-seq data using Cell Ranger and Seurat with Docker containers
+import os, sys
+import pandas as pd
+
+
+# include: os.path.join("Snakefile_count_full.smk")
+#              OR
+include: os.path.join("Snakefile_multi_full.smk")
+
+
+rule all:
+    input:
+        os.path.join(seurat_outdir, final_rds),
+        expand(
+            os.path.join(
+                "{fastq_outdirectory}", "mkfastq_success_{bcl_run_index}.csv"
+            ),
+            zip,
+            fastq_outdirectory=list(fastq_outdirectory_dict.values()),
+            bcl_run_index=list(fastq_outdirectory_dict.keys()),
+        ),

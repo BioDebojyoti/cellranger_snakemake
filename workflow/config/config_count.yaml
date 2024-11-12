@@ -1,0 +1,44 @@
+# A unique run id and output folder name [a-zA-Z0-9_-]+
+output_count: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/gex_240227/count_results"
+
+# if additional information is needed to add
+add_info_aggr: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/additional_info.csv"
+
+# Only used if start_with_bcl is False
+paths2fastq_file: # "../gosia_single_cell_runs/gex_240227/mkfastq_success_run2.csv"
+transcriptome: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/refdata_gex_GRCh38_2020_A"
+
+resources:
+  localcores: 8 # Set the number of cores to use (e.g., 16)
+  localmem: 32 # Set the amount of memory to use in GB
+
+feature_ref: # "/path/to/feature_ref.csv"  # Path to the Feature Reference CSV file (optional)
+libraries_csv: # "/path/to/libraries.csv"  # Path to the Libraries CSV file (optional)
+
+additional_arguments: "--create-bam=false" # required
+
+# additional but optional arguments are
+# "--jobmode local" # Job manager to use. Valid options: local (default), sge, lsf, slurm or path to a .template file.
+#         or
+# "--chemistry "fiveprime" or something else
+# Assay configuration. NOTE: by default the assay configuration is detected automatically, which is the recommended mode. You usually will not need to specify a chemistry. Options are: 'auto' for autodetection,
+# 'threeprime' for Single Cell 3', 'fiveprime' for  Single Cell 5', 'SC3Pv1' or 'SC3Pv2' or 'SC3Pv3' or 'SC3Pv4' for Single Cell 3' v1/v2/v3/v4, 'SC3Pv3LT' for Single Cell 3' v3 LT, 'SC3Pv3HT' for Single Cell 3'
+# v3 HT, 'SC5P-PE' or 'SC5P-PE-v3' or 'SC5P-R2' or 'SC5P-R2-v3', for Single Cell 5', paired-end/R2-only, 'SC-FB' for Single Cell Antibody-only 3' v2 or 5'. To analyze the GEX portion of multiome data, chemistry
+# must be set to 'ARC-v1' [default: auto]
+#         or
+# "--expect-cells 3000"  # This is where you specify the expected cell count
+# "--force-cells 2000"   # Optional: This can also be specified
+#         or
+# "--lanes 12"           # Only use FASTQs from selected lanes
+#         or
+# "--project <TEXT>"
+# Name of the project folder within a mkfastq or bcl2fastq-generated folder
+# # from which to pick FASTQs
+#         or
+# "--nosecondary                  # Disable secondary analysis, e.g. clustering. Optional
+# "--r1-length <NUM>              # Hard trim the input Read 1 to this length before analysis
+# "--r2-length <NUM>              # Hard trim the input Read 2 to this length before analysis
+# "--include-introns <true|false> # Include intronic reads in count [default: true] [possible values: true, false]
+# "--no-libraries                 # Proceed with processing using a --feature-ref but no Feature Barcode libraries specified with the 'libraries' flag
+# "--check-library-compatibility <true|false> # Whether to check for barcode compatibility between libraries. [default: true] [possible values: true, false]
+# "--min-crispr-umi <NUM>"         # Minimum CRISPR UMI threshold [default: 3]

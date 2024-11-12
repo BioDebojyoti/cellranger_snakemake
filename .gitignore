@@ -1,6 +1,13 @@
-
+Dockerfile
 gosia_single_cell_runs
 singlecell.tgz
-snakemake.log
-test
-test.yaml
+.snakemake
+workflow/pipestance_dirs
+workflow/.snakemake
+refdata-gex-GRCh38-2020-A multi_template.csv
+refdata_cellranger_vdj_GRCh38_alts_ensembl_710
+refdata-gex-GRCh38-2020-A
+workflow/README_SEURAT_files
+workflow/README_SEURAT_files/*
+workflow/workflow.dag.dot
+workflow/dag_cleaned.png

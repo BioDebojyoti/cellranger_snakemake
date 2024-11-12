@@ -1,0 +1,14 @@
+output_vdj: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/vdj_240220/vdj_results"
+
+add_info_aggr: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/additional_info.csv"
+
+vdj_reference: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/refdata_cellranger_vdj_GRCh38_alts_ensembl_710"
+paths2fastq4vdj_file: #"/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/vdj_240220/mkfastq_success_run1.csv"
+
+resources:
+  localcores: 4
+  localmem: 8
+  max_cores: 8
+  max_memory: 16
+
+additional_arguments: "" # required
