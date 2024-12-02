@@ -3,28 +3,43 @@ import os, sys
 import pandas as pd
 
 
-# include: os.path.join("Snakefile_count_full.smk")
+include: os.path.join("Snakefile_count_full.smk")
+
+
 #              OR
-include: os.path.join("Snakefile_multi_full.smk")
+# include: os.path.join("Snakefile_multi_full.smk")
+
+
+# print(config_count["paths2fastq_file"])
+# print(rules.demultiplex_all.input.fastq_paths)
+# print(create_sample_dict_from_csv(rules.create_fastq_dict.output.fastq_dict)[1])
 
 
 rule all:
     input:
-        expand(
-            os.path.join("{multi_outdir}", "{donor_id}_multi_samplesheet.csv"),
-            donor_id=donor_list,
-            multi_outdir=multi_outdir,
-        ),
-        expand(
-            os.path.join("{multi_outdir}", "aggregation_multi.csv"),
-            multi_outdir=multi_outdir,
-        ),
+        # expand(
+        #     os.path.join("{multi_outdir}", "{donor_id}_multi_samplesheet.csv"),
+        #     donor_id=donor_list,
+        #     multi_outdir=multi_outdir,
+        # ),
+        # expand(
+        #     os.path.join("{multi_outdir}", "aggregation_multi.csv"),
+        #     multi_outdir=multi_outdir,
+        # ),
         os.path.join(seurat_outdir, final_rds),
-        expand(
-            os.path.join(
-                "{fastq_outdirectory}", "mkfastq_success_{bcl_run_index}.csv"
-            ),
-            zip,
-            fastq_outdirectory=list(fastq_outdirectory_dict.values()),
-            bcl_run_index=list(fastq_outdirectory_dict.keys()),
-        ),
+        # expand(
+        #     os.path.join("{count_outdir}", "aggregation_count.csv"),
+        #     count_outdir=count_outdir,
+        # ),
+        # expand(
+        #     os.path.join(
+        #         "{fastq_outdirectory}", "mkfastq_success_{bcl_run_index}.csv"
+        #     ),
+        #     zip,
+        #     fastq_outdirectory=list(fastq_outdirectory_dict.values()),
+        #     bcl_run_index=list(fastq_outdirectory_dict.keys()),
+        # ),
+        # aggr_input_csv=expand(
+        #     os.path.join("{count_outdir}", "aggregation_count.csv"),
+        #     count_outdir=count_outdir,
+        # ),
