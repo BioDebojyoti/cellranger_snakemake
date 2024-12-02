@@ -1,0 +1,61 @@
+@startuml
+digraph snakemake_dag {
+	graph [bb="0,0,151.5,468",
+		bgcolor=white,
+		margin=0
+	];
+	node [fontname=sans,
+		fontsize=10,
+		label="\N",
+		penwidth=2,
+		shape=box,
+		style=rounded
+	];
+	edge [color=grey,
+		penwidth=2
+	];
+	0	[color="0.19 0.6 0.85",
+		height=0.5,
+		label=de_results,
+		pos="68.5,18",
+		width=0.93056];
+	1	[color="0.38 0.6 0.85",
+		height=0.5,
+		label=seurat,
+		pos="68.5,90",
+		width=0.75];
+	1 -> 0	[pos="e,68.5,36.104 68.5,71.697 68.5,63.983 68.5,54.712 68.5,46.112"];
+	2	[color="0.00 0.6 0.85",
+		height=0.5,
+		label=cellranger_aggr,
+		pos="105.5,162",
+		width=1.2778];
+	2 -> 1	[pos="e,77.541,108.1 96.354,143.7 92.097,135.64 86.944,125.89 82.234,116.98"];
+	3	[color="0.29 0.6 0.85",
+		height=0.5,
+		label=cellranger_count_b4aggr,
+		pos="68.5,234",
+		width=1.9028];
+	3 -> 1	[pos="e,61.02,108.3 61.02,215.7 57.027,205.52 52.527,192.27 50.5,180 47.892,164.21 47.892,159.79 50.5,144 51.941,135.28 54.632,126.06 \
+57.502,117.8"];
+	3 -> 2	[pos="e,96.459,180.1 77.646,215.7 81.903,207.64 87.056,197.89 91.766,188.98"];
+	4	[color="0.57 0.6 0.85",
+		height=0.5,
+		label=cellranger_count,
+		pos="68.5,306",
+		width=1.3611];
+	4 -> 3	[pos="e,68.5,252.1 68.5,287.7 68.5,279.98 68.5,270.71 68.5,262.11"];
+	5	[color="0.10 0.6 0.85",
+		height=0.5,
+		label=demultiplex_all,
+		pos="68.5,378",
+		width=1.2778];
+	5 -> 4	[pos="e,68.5,324.1 68.5,359.7 68.5,351.98 68.5,342.71 68.5,334.11"];
+	6	[color="0.48 0.6 0.85",
+		height=0.5,
+		label=cellranger_mkfastq,
+		pos="68.5,450",
+		width=1.5417];
+	6 -> 5	[pos="e,68.5,396.1 68.5,431.7 68.5,423.98 68.5,414.71 68.5,406.11"];
+}
+@enduml
