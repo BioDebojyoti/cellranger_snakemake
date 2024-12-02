@@ -29,52 +29,11 @@ dict_elements = samples_for_count()
 samples_to_process = dict_elements[0]
 sample_count_fastq_dict = dict_elements[1]
 
-# print(samples_to_process)
-# print(sample_count_fastq_dict)
 
-# def create_sample_dict_from_csv(file_path):
-#     df = pd.read_csv(file_path, index_col=0)
-#     sample_dict = df.apply(lambda row: row.dropna().tolist(), axis=1).to_dict()
-#     return [sample_dict.keys(), sample_dict.values(), sample_dict]
+# def load_fastq_dict(fastq_dict_file):
 
-
-def load_fastq_dict(fastq_dict_file):
-
-    df = pd.read_csv(fastq_dict_file, index_col=0)
-    return df.to_dict(orient="index")
-
-
-# Dynamically define fastq_file_path based on user input or mkfastq output
-# fastq_file_path = (
-#     config_count["paths2fastq_file"]
-#     if config_count["paths2fastq_file"] is not None
-#     else expand(
-#         os.path.join("{fastq_outdirectory}", "mkfastq_success_{bcl_run_index}.csv"),
-#         zip,
-#         fastq_outdirectory=list(fastq_outdirectory_dict.values()),
-#         bcl_run_index=bcl_run_index_gex,
-#     )
-# )
-
-
-# Rule to create the FASTQ dictionary dynamically
-# rule create_fastq_dict:
-#     input:
-#         samplesheet_or_fastq_files=lambda: config_count["paths2fastq_file"]
-#         or rules.demultiplex_all.input.fastq_paths,
-#     output:
-#         fastq_dict=os.path.join(config_count["output_count"], "fastq_dict.csv"),
-#     params:
-#         additional_info=config_count["add_info_aggr"],
-#     container:
-#         "docker://litd/docker-cellranger:v8.0.1"
-#     log:
-#         os.path.join(count_outdir, "logs", "count_fastq_dict.log"),
-#     shell:
-#         """
-#         python scripts/create_count_dict.py {params.additional.info} \
-#         {input.samplesheet_or_fastq_files} > {output.fastq_dict}
-#         """
+#     df = pd.read_csv(fastq_dict_file, index_col=0)
+#     return df.to_dict(orient="index")
 
 
 rule cellranger_count_b4aggr:
@@ -98,7 +57,7 @@ rule cellranger_count_b4aggr:
         countdir=lambda wc, output: os.path.dirname(output.aggr_input_csv[0]),
         additional_info_aggr=config_count["add_info_aggr"],
     container:
-        "docker://litd/docker-cellranger:v8.0.1"
+        "cellranger.v8.0.1.sif"
     shell:
         """
         bash scripts/get_count_aggr_csv.sh {params.countdir} > {params.countdir}/aggregation_count.csv;
@@ -128,7 +87,7 @@ rule cellranger_count:
         cores=config_count["resources"]["localcores"],
         memory=config_count["resources"]["localmem"],
     container:
-        "docker://litd/docker-cellranger:v8.0.1"
+        "cellranger.v8.0.1.sif"
     log:
         file=os.path.join("{count_outdir}", "logs", "count_{sample}.log"),
     benchmark:

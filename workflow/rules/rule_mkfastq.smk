@@ -120,7 +120,7 @@ rule cellranger_mkfastq:
         outdir2use=lambda wc: fastq_outdirectory_dict[wc.bcl_run_index],
         lib_type=lambda wc: feature_type_dict[wc.bcl_run_index],
     container:
-        "docker://litd/docker-cellranger:v8.0.1"
+        "cellranger.v8.0.1.sif"
     log:
         os.path.join("{fastq_outdirectory}", "logs", "mkfastq_{bcl_run_index}.log"),
     benchmark:

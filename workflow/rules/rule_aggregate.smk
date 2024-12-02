@@ -17,7 +17,7 @@ rule cellranger_aggr:
         cores=config_aggr["resources"]["localcores"],
         memory=config_aggr["resources"]["localmem"],
     container:
-        "docker://litd/docker-cellranger:v8.0.1"
+        "cellranger.v8.0.1.sif"
     params:
         aggr_id=config_aggr["aggregation_id"],
         aggr_outdir=aggr_outdir,
