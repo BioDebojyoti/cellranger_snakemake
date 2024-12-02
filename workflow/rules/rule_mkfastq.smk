@@ -2,6 +2,7 @@
 import os, sys, re
 import pandas as pd
 
+
 add_args = [
     (
         config_mkfastq["additional_arguments"]
@@ -19,6 +20,23 @@ max_memory = config_mkfastq["resources"]["max_memory"]
 
 
 combinations_df = pd.read_csv(config_mkfastq["bcl_folder_paths"])
+
+
+dfs = pd.DataFrame()
+
+for i, run_index in enumerate(combinations_df["bcl_run_index"].tolist()):
+    if combinations_df.iloc[i]["iem_samplesheet"]:
+        df_curr_run = extract_data_block(combinations_df.iloc[i]["samplesheet_4_bcl"])
+        df_curr_run.columns.values[1] = "Sample"
+    else:
+        df_curr_run = pd.read_csv(combinations_df.iloc[i]["samplesheet_4_bcl"])
+
+    df_curr_run["bcl_run_index"] = combinations_df.iloc[i]["bcl_run_index"]
+    # Concatenate the current DataFrame with the overall DataFrame
+    dfs = pd.concat([dfs, df_curr_run], ignore_index=True)
+
+run_bcl_sample_dict = dfs.groupby("bcl_run_index")["Sample"].apply(list).to_dict()
+
 
 run_bcl_paths_dict = dict(
     zip(combinations_df["bcl_run_index"], combinations_df["run_bcl_path"])
@@ -40,11 +58,27 @@ samplesheet_4_bcl_dict = dict(
     zip(combinations_df["bcl_run_index"], combinations_df["samplesheet_4_bcl"])
 )
 
-# print(run_bcl_paths_dict.items())
-# print(fastq_outdirectory_dict.items())
-# print(feature_type_dict.items())
-# print(iem_samplesheet_dict.items())
-# print(samplesheet_4_bcl_dict.items())
+bcl_run_index_gex = [
+    i
+    for i, v in feature_type_dict.items()
+    if v in ["Gene Expression", "gene expression", "gene-expression", "Gene-Expression"]
+]
+
+sample_directories_dict_transformed = {
+    sample: (
+        bcl_run_index,
+        os.path.join(fastq_outdirectory_dict[bcl_run_index], f"{sample}_fastq"),
+    )
+    for bcl_run_index in run_bcl_sample_dict.keys()
+    for sample in run_bcl_sample_dict[bcl_run_index]
+}
+
+
+samples = list(sample_directories_dict_transformed.keys())
+bcl_run_indexes = [values[0] for values in sample_directories_dict_transformed.values()]
+fastq_dir_paths = [values[1] for values in sample_directories_dict_transformed.values()]
+
+# print(sample_directories_dict_transformed)
 
 
 rule demultiplex_all:
@@ -56,6 +90,14 @@ rule demultiplex_all:
             zip,
             fastq_outdirectory=list(fastq_outdirectory_dict.values()),
             bcl_run_index=list(fastq_outdirectory_dict.keys()),
+        ),
+    output:
+        demultiplexed_samples=expand(
+            "{directory}",
+            directory=[
+                sample_directories_dict_transformed[sample][1]
+                for sample in sample_directories_dict_transformed.keys()
+            ],
         ),
 
 
