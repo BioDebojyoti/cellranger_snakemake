@@ -3,7 +3,6 @@ import os, sys
 import pandas as pd
 
 count_outdir = config_count["output_count"]
-
 donor_list = list(set(pd.read_csv(config_count["add_info_aggr"])["donor"].tolist()))
 
 
@@ -30,12 +29,6 @@ samples_to_process = dict_elements[0]
 sample_count_fastq_dict = dict_elements[1]
 
 
-# def load_fastq_dict(fastq_dict_file):
-
-#     df = pd.read_csv(fastq_dict_file, index_col=0)
-#     return df.to_dict(orient="index")
-
-
 rule cellranger_count_b4aggr:
     output:
         aggr_input_csv=expand(
@@ -43,7 +36,6 @@ rule cellranger_count_b4aggr:
             count_outdir=count_outdir,
         ),
     input:
-        # flag=os.path.join(outdir, "mkfastq.sucess.csv"),
         count_info_h5=expand(
             os.path.join(
                 "{count_outdir}", "{sample}_count", "outs", "molecule_info.h5"
@@ -68,7 +60,6 @@ rule cellranger_count_b4aggr:
 # Rule to count features for single library
 rule cellranger_count:
     input:
-        # fastq_folder=rules.create_fastq_dict.output,
         fastq_folder=lambda wc: sample_count_fastq_dict[wc.sample],
         transcriptome=config_count["transcriptome"],
     output:
