@@ -12,4 +12,11 @@ workflow/README_SEURAT_files/*
 workflow/workflow.dag.dot
 workflow/dag_cleaned.png
 .vscode/
-refdata_gex_GRCh38_2020_A/
+refdata_gex_GRCh38_2020_A
+cellranger-tiny-bcl-1.2.0
+cellranger-tiny-bcl-samplesheet-1.2.0.csv
+workflow/rules/rule_count.smk.bk
+workflow/rules/rule_count_trial.smk
+workflow/rules/rule_count_trial.smk.bk
+workflow/scripts/create_count_dict.py
+workflow/scripts/sample_dict_creator.py
