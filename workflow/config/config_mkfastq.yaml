@@ -1,4 +1,5 @@
-bcl_folder_paths: "../gosia_single_cell_runs/bcl_folder_paths.csv"
+bcl_folder_paths: "../gosia_single_cell_runs/bcl_folder_paths_count_only.csv"
+# "../gosia_single_cell_runs/bcl_folder_paths.csv" # gex + vdj
 
 resources:
   localcores: 8

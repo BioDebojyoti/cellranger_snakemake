@@ -12,7 +12,6 @@ include: os.path.join("rules", "rule_common_seurat.smk")
 include: os.path.join("rules", "rule_seurat.smk")
 
 
-# print(list(rules.__dict__.keys()))
 rule de_results:
     input:
         os.path.join(seurat_outdir, final_rds),
