@@ -7,7 +7,20 @@ output:
     css: styles.css
 ---
 
+```{r}
+library("bookdown")
+``` 
+
 # Introduction:
+
+```{css echo = FALSE}
+img {vertical-align: top;}
+```
+
+```{r image_grobs, fig.show = "hold", out.width = "50%", fig.align = "default", echo = FALSE}
+knitr::include_graphics("rulegraph_count.png")
+knitr::include_graphics("rulegraph_multi.png")
+```
 
 The single-cell RNA pipeline can start from either bcl files with initial demultiplexing or already demultiplexed fastq files.
 
@@ -17,14 +30,14 @@ Based on the data format at the start
 
 Please prepare a csv file in one of the following formats:
 
-**[a]** gene expression-only data 
+**[a]** pipeline **count**: gene expression-only data 
 ```txt
 feature_type,run_bcl_path,iem_samplesheet,samplesheet_4_bcl,fastq_outdirectory,bcl_run_index
 "Gene Expression",/path/bcl/folder1,False,/path/to/samplesheet/for/bcl/folder1,/path/to/fastq/output/dir1,run1
 "Gene Expression",/path/bcl/folder2,True,/path/to/samplesheet/for/bcl/folder2,/path/to/fastq/output/dir2,run2
 ```
 
-**[b]** gene expression-only and VD(J) data
+**[b]** pipeline **multi**: gene expression and VD(J) data
 ```txt
 feature_type,run_bcl_path,iem_samplesheet,samplesheet_4_bcl,fastq_outdirectory,bcl_run_index
 "Gene Expression,/path/bcl/folder1,False,/path/to/samplesheet/for/bcl/folder1,/path/to/fastq/output/dir1,run1
