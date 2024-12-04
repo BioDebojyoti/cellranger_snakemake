@@ -3,24 +3,31 @@ title: "scRNA-seq snakemake pipeline manual"
 author: Debojyoti Das
 date: 25-11-2024
 output:
-  html_document:
-    css: styles.css
+  # html_document:
+  #   css: styles.css
+  pdf_document:
+    fig_caption: true
+    extra_dependencies: "subfig"
+
 ---
 
-```{r}
-library("bookdown")
-``` 
-
 # Introduction:
+```{r echo =FALSE, eval = FALSE}
+packageVersion("knitr")
+packageVersion("rmarkdown")
+```
 
 ```{css echo = FALSE}
 img {vertical-align: top;}
 ```
 
-```{r image_grobs, fig.show = "hold", out.width = "50%", fig.align = "default", echo = FALSE}
+```{r fig.show = "hold", fig.cap = "pipeline", fig.subcap=c("count","multi"), out.width = "50%", out.height="50%", fig.align = "default", echo = FALSE}
 knitr::include_graphics("rulegraph_count.png")
 knitr::include_graphics("rulegraph_multi.png")
 ```
+
+
+
 
 The single-cell RNA pipeline can start from either bcl files with initial demultiplexing or already demultiplexed fastq files.
 
