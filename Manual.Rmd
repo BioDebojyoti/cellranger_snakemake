@@ -29,7 +29,7 @@ knitr::include_graphics("rulegraph_multi.png")
 
 
 
-The single-cell RNA pipeline can start from either bcl files with initial demultiplexing or already demultiplexed fastq files.
+The single-cell RNA pipeline can start from either **bcl files** (requiring initial demultiplexing) or (already demultiplexed) **fastq files**.
 
 Based on the data format at the start
 
