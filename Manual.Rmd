@@ -21,7 +21,7 @@ packageVersion("rmarkdown")
 img {vertical-align: top;}
 ```
 
-```{r fig.show = "hold", fig.cap = "pipeline", fig.subcap=c("count","multi"), out.width = "50%", out.height="50%", fig.align = "default", echo = FALSE}
+```{r fig.show = "hold", fig.cap = "pipeline rulegraph", fig.subcap=c("count","multi"), out.width = "50%", out.height="50%", fig.align = "default", echo = FALSE}
 knitr::include_graphics("rulegraph_count.png")
 knitr::include_graphics("rulegraph_multi.png")
 ```
