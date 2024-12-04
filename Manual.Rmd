@@ -52,7 +52,7 @@ feature_type,run_bcl_path,iem_samplesheet,samplesheet_4_bcl,fastq_outdirectory,b
 "VDJ-T",/path/bcl/folder3,False,/path/to/samplesheet/for/bcl/folder3,/path/to/fastq/output/vdj_tcell,runtcell
 ```
 
-/path/to/samplesheet/for/bcl/folder1, the bcl samplesheet can either be a simple samplesheet (iem_samplesheet **False**)
+The bcl samplesheet (/path/to/samplesheet/for/bcl/folder1) can either be a simple samplesheet (iem_samplesheet **False**)
 
 ```txt
 Lane,Sample,Index
