@@ -36,7 +36,9 @@ for i, run_index in enumerate(combinations_df["bcl_run_index"].tolist()):
     dfs = pd.concat([dfs, df_curr_run], ignore_index=True)
 
 run_bcl_sample_dict = dfs.groupby("bcl_run_index")["Sample"].apply(list).to_dict()
-
+sample_to_run = {
+    k: v for v in run_bcl_sample_dict.keys() for k in run_bcl_sample_dict[v]
+}
 
 run_bcl_paths_dict = dict(
     zip(combinations_df["bcl_run_index"], combinations_df["run_bcl_path"])
@@ -64,6 +66,7 @@ bcl_run_index_gex = [
     if v in ["Gene Expression", "gene expression", "gene-expression", "Gene-Expression"]
 ]
 
+
 sample_directories_dict_transformed = {
     sample: (
         bcl_run_index,
@@ -73,36 +76,87 @@ sample_directories_dict_transformed = {
     for sample in run_bcl_sample_dict[bcl_run_index]
 }
 
-
 samples = list(sample_directories_dict_transformed.keys())
 bcl_run_indexes = [values[0] for values in sample_directories_dict_transformed.values()]
 fastq_dir_paths = [values[1] for values in sample_directories_dict_transformed.values()]
 
-# print(sample_directories_dict_transformed)
+bcl_run_index_dir_dict = {}
+
+for run, fastq_dir_path in sample_directories_dict_transformed.values():
+    if run not in bcl_run_index_dir_dict:
+        bcl_run_index_dir_dict[run] = []
+    bcl_run_index_dir_dict[run].append(fastq_dir_path)
+
+
+# print(bcl_run_index_dir_dict)
+
+directories = bcl_run_index_dir_dict.values()
+
+df = pd.DataFrame.from_dict(
+    {
+        key: {"sample": key, "bcl_run_index": value[0], "fastq_dir_path": value[1]}
+        for key, value in sample_directories_dict_transformed.items()
+    },
+    orient="index",
+).reset_index(drop=True)
+
+# Reorder columns to match the desired order
+df = df[["sample", "bcl_run_index", "fastq_dir_path"]]
+df["fastq_outdirectory"] = [os.path.dirname(d) for d in df["fastq_dir_path"].tolist()]
+
+
+flag_files = []
+for index, row in df.iterrows():
+    bcl = row["bcl_run_index"]
+    curr_flag_file = os.path.join(
+        row["fastq_outdirectory"],
+        f"mkfastq_success_{bcl}.csv",
+    )
+    if curr_flag_file not in flag_files:
+        flag_files.append(curr_flag_file)
+
+flag_dictionary = {}
+for i, v in enumerate(df["bcl_run_index"].unique()):
+    curr_df = df[df["bcl_run_index"] == v].copy()
+    curr_flag_file = os.path.join(
+        curr_df["fastq_outdirectory"].unique()[0],
+        f"mkfastq_success_{bcl}.csv",
+    )
+    flag_dictionary[v] = [curr_flag_file, curr_df["fastq_dir_path"].tolist()]
+
+flag_files = [f[0] for f in flag_dictionary.values()]
+fastq_folders = [directory(d) for f in flag_dictionary.values() for d in f[1]]
+fastq_outdirectory = df["fastq_outdirectory"].unique()[0]
 
 
 rule demultiplex_all:
     input:
-        fastq_paths=expand(
-            os.path.join(
-                "{fastq_outdirectory}", "mkfastq_success_{bcl_run_index}.csv"
-            ),
-            zip,
-            fastq_outdirectory=list(fastq_outdirectory_dict.values()),
-            bcl_run_index=list(fastq_outdirectory_dict.keys()),
+        expand(
+            os.path.join(fastq_outdirectory, "mkfastq_success_{bcl_run_index}.csv"),
+            bcl_run_index=bcl_run_indexes,
         ),
+        # expand(os.path.join(fastq_outdirectory, "{sample}_fastq"), sample=samples),
+
+
+checkpoint fastq_folder_collect:
     output:
-        demultiplexed_samples=expand(
-            "{directory}",
-            directory=[
-                sample_directories_dict_transformed[sample][1]
-                for sample in sample_directories_dict_transformed.keys()
-            ],
+        directory(
+            os.path.join(fastq_outdirectory, "{sample}_fastq"),
         ),
+    input:
+        lambda wc: os.path.join(
+            fastq_outdirectory, f"mkfastq_success_{sample_to_run[wc.sample]}.csv"
+        ),
+
+
+# input:
+#     lambda wc: os.path.join(
+#         "{fastq_outdirectory}", "mkfastq_success_{bcl_run_index}.csv"
+#     ),
 
 
 # Rule to generate FASTQ files if starting from BCL files
-rule cellranger_mkfastq:
+checkpoint cellranger_mkfastq:
     input:
         bcl_path=lambda wc: run_bcl_paths_dict[wc.bcl_run_index],
     output:
@@ -120,7 +174,8 @@ rule cellranger_mkfastq:
         outdir2use=lambda wc: fastq_outdirectory_dict[wc.bcl_run_index],
         lib_type=lambda wc: feature_type_dict[wc.bcl_run_index],
     container:
-        "cellranger.v8.0.1.sif"
+        "docker://litd/docker-cellranger:v8.0.1"
+        # "cellranger.v8.0.1.sif"
     log:
         os.path.join("{fastq_outdirectory}", "logs", "mkfastq_{bcl_run_index}.log"),
     benchmark:
@@ -136,6 +191,6 @@ rule cellranger_mkfastq:
         --localcores={resources.cores} \
         --localmem={resources.memory} \
         2>&1 | tee -a {log};
-        bash scripts/move_pipestance_mkfastq_dir.sh {log} {params.outdir2use};
-        bash scripts/get_fastq_csv.sh {params.outdir2use} "{params.lib_type}" > {output.flag};
+        bash scripts/move_pipestance_mkfastq_dir.sh {log:q} {params.outdir2use:q};
+        bash scripts/get_fastq_csv.sh {params.outdir2use:q} "{params.lib_type}" > {output.flag};
         """

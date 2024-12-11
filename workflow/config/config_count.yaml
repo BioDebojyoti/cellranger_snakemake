@@ -1,5 +1,5 @@
 # A unique run id and output folder name [a-zA-Z0-9_-]+
-output_count: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/gex_240227/new_count_results"
+output_count: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gex_count_test/count_results"
 
 # if additional information is needed to add
 add_info_aggr: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/additional_info_count_only.csv"

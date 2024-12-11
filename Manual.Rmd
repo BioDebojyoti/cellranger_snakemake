@@ -91,6 +91,13 @@ If you are using an Illumina sample sheet for demultiplexing with bcl2fastq, BCL
 please remove these lines under the [Settings] section: Adapter or AdapterRead1 or AdapterRead2.</pre>")
 ```
 
+**Important**
+
+Do not trim adapters during demultiplexing. Leave these settings blank.
+Trimming adapters from reads can potentially damage the 10x barcodes and the UMIs, resulting in pipeline failure or data loss.
+If you are using an Illumina sample sheet for demultiplexing with bcl2fastq, BCL Convert or our mkfastq pipeline,
+please remove these lines under the [**Settings] section: Adapter or AdapterRead1 or AdapterRead2.
+
 **FASTQ files**
 
 Please prepare csv file with the following format:

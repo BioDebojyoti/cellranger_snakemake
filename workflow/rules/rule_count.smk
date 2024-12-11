@@ -49,7 +49,8 @@ rule cellranger_count_b4aggr:
         countdir=lambda wc, output: os.path.dirname(output.aggr_input_csv[0]),
         additional_info_aggr=config_count["add_info_aggr"],
     container:
-        "cellranger.v8.0.1.sif"
+        "docker://litd/docker-cellranger:v8.0.1"
+        # "cellranger.v8.0.1.sif"
     shell:
         """
         bash scripts/get_count_aggr_csv.sh {params.countdir} > {params.countdir}/aggregation_count.csv;
@@ -78,7 +79,8 @@ rule cellranger_count:
         cores=config_count["resources"]["localcores"],
         memory=config_count["resources"]["localmem"],
     container:
-        "cellranger.v8.0.1.sif"
+        "docker://litd/docker-cellranger:v8.0.1"
+        # "cellranger.v8.0.1.sif"
     log:
         file=os.path.join("{count_outdir}", "logs", "count_{sample}.log"),
     benchmark:
