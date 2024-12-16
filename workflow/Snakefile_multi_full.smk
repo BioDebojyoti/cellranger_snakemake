@@ -4,12 +4,15 @@ import pandas as pd
 
 
 include: os.path.join("rules", "rule_common_config.smk")
-include: os.path.join("rules", "rule_mkfastq.smk")
+include: os.path.join("rules", "rule_mkfastq_multi.smk")
 include: os.path.join("rules", "rule_multi.smk")
 include: os.path.join("rules", "rule_common_aggr.smk")
 include: os.path.join("rules", "rule_aggregate.smk")
 include: os.path.join("rules", "rule_common_seurat.smk")
 include: os.path.join("rules", "rule_seurat.smk")
+
+
+ruleorder: cellranger_mkfastq > demultiplex_all > cellranger_multi_input_prep > cellranger_multi > cellranger_multi_b4aggr > cellranger_aggr > seurat
 
 
 rule de_results:

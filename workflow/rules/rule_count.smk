@@ -59,7 +59,7 @@ rule cellranger_count_b4aggr:
 
 
 # Rule to count features for single library
-rule cellranger_count:
+checkpoint cellranger_count:
     input:
         fastq_folder=lambda wc: sample_count_fastq_dict[wc.sample],
         transcriptome=config_count["transcriptome"],

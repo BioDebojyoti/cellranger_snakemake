@@ -131,21 +131,12 @@ fastq_outdirectory = df["fastq_outdirectory"].unique()[0]
 
 rule demultiplex_all:
     input:
-        expand(
+        folders=expand(
+            os.path.join(fastq_outdirectory, "{sample}_fastq"), sample=samples
+        ),
+        csvs=expand(
             os.path.join(fastq_outdirectory, "mkfastq_success_{bcl_run_index}.csv"),
             bcl_run_index=bcl_run_indexes,
-        ),
-        expand(os.path.join(fastq_outdirectory, "{sample}_fastq"), sample=samples),
-
-
-checkpoint fastq_folder_collect:
-    output:
-        directory(
-            os.path.join(fastq_outdirectory, "{sample}_fastq"),
-        ),
-    input:
-        lambda wc: os.path.join(
-            fastq_outdirectory, f"mkfastq_success_{sample_to_run[wc.sample]}.csv"
         ),
 
 
@@ -154,7 +145,7 @@ rule cellranger_mkfastq:
     input:
         bcl_path=lambda wc: run_bcl_paths_dict[wc.bcl_run_index],
     output:
-        flag=os.path.join("{fastq_outdirectory}", "mkfastq_success_{bcl_run_index}.csv"),
+        flag=os.path.join(fastq_outdirectory, "mkfastq_success_{bcl_run_index}.csv"),
     resources:
         cores=lambda wc, attempt: min(mkfastq_cores * attempt, max_cores),
         memory=lambda wc, attempt: min(mkfastq_memory * attempt, max_memory),
@@ -171,10 +162,10 @@ rule cellranger_mkfastq:
         "docker://litd/docker-cellranger:v8.0.1"
         # "cellranger.v8.0.1.sif"
     log:
-        os.path.join("{fastq_outdirectory}", "logs", "mkfastq_{bcl_run_index}.log"),
+        os.path.join(fastq_outdirectory, "logs", "mkfastq_{bcl_run_index}.log"),
     benchmark:
         os.path.join(
-            "{fastq_outdirectory}", "benchmarks", "benchmark_mkfastq_{bcl_run_index}"
+            fastq_outdirectory, "benchmarks", "benchmark_mkfastq_{bcl_run_index}"
         )
     shell:
         """
@@ -187,6 +178,3 @@ rule cellranger_mkfastq:
         bash scripts/move_pipestance_mkfastq_dir.sh {log:q} {params.outdir2use:q};
         bash scripts/get_fastq_csv.sh {params.outdir2use:q} "{params.lib_type}" > {output.flag};
         """
-
-
-#        --output-dir={params.outdir2use} \

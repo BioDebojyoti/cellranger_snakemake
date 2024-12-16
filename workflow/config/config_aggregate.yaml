@@ -5,6 +5,6 @@ resources:
 aggr_input_file:
 
 aggregation_id: "aggr_gex_vdj_4_samples" # Required. A unique run ID string: e.g. AGG123
-normalize: None
+normalize: "mapped"
 
-aggr_outdir: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gex_count_test/count_results/aggr_results"
+aggr_outdir: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gex_vdj/aggr_results"

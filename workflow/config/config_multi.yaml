@@ -1,5 +1,5 @@
 #output_multi: "/home/debojyoti/Projects/core_facility/beam_t/runs"
-output_multi: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/new_multi_results"
+output_multi: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gex_vdj/multi_results"
 
 multi_config_csv:
   # [

@@ -28,6 +28,14 @@ with open("config/config_seurat.yaml") as f:
     config_seurat = yaml.safe_load(f)
 
 
+def get_rule_property(rule_name, property_name):
+    try:
+        rule_now = getattr(rules, rule_name)
+        return getattr(rule_now.input, property_name, None)
+    except AttributeError:
+        return None
+
+
 def extract_data_block(file_to_extract):
 
     # Open the file and read lines

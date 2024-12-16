@@ -13,23 +13,24 @@ donor_list = list(
 )
 
 
-rule cellranger_multi_input_prep:
+checkpoint cellranger_multi_input_prep:
     output:
         expand(
-            os.path.join("{multi_outdir}", "{donor_id}_multi_samplesheet.csv"),
+            os.path.join(multi_outdir, "{donor_id}_multi_samplesheet.csv"),
             donor_id=donor_list,
-            multi_outdir=multi_outdir,
         ),
-    container:
-        "docker://litd/docker-cellranger:v8.0.1"
+    input:
+        fastq_paths=lambda wc: list(set(rules.demultiplex_all.input.csvs)),
+    # container:
+    #     "docker://litd/docker-cellranger:v8.0.1"
     params:
-        config_file=config_multi,
+        config_file="config/config_multi.yaml",
         multi_outdir=lambda wc, output: os.path.dirname(output[0]),
     log:
         os.path.join(multi_outdir, "logs", "multi_input_prep.log"),
     shell:
         """
-        python scripts/get_multi_input.py {params.config_file} {params.multi_outdir}
+        python scripts/get_multi_input.py {params.config_file} {params.multi_outdir} {input.fastq_paths}
         """
 
 
@@ -39,19 +40,19 @@ rule cellranger_multi_b4aggr:
     input:
         multi_web_summary=expand(
             os.path.join(
-                "{multi_outdir}",
+                multi_outdir,
+                "{donor_id}",
                 "outs",
                 "per_sample_outs",
                 "{donor_id}",
                 "web_summary.html",
             ),
             donor_id=donor_list,
-            multi_outdir=multi_outdir,
         ),
-    container:
-        "docker://litd/docker-cellranger:v8.0.1"
+    # container:
+    #     "docker://litd/docker-cellranger:v8.0.1"
     params:
-        multidir=lambda wc, output: os.path.dirname(output.aggr_input_csv[0]),
+        multidir=multi_outdir,
         additional_info_aggr=config_multi["additional_info_aggr"],
     log:
         os.path.join(multi_outdir, "logs", "multi_pre_aggr.log"),
@@ -65,17 +66,19 @@ rule cellranger_multi_b4aggr:
 # Rule to count features for single library
 rule cellranger_multi:
     input:
-        csv=os.path.join("{multi_outdir}", "{donor_id}_multi_samplesheet.csv"),
+        csv=os.path.join(multi_outdir, "{donor_id}_multi_samplesheet.csv"),
     output:
         multi_web_summary=os.path.join(
-            "{multi_outdir}",
+            multi_outdir,
+            "{donor_id}",
             "outs",
             "per_sample_outs",
             "{donor_id}",
             "web_summary.html",
         ),
         multi_count_sample_info=os.path.join(
-            "{multi_outdir}",
+            multi_outdir,
+            "{donor_id}",
             "outs",
             "per_sample_outs",
             "{donor_id}",
@@ -84,7 +87,8 @@ rule cellranger_multi:
         ),
         multi_count_dir=directory(
             os.path.join(
-                "{multi_outdir}",
+                multi_outdir,
+                "{donor_id}",
                 "outs",
                 "per_sample_outs",
                 "{donor_id}",
@@ -93,17 +97,17 @@ rule cellranger_multi:
             )
         ),
     params:
-        id2use=lambda wc: "{donor_id}",
-        multi_outdir2use=lambda wc: "{multi_outdir}",
+        id2use="{donor_id}",
+        multi_outdir2use=os.path.join(multi_outdir, "{donor_id}"),
     resources:
         cores=config_count["resources"]["localcores"],
         memory=config_count["resources"]["localmem"],
     container:
         "docker://litd/docker-cellranger:v8.0.1"
     log:
-        file=os.path.join("{multi_outdir}", "logs", "multi_{donor_id}.log"),
+        file=os.path.join(multi_outdir, "logs", "multi_{donor_id}.log"),
     benchmark:
-        os.path.join("{multi_outdir}", "benchmarks", "benchmarks_{donor_id}_multi.csv")
+        os.path.join(multi_outdir, "benchmarks", "benchmarks_{donor_id}_multi.csv")
     shell:
         """   
         cellranger multi \
