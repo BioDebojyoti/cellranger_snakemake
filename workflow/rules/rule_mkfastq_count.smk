@@ -131,25 +131,13 @@ fastq_outdirectory = df["fastq_outdirectory"].unique()[0]
 
 rule demultiplex_all:
     input:
-        folders=expand(
-            os.path.join(fastq_outdirectory, "{sample}_fastq"), sample=samples
-        ),
         csvs=expand(
             os.path.join(fastq_outdirectory, "mkfastq_success_{bcl_run_index}.csv"),
             bcl_run_index=bcl_run_indexes,
         ),
-
-
-checkpoint fastq_folder_collect:
-    output:
-        directory(
-            os.path.join(fastq_outdirectory, "{sample}_fastq"),
-        ),
-    input:
-        lambda wc: os.path.join(
-            fastq_outdirectory,
-            f"mkfastq_success_{sample_directories_dict_transformed[wc.sample][0]}.csv",
-        ),
+        # folders=expand(
+        #     os.path.join(fastq_outdirectory, "{sample}_fastq"), sample=samples
+        # ),
 
 
 # Rule to generate FASTQ files if starting from BCL files

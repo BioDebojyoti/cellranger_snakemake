@@ -8,7 +8,8 @@ resources:
   threads: 16
   memory: 16
 
-out_directory: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gex_vdj/seurat_out"
+# out_directory: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gex_vdj/seurat_out"
+out_directory: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gex_count_test/seurat_out"
 # seurat output directory
 
 min_cells:
