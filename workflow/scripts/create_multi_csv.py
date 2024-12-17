@@ -95,7 +95,7 @@ def create_multi_csv(
         for row in libraries_data:
             fastq_id = row["sample"]
             fastqs = row["fastq"]
-            feature_type = row["library_type"]
+            feature_type = row["lib_type"]
             csv_content.append(f"{fastq_id},{fastqs},{feature_type}")
         csv_content.append("")
 

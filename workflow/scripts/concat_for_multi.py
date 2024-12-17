@@ -25,12 +25,11 @@ def create_donor_dict(additional_info_csv, fastq_csv_files, multi_csv_directory)
     for donor, group_df in merged_df.groupby("donor"):
         donor_dict[donor] = group_df.to_dict(orient="records")
         donor_df = pd.DataFrame.from_dict(donor_dict[donor]).loc[
-            :, ["fastq", "sample", "library_type"]
+            :, ["fastq", "sample", "lib_type"]
         ]
+        donor_df.drop_duplicates(keep="first", inplace=True)
+
         output_path = multi_csv_directory + "/" + donor + "_multi.csv"
-
-        # print(output_path)
-
         donor_df.to_csv(output_path, index=False)
 
     return list(donor_dict.keys())
@@ -42,12 +41,14 @@ def main():
         description="Create a dictionary of donors by merging CSV files."
     )
     parser.add_argument(
+        "-a",
         "--additional_info_csv",
         type=str,
         required=True,
         help="Path to the additional_info_csv file (e.g., 'additional_info_csv.csv')",
     )
     parser.add_argument(
+        "-f",
         "--fastq_csv_files",
         type=str,
         nargs="+",
@@ -56,6 +57,7 @@ def main():
     )
 
     parser.add_argument(
+        "-m",
         "--multi_csv_directory",
         type=str,
         required=True,

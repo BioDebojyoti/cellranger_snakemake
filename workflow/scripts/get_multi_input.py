@@ -2,10 +2,19 @@ import sys
 import os
 import re
 import shutil
-import pandas as pd
+import yaml
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.dirname(SCRIPT_DIR))
+
+from scripts import create_multi_csv as cmc
+from scripts import concat_for_multi as cfm
 
 
-def generate_multi_input(config_multi, multi_outdir):
+def generate_multi_input(config_multi, multi_outdir, demultiplexd_fastq_paths=None):
+
+    with open("config/config_multi.yaml") as f:
+        config_multi = yaml.safe_load(f)
 
     if isinstance(config_multi.get("multi_config_csv"), list):
 
@@ -31,7 +40,7 @@ def generate_multi_input(config_multi, multi_outdir):
         if isinstance(config_multi.get("input_csvs"), list):
             input_csvs = config_multi["input_csvs"]
         else:
-            input_csvs = rules.demultiplex_all.input.fastq_paths
+            input_csvs = demultiplexd_fastq_paths
 
         additional_info_aggr = config_multi["additional_info_aggr"]
 
@@ -74,8 +83,6 @@ def generate_multi_input(config_multi, multi_outdir):
         for donor_id in donor_list:
             input_multi_csv = f"{multi_outdir}/{donor_id}_multi.csv"
             output_multi_csv = f"{multi_outdir}/{donor_id}_multi_samplesheet.csv"
-            # print(output_multi_csv)
-            # print(input_multi_csv)
 
             cmc.create_multi_csv(
                 input_csvs=input_multi_csv,
@@ -88,5 +95,10 @@ def generate_multi_input(config_multi, multi_outdir):
 if __name__ == "__main__":
     config_file = sys.argv[1]
     multi_outdir = sys.argv[2]
+    fastq_paths = sys.argv[3:]
 
-    generate_multi_input(config_multi=config_file, multi_outdir=multi_outdir)
+    generate_multi_input(
+        config_multi=config_file,
+        multi_outdir=multi_outdir,
+        demultiplexd_fastq_paths=fastq_paths,
+    )

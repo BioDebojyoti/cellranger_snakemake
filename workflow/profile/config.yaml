@@ -9,6 +9,7 @@ printshellcmds: True
 rerun-incomplete: True
 restart-times:
 
+use-conda: True
 # singularity
 use-singularity: True
 singularity-args: "--bind /home/debojyoti/Projects/core_facility/"

@@ -4,14 +4,14 @@ load_data_10X <- function(data_dir = NULL, data_file = NULL) {
       data_10_x <- Seurat::Read10X(data.dir = data_dir)
       return(data_10_x)
     }
-  }
-  if (!is.null(data_file)) {
-    if (dir.exists(data_file)) {
+  } else if (!is.null(data_file)) {
+    if (file.exists(data_file)) {
       data_10_x <- Seurat::Read10X_h5(filename = data_file)
       return(data_10_x)
     }
+  } else {
+    cat("10X data not found!")
   }
-  cat("10X data not found!")
 }
 
 # Function to load metadata and integrate cell data

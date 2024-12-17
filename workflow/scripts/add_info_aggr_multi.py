@@ -1,5 +1,7 @@
 import pandas as pd
-import sys, os, re
+import sys
+import os
+import re
 import csv
 
 

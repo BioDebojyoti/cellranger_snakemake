@@ -25,12 +25,12 @@ libraries2use <- c(
   "yaml"
 )
 
+
 # Load all libraries
 invisible(sapply(libraries2use, load_library))
 
 # get directory for the present file
 script_path <- this.path::this.path()
-print(script_path)
 
 source(paste0(dirname(script_path), "/useful.R", collapse = ""))
 source(paste0(dirname(script_path), "/generalized_vdj.R", collapse = ""))
@@ -212,7 +212,7 @@ RhpcBLASctl::blas_set_num_threads(threads)
 RhpcBLASctl::omp_set_num_threads(threads)
 
 memory_to_use <- memory * 1024^3
-# 16*1024^3 = 17179869184
+
 options(future.globals.maxSize = memory_to_use)
 options(mc.cores = cores)
 
@@ -245,7 +245,7 @@ seurat_analysis <- function(
 
   # Load dataset
   data_10_x <- load_data_10X(data_dir, data_file)
-
+  print("loaded data_10X successfully")
   # Load metadata if applicable
   sample_identity <- metadata(data_10_x, aggr_csv_file)
 
