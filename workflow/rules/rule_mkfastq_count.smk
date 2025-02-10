@@ -1,7 +1,7 @@
 # Snakemake pipeline for scRNA-seq data using Cell Ranger and Seurat with Docker containers
 import os, sys, re
 import pandas as pd
-
+import json
 
 add_args = [
     (
@@ -21,6 +21,9 @@ max_memory = config_mkfastq["resources"]["max_memory"]
 
 combinations_df = pd.read_csv(config_mkfastq["bcl_folder_paths"])
 
+fastq_outdirectory = config_mkfastq["fastq_outdirectory"]
+
+combinations_df["fastq_outdirectory"] = fastq_outdirectory
 
 dfs = pd.DataFrame()
 
@@ -90,54 +93,87 @@ for run, fastq_dir_path in sample_directories_dict_transformed.values():
 
 # print(bcl_run_index_dir_dict)
 
-directories = bcl_run_index_dir_dict.values()
+# directories = bcl_run_index_dir_dict.values()
 
-df = pd.DataFrame.from_dict(
-    {
-        key: {"sample": key, "bcl_run_index": value[0], "fastq_dir_path": value[1]}
-        for key, value in sample_directories_dict_transformed.items()
-    },
-    orient="index",
-).reset_index(drop=True)
+# df = pd.DataFrame.from_dict(
+#     {
+#         key: {"sample": key, "bcl_run_index": value[0], "fastq_dir_path": value[1]}
+#         for key, value in sample_directories_dict_transformed.items()
+#     },
+#     orient="index",
+# ).reset_index(drop=True)
 
-# Reorder columns to match the desired order
-df = df[["sample", "bcl_run_index", "fastq_dir_path"]]
-df["fastq_outdirectory"] = [os.path.dirname(d) for d in df["fastq_dir_path"].tolist()]
+# # Reorder columns to match the desired order
+# df = df[["sample", "bcl_run_index", "fastq_dir_path"]]
+# df["fastq_outdirectory"] = [os.path.dirname(d) for d in df["fastq_dir_path"].tolist()]
 
+proxy_outdir_dict = {
+    key: [f"{fastq_outdirectory}/{sample}_fastq.csv" for sample in value]
+    for key, value in run_bcl_sample_dict.items()
+}
 
-flag_files = []
-for index, row in df.iterrows():
-    bcl = row["bcl_run_index"]
-    curr_flag_file = os.path.join(
-        row["fastq_outdirectory"],
-        f"mkfastq_success_{bcl}.csv",
-    )
-    if curr_flag_file not in flag_files:
-        flag_files.append(curr_flag_file)
+# print(list(proxy_outdir_dict.values())[0])
 
-flag_dictionary = {}
-for i, v in enumerate(df["bcl_run_index"].unique()):
-    curr_df = df[df["bcl_run_index"] == v].copy()
-    curr_flag_file = os.path.join(
-        curr_df["fastq_outdirectory"].unique()[0],
-        f"mkfastq_success_{bcl}.csv",
-    )
-    flag_dictionary[v] = [curr_flag_file, curr_df["fastq_dir_path"].tolist()]
+# flag_files = []
+# for index, row in df.iterrows():
+#     bcl = row["bcl_run_index"]
+#     curr_flag_file = os.path.join(
+#         row["fastq_outdirectory"],
+#         f"mkfastq_success_{bcl}.csv",
+#     )
+#     if curr_flag_file not in flag_files:
+#         flag_files.append(curr_flag_file)
 
-flag_files = [f[0] for f in flag_dictionary.values()]
-fastq_folders = [directory(d) for f in flag_dictionary.values() for d in f[1]]
-fastq_outdirectory = df["fastq_outdirectory"].unique()[0]
+# flag_dictionary = {}
+# for i, v in enumerate(df["bcl_run_index"].unique()):
+#     curr_df = df[df["bcl_run_index"] == v].copy()
+#     curr_flag_file = os.path.join(
+#         curr_df["fastq_outdirectory"].unique()[0],
+#         f"mkfastq_success_{bcl}.csv",
+#     )
+#     flag_dictionary[v] = [curr_flag_file, curr_df["fastq_dir_path"].tolist()]
+
+# flag_files = [f[0] for f in flag_dictionary.values()]
+# fastq_folders = [directory(d) for f in flag_dictionary.values() for d in f[1]]
+# fastq_outdirectory = df["fastq_outdirectory"]
 
 
 rule demultiplex_all:
     input:
         csvs=expand(
             os.path.join(fastq_outdirectory, "mkfastq_success_{bcl_run_index}.csv"),
-            bcl_run_index=bcl_run_indexes,
+            bcl_run_index=list(set(bcl_run_indexes)),
         ),
-        # folders=expand(
-        #     os.path.join(fastq_outdirectory, "{sample}_fastq"), sample=samples
-        # ),
+
+
+rule demultiplex_folder_paths:
+    input:
+        csvs=expand(
+            os.path.join(fastq_outdirectory, "mkfastq_success_{bcl_run_index}.csv"),
+            bcl_run_index=list(set(bcl_run_indexes)),
+        ),
+    output:
+        os.path.join(fastq_outdirectory, "all_folders.csv"),
+    shell:
+        """
+        cat {input.csvs[0]} > {output};
+        for file in {input.csvs[1:]}; do
+            awk 'NR>1' "$file" >> {output};
+        done
+        """
+
+
+checkpoint parse_all_folders:
+    input:
+        os.path.join(fastq_outdirectory, "all_folders.csv"),
+    output:
+        os.path.join(fastq_outdirectory, "sample_to_fastq.json"),
+    run:
+        all_folders_df = pd.read_csv(input[0])
+        sample_to_fastq = dict(zip(all_folders_df["sample"], all_folders_df["fastq"]))
+
+        with open(output[0], "w") as f:
+            json.dump(sample_to_fastq, f, indent=4)
 
 
 # Rule to generate FASTQ files if starting from BCL files
@@ -158,6 +194,7 @@ rule cellranger_mkfastq:
         args2add=add_args[0],
         outdir2use=lambda wc: fastq_outdirectory_dict[wc.bcl_run_index],
         lib_type=lambda wc: feature_type_dict[wc.bcl_run_index],
+        run_index=lambda wc: wc.bcl_run_index,
     container:
         "docker://litd/docker-cellranger:v8.0.1"
         # "cellranger.v8.0.1.sif"
@@ -177,4 +214,5 @@ rule cellranger_mkfastq:
         2>&1 | tee -a {log};
         bash scripts/move_pipestance_mkfastq_dir.sh {log:q} {params.outdir2use:q};
         bash scripts/get_fastq_csv.sh {params.outdir2use:q} "{params.lib_type}" > {output.flag};
+        bash scripts/proxy_for_directory.sh {input};
         """

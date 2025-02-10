@@ -6,11 +6,20 @@ count_outdir = config_count["output_count"]
 donor_list = list(set(pd.read_csv(config_count["add_info_aggr"])["donor"].tolist()))
 
 
-checkpoint fastq_folder_collect:
-    input:
-        rules.demultiplex_all.input.csvs,
-    output:
-        directory(os.path.join(fastq_outdirectory, "{sample}_fastq")),
+def get_fastq(wildcards):
+    checkpoint_output = checkpoints.parse_all_folders.get(**wildcards).output[0]
+
+    with open(checkpoint_output) as f:
+        sample_to_fastq = json.load(f)
+
+    return sample_to_fastq[wildcards.sample]
+
+
+# rule fastq_folder_collect:
+#     input:
+#         os.path.join(fastq_outdirectory, "{sample}_fastq_{bcl_run_index}.csv"),
+#     output:
+#         directory(os.path.join(fastq_outdirectory, "{sample}")),
 
 
 rule cellranger_count_b4aggr:
@@ -37,13 +46,15 @@ rule cellranger_count_b4aggr:
 
 
 #        fastq_folder=lambda wc: sample_directories_dict_transformed[wc.sample][1],
+# os.path.join(fastq_outdirectory, "{sample}_fastq")
+# lambda wc: rules.fastq_folder_collect.get(sample=wc.sample).output.split(
+#         os.path.join(fastq_outdirectory, "{sample}_fastq"),
 
 
 # Rule to count features for single library
 rule cellranger_count:
     input:
-        fastq_folder=os.path.join(fastq_outdirectory, "{sample}_fastq"),
-        transcriptome=config_count["transcriptome"],
+        get_fastq,
     output:
         Permoleculereadinformation=os.path.join(
             count_outdir, "{sample}_count", "outs", "molecule_info.h5"
@@ -52,6 +63,7 @@ rule cellranger_count:
             count_outdir, "{sample}_count", "outs", "filtered_feature_bc_matrix.h5"
         ),
     params:
+        transcriptome=config_count["transcriptome"],
         id2use=lambda wc: f"pipestance_{wc.sample}",
         sample=lambda wc: f"{wc.sample}",
         count_outdir2use=lambda wc: os.path.join(count_outdir, "{wc.sample}_count"),
@@ -70,8 +82,8 @@ rule cellranger_count:
         """   
         cellranger count \
         --id={params.id2use} \
-        --transcriptome={input.transcriptome} \
-        --fastqs={input.fastq_folder} \
+        --transcriptome={params.transcriptome} \
+        --fastqs={input} \
         --sample={params.sample} \
         --localcores={resources.cores} \
         --localmem={resources.memory} \
