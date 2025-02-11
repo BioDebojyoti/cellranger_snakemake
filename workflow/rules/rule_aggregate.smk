@@ -2,7 +2,7 @@
 import os, sys
 import pandas as pd
 
-aggr_outdir = output_dir_for_cellranger_aggr(" ")
+aggr_outdir = os.path.join(fastq_outdirectory, "aggr_results")
 
 
 # Rule to aggregate libraries

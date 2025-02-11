@@ -81,7 +81,7 @@ def extra_args_for_seurat(wc, config_seurat):
 
     # Map config keys to command-line arguments
     arg_mapping = {
-        "out_directory": "--out-directory",
+        # "out_directory": "--out-directory",
         "min_cells": "--min-cells",
         "min_features": "--min-features",
         "max_features": "--max-features",

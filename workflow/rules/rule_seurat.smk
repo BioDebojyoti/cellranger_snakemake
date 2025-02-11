@@ -6,10 +6,7 @@ import pandas as pd
 project_name = config_seurat.get("project") or "singleCell"
 final_rds = f"{project_name}_analysed_seurat.rds"
 
-two_levels_up = os.path.dirname(os.path.dirname(input_gex_for_seurat(None)))
-seurat_outdir = config_seurat.get("out_directory") or os.path.join(
-    two_levels_up, "seurat_out"
-)
+seurat_outdir = os.path.join(fastq_outdirectory, "seurat_out")
 
 
 # Rule to run seurat on cellranger output
@@ -26,6 +23,7 @@ rule seurat:
     conda:
         "d_seurat510"
     params:
+        seurat_out_directory=seurat_outdir,
         extra_args=lambda wc: extra_args_for_seurat(wc, config_seurat),
         vdj_t_args=lambda wc: vdj_t_flag(wc),
         vdj_b_args=lambda wc: vdj_b_flag(wc),
@@ -35,6 +33,7 @@ rule seurat:
         """
         Rscript scripts/scQCAD.R -f {input.gex} -a {input.aggr_csv} \
         {params.extra_args} {params.vdj_t_args} {params.vdj_b_args} \
+        --out-directory={params.seurat_out_directory} \
         --num-cores={resources.cores} --num-threads={resources.threads} \
         --memory-usage={resources.memory} 2>&1 | tee -a {log.file}; 
         """

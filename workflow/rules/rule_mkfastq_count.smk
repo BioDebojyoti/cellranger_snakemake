@@ -2,6 +2,7 @@
 import os, sys, re
 import pandas as pd
 import json
+from io import StringIO
 
 add_args = [
     (
@@ -91,51 +92,10 @@ for run, fastq_dir_path in sample_directories_dict_transformed.values():
     bcl_run_index_dir_dict[run].append(fastq_dir_path)
 
 
-# print(bcl_run_index_dir_dict)
-
-# directories = bcl_run_index_dir_dict.values()
-
-# df = pd.DataFrame.from_dict(
-#     {
-#         key: {"sample": key, "bcl_run_index": value[0], "fastq_dir_path": value[1]}
-#         for key, value in sample_directories_dict_transformed.items()
-#     },
-#     orient="index",
-# ).reset_index(drop=True)
-
-# # Reorder columns to match the desired order
-# df = df[["sample", "bcl_run_index", "fastq_dir_path"]]
-# df["fastq_outdirectory"] = [os.path.dirname(d) for d in df["fastq_dir_path"].tolist()]
-
 proxy_outdir_dict = {
     key: [f"{fastq_outdirectory}/{sample}_fastq.csv" for sample in value]
     for key, value in run_bcl_sample_dict.items()
 }
-
-# print(list(proxy_outdir_dict.values())[0])
-
-# flag_files = []
-# for index, row in df.iterrows():
-#     bcl = row["bcl_run_index"]
-#     curr_flag_file = os.path.join(
-#         row["fastq_outdirectory"],
-#         f"mkfastq_success_{bcl}.csv",
-#     )
-#     if curr_flag_file not in flag_files:
-#         flag_files.append(curr_flag_file)
-
-# flag_dictionary = {}
-# for i, v in enumerate(df["bcl_run_index"].unique()):
-#     curr_df = df[df["bcl_run_index"] == v].copy()
-#     curr_flag_file = os.path.join(
-#         curr_df["fastq_outdirectory"].unique()[0],
-#         f"mkfastq_success_{bcl}.csv",
-#     )
-#     flag_dictionary[v] = [curr_flag_file, curr_df["fastq_dir_path"].tolist()]
-
-# flag_files = [f[0] for f in flag_dictionary.values()]
-# fastq_folders = [directory(d) for f in flag_dictionary.values() for d in f[1]]
-# fastq_outdirectory = df["fastq_outdirectory"]
 
 
 rule demultiplex_all:
@@ -144,32 +104,21 @@ rule demultiplex_all:
             os.path.join(fastq_outdirectory, "mkfastq_success_{bcl_run_index}.csv"),
             bcl_run_index=list(set(bcl_run_indexes)),
         ),
-
-
-rule demultiplex_folder_paths:
-    input:
-        csvs=expand(
-            os.path.join(fastq_outdirectory, "mkfastq_success_{bcl_run_index}.csv"),
-            bcl_run_index=list(set(bcl_run_indexes)),
-        ),
-    output:
-        os.path.join(fastq_outdirectory, "all_folders.csv"),
-    shell:
-        """
-        cat {input.csvs[0]} > {output};
-        for file in {input.csvs[1:]}; do
-            awk 'NR>1' "$file" >> {output};
-        done
-        """
-
-
-checkpoint parse_all_folders:
-    input:
-        os.path.join(fastq_outdirectory, "all_folders.csv"),
     output:
         os.path.join(fastq_outdirectory, "sample_to_fastq.json"),
     run:
-        all_folders_df = pd.read_csv(input[0])
+        all_data = []
+
+        for i, file in enumerate(input.csvs):
+            with open(file) as infile:
+                lines = infile.readlines()
+                if i > 0:
+                    lines = lines[1:]  # Skip header for subsequent files
+                all_data.extend(lines)
+
+        combined_csv = "".join(all_data)
+        all_folders_df = pd.read_csv(StringIO(combined_csv))
+
         sample_to_fastq = dict(zip(all_folders_df["sample"], all_folders_df["fastq"]))
 
         with open(output[0], "w") as f:
@@ -214,5 +163,5 @@ rule cellranger_mkfastq:
         2>&1 | tee -a {log};
         bash scripts/move_pipestance_mkfastq_dir.sh {log:q} {params.outdir2use:q};
         bash scripts/get_fastq_csv.sh {params.outdir2use:q} "{params.lib_type}" > {output.flag};
-        bash scripts/proxy_for_directory.sh {input};
+        bash scripts/proxy_for_directory.sh {output.flag};
         """

@@ -20,7 +20,9 @@ max_memory = config_mkfastq["resources"]["max_memory"]
 
 
 combinations_df = pd.read_csv(config_mkfastq["bcl_folder_paths"])
+fastq_outdirectory = config_mkfastq["fastq_outdirectory"]
 
+combinations_df["fastq_outdirectory"] = fastq_outdirectory
 
 dfs = pd.DataFrame()
 
@@ -119,14 +121,15 @@ flag_dictionary = {}
 for i, v in enumerate(df["bcl_run_index"].unique()):
     curr_df = df[df["bcl_run_index"] == v].copy()
     curr_flag_file = os.path.join(
-        curr_df["fastq_outdirectory"].unique()[0],
+        curr_df["fastq_outdirectory"],
         f"mkfastq_success_{bcl}.csv",
     )
     flag_dictionary[v] = [curr_flag_file, curr_df["fastq_dir_path"].tolist()]
 
 flag_files = [f[0] for f in flag_dictionary.values()]
 fastq_folders = [directory(d) for f in flag_dictionary.values() for d in f[1]]
-fastq_outdirectory = df["fastq_outdirectory"].unique()[0]
+
+print(run_bcl_sample_dict)
 
 
 rule demultiplex_all:
@@ -189,4 +192,5 @@ rule cellranger_mkfastq:
         2>&1 | tee -a {log};
         bash scripts/move_pipestance_mkfastq_dir.sh {log:q} {params.outdir2use:q};
         bash scripts/get_fastq_csv.sh {params.outdir2use:q} "{params.lib_type}" > {output.flag};
+        bash scripts/proxy_for_directory.sh {output.flag};
         """

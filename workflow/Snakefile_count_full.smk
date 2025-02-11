@@ -12,6 +12,9 @@ include: os.path.join("rules", "rule_common_seurat.smk")
 include: os.path.join("rules", "rule_seurat.smk")
 
 
+# report: os.path.join(fastq_outdirectory, "report", "workflow.rst")
+
+
 # ruleorder: cellranger_mkfastq > demultiplex_all > cellranger_count > cellranger_count_b4aggr > cellranger_aggr > seurat
 
 
