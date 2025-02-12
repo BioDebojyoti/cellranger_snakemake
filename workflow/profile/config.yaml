@@ -2,7 +2,7 @@
 snakefile: Snakefile
 cores: 32
 latency-wait:
-reason: True
+# reason: True
 show-failed-logs: True
 keep-going: True
 printshellcmds: True

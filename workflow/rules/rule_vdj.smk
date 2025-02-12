@@ -61,6 +61,8 @@ rule cellranger_vdj_b4aggr:
     params:
         vdjdir=vdj_outdir,
         additional_info_aggr=config_vdj["add_info_aggr"],
+    conda:
+        "envs/minimal_python.yaml"
     shell:
         """
         bash scripts/get_vdj_aggr_csv.sh {params.vdjdir} > {params.vdjdir}/aggregation_vdj.csv;

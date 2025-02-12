@@ -2,7 +2,8 @@
 bcl_folder_paths: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/bcl_folder_paths_count_only.csv"
 # "../gosia_single_cell_runs/bcl_folder_paths.csv" # gex + vdj
 
-fastq_outdirectory: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gex_count_test_new"
+results_directory: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gex_count_test_two"
+# fastq_outdirectory: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gex_count_test_new"
 
 resources:
   localcores: 8

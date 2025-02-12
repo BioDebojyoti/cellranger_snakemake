@@ -28,6 +28,8 @@ checkpoint cellranger_multi_input_prep:
         multi_outdir=lambda wc, output: os.path.dirname(output[0]),
     log:
         os.path.join(multi_outdir, "logs", "multi_input_prep.log"),
+    conda:
+        "envs/minimal_python.yaml"
     shell:
         """
         python scripts/get_multi_input.py {params.config_file} {params.multi_outdir} {input.fastq_paths}
@@ -49,8 +51,8 @@ rule cellranger_multi_b4aggr:
             ),
             donor_id=donor_list,
         ),
-    # container:
-    #     "docker://litd/docker-cellranger:v8.0.1"
+    conda:
+        "envs/minimal_python.yaml"
     params:
         multidir=multi_outdir,
         additional_info_aggr=config_multi["additional_info_aggr"],

@@ -2,7 +2,11 @@
 import os, sys
 import pandas as pd
 
-count_outdir = os.path.join(fastq_outdirectory, "count_results")
+
+report: "../report/workflow.rst"
+
+
+count_outdir = os.path.join(results_directory, "count_results")
 donor_list = list(set(pd.read_csv(config_count["add_info_aggr"])["donor"].tolist()))
 
 
@@ -11,9 +15,13 @@ rule fastq_folders:
         os.path.join(fastq_outdirectory, "sample_to_fastq.json"),
     output:
         expand(os.path.join(fastq_outdirectory, "{sample}_fastq.csv"), sample=samples),
+    log:
+        file=os.path.join(fastq_outdirectory, "logs", "fastq_folders.log"),
+    # conda:
+    #     "envs/minimal_python.yaml"
     shell:
         """
-        python scripts/get_proxy_fastq_files.py {input}
+        /usr/bin/python3 scripts/get_proxy_fastq_files.py {input}
         """
 
 
@@ -31,18 +39,21 @@ rule cellranger_count_b4aggr:
             ),
             sample=samples,
         ),
+        WebSummary=expand(
+            os.path.join(count_outdir, "{sample}_count", "outs", "web_summary.html"),
+            sample=samples,
+        ),
     log:
         os.path.join(count_outdir, "logs", "count_aggr.log"),
     params:
-        countdir=count_outdir,
+        countdir=lambda wc: count_outdir,
         additional_info_aggr=config_count["add_info_aggr"],
-    container:
-        "docker://litd/docker-cellranger:v8.0.1"
-        # "cellranger.v8.0.1.sif"
+    # conda:
+    #     "envs/minimal_python.yaml"
     shell:
         """
         bash scripts/get_count_aggr_csv.sh {params.countdir} > {params.countdir}/aggregation_count.csv;
-        python scripts/add_info_aggr.py {params.countdir}/aggregation_count.csv {params.additional_info_aggr}
+        /usr/bin/python3 scripts/add_info_aggr.py {params.countdir}/aggregation_count.csv {params.additional_info_aggr}
         """
 
 
@@ -56,6 +67,10 @@ rule cellranger_count:
         ),
         FilteredBCmatricesHDF5=os.path.join(
             count_outdir, "{sample}_count", "outs", "filtered_feature_bc_matrix.h5"
+        ),
+        WebSummary=report(
+            os.path.join(count_outdir, "{sample}_count", "outs", "web_summary.html"),
+            "../report/cellranger_count_mapping.rst",
         ),
     params:
         transcriptome=config_count["transcriptome"],

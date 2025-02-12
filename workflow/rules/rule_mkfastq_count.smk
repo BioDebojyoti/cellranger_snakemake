@@ -22,7 +22,10 @@ max_memory = config_mkfastq["resources"]["max_memory"]
 
 combinations_df = pd.read_csv(config_mkfastq["bcl_folder_paths"])
 
-fastq_outdirectory = config_mkfastq["fastq_outdirectory"]
+results_directory = config_mkfastq["results_directory"]
+fastq_outdirectory = os.path.join(results_directory, "fastq_directory")
+# fastq_outdirectory = config_mkfastq["fastq_outdirectory"]
+report_file = os.path.join(results_directory, "report.html")
 
 combinations_df["fastq_outdirectory"] = fastq_outdirectory
 
@@ -106,6 +109,8 @@ rule demultiplex_all:
         ),
     output:
         os.path.join(fastq_outdirectory, "sample_to_fastq.json"),
+    log:
+        file=os.path.join(fastq_outdirectory, "logs", "demultiplex_all.log"),
     run:
         all_data = []
 
@@ -146,7 +151,6 @@ rule cellranger_mkfastq:
         run_index=lambda wc: wc.bcl_run_index,
     container:
         "docker://litd/docker-cellranger:v8.0.1"
-        # "cellranger.v8.0.1.sif"
     log:
         os.path.join(fastq_outdirectory, "logs", "mkfastq_{bcl_run_index}.log"),
     benchmark:

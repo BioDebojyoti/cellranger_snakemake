@@ -2,7 +2,8 @@
 import os, sys
 import pandas as pd
 
-aggr_outdir = os.path.join(fastq_outdirectory, "aggr_results")
+aggr_outdir = os.path.join(results_directory, "aggr_results")
+# aggr_outdir = os.path.join(fastq_outdirectory, "aggr_results")
 
 
 # Rule to aggregate libraries
@@ -18,7 +19,6 @@ rule cellranger_aggr:
         memory=config_aggr["resources"]["localmem"],
     container:
         "docker://litd/docker-cellranger:v8.0.1"
-        # "cellranger.v8.0.1.sif"
     params:
         aggr_id=config_aggr["aggregation_id"],
         aggr_outdir=aggr_outdir,

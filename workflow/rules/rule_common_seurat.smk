@@ -1,11 +1,30 @@
 import yaml
 import os, sys, argparse
 from scripts import create_multi_csv
+import subprocess
+
+
+def get_snakemake_version():
+    version_str = subprocess.run(
+        ["snakemake", "--version"], capture_output=True, text=True
+    ).stdout.strip()
+    return tuple(map(int, version_str.split(".")))
+
+
+snakemake_version = get_snakemake_version()
+
+
+def get_available_rules(snakemake_version):
+    if snakemake_version < (8, 0, 0):
+        rules_available = list(rules.__dict__.keys())
+    else:
+        rules_available = list(rules._rules.keys())
+    return rules_available
 
 
 def input_gex_for_seurat(wc):
 
-    rules_available = list(rules.__dict__.keys())
+    rules_available = get_available_rules(snakemake_version)
 
     if config_seurat.get("count_file") is not None:
         return config_seurat["count_file"]
@@ -22,21 +41,25 @@ def input_gex_for_seurat(wc):
 
 def seurat_input_aggr_csv(wc):
 
-    rules_available = list(rules.__dict__.keys())
+    rules_available = get_available_rules(snakemake_version)
 
     if config_seurat.get("aggr_csv_file") is not None:
         return config_seurat["aggr_csv_file"]
     else:
         if config_aggr.get("aggr_input_file") is not None:
+
             return config_aggr["aggr_input_file"]
-        elif "cellranger_count_b4aggr" in rules_available:
+        if "cellranger_count_b4aggr" in rules_available:
+
             return rules.cellranger_count_b4aggr.output.aggr_input_csv
-        elif "cellranger_multi_b4aggr" in rules_available:
+        if "cellranger_multi_b4aggr" in rules_available:
+
             return rules.cellranger_multi_b4aggr.output.aggr_input_csv
-        elif "cellranger_vdj_b4aggr" in rules_available:
+        if "cellranger_vdj_b4aggr" in rules_available:
+
             return rules.cellranger_vdj_b4aggr.output.aggr_input_csv
-        else:
-            print("Something went wrong!!")
+        # else:
+        #     print("Something went wrong!!")
 
 
 def list1_isin_list2(list1, list2):
@@ -48,7 +71,9 @@ def list1_isin_list2(list1, list2):
 
 
 def vdj_t_flag(wc):
-    rules_available = list(rules.__dict__.keys())
+
+    rules_available = get_available_rules(snakemake_version)
+
     if list1_isin_list2(["cellranger_multi", "cellranger_aggr"], rules_available):
         vdj_t_path = os.path.join(
             rules.cellranger_aggr.params.aggr_outdir,
@@ -62,8 +87,9 @@ def vdj_t_flag(wc):
 
 
 def vdj_b_flag(wc):
-    # Check if specific rules are available
-    rules_available = list(rules.__dict__.keys())
+
+    rules_available = get_available_rules(snakemake_version)
+
     if list1_isin_list2(["cellranger_multi", "cellranger_aggr"], rules_available):
         vdj_b_path = os.path.join(
             rules.cellranger_aggr.params.aggr_outdir,
