@@ -69,8 +69,12 @@ rule cellranger_count:
             count_outdir, "{sample}_count", "outs", "filtered_feature_bc_matrix.h5"
         ),
         WebSummary=report(
-            os.path.join(count_outdir, "{sample}_count", "outs", "web_summary.html"),
-            "../report/cellranger_count_mapping.rst",
+            directory(os.path.join(count_outdir, "{sample}_count", "outs")),
+            htmlindex="web_summary.html",
+            caption="../report/cellranger_count_mapping.rst",
+            category="cellranger_count",
+            subcategory="{sample}",
+            labels={"sample": "{sample}"},
         ),
     params:
         transcriptome=config_count["transcriptome"],

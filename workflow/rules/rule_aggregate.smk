@@ -14,6 +14,13 @@ rule cellranger_aggr:
         aggr_h5=os.path.join(
             "{aggr_outdir}", "outs", "count", "filtered_feature_bc_matrix.h5"
         ),
+        WebSummary=report(
+            directory(os.path.join("{aggr_outdir}", "outs")),
+            htmlindex="web_summary.html",
+            caption="../report/cellranger_aggr.rst",
+            category="cellranger_aggr",
+            labels={"ID used": config_aggr["aggregation_id"]},
+        ),
     resources:
         cores=config_aggr["resources"]["localcores"],
         memory=config_aggr["resources"]["localmem"],
