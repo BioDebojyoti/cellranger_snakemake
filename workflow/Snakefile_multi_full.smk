@@ -12,7 +12,7 @@ include: os.path.join("rules", "rule_common_seurat.smk")
 include: os.path.join("rules", "rule_seurat.smk")
 
 
-ruleorder: cellranger_mkfastq > demultiplex_all > cellranger_multi_input_prep > cellranger_multi > cellranger_multi_b4aggr > cellranger_aggr > seurat
+ruleorder: cellranger_mkfastq > demultiplex_all > cellranger_multi_input_prep > cellranger_multi > cellranger_multi_b4aggr > cellranger_aggr > seurat_step
 
 
 rule de_results:

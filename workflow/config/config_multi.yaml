@@ -10,12 +10,12 @@ multi_config_csv:
   # ]
 # "/home/debojyoti/Projects/core_facility/beam_t/5k_BEAM-T_Human_A0201_B0702_PBMC_5pv2_Multiplex_config.csv"
 
-additional_info_aggr: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/additional_info.csv"
+additional_info_aggr: "/home/debojyoti/Projects/core_facility/cellranger_snakemake_tests/gosia_single_cell_runs/additional_info.csv"
 input_csvs:
 # "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/vdj_240220/mkfastq_success_run1.csv",
 # "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/gex_240227/mkfastq_success_run2.csv",
 gene_expression:
-  reference: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/refdata_gex_GRCh38_2020_A"
+  reference: "/home/debojyoti/Projects/core_facility/cellranger_snakemake_tests/refdata_gex_GRCh38_2020_A"
   create_bam: False
   probe_set:
   filter_probes:

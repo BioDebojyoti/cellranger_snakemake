@@ -5,7 +5,7 @@ latency-wait:
 # reason: True
 show-failed-logs: True
 keep-going: True
-printshellcmds: True
+printshellcmds: False
 rerun-incomplete: True
 restart-times:
 

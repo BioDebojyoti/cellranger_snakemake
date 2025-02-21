@@ -2,11 +2,11 @@
 output_count: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gex_count_test/count_results"
 
 # if additional information is needed to add
-add_info_aggr: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/additional_info_count_only.csv"
+add_info_aggr: "/home/debojyoti/Projects/core_facility/cellranger_snakemake_tests/gosia_single_cell_runs/additional_info_count_only.csv"
 
 # Only used if start_with_bcl is False
 paths2fastq_file: # "../gosia_single_cell_runs/gex_240227/mkfastq_success_run2.csv"
-transcriptome: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/refdata_gex_GRCh38_2020_A"
+transcriptome: "/home/debojyoti/Projects/core_facility/cellranger_snakemake_tests/refdata_gex_GRCh38_2020_A"
 
 resources:
   localcores: 8 # Set the number of cores to use (e.g., 16)

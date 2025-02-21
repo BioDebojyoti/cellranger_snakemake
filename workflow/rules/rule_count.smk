@@ -17,11 +17,11 @@ rule fastq_folders:
         expand(os.path.join(fastq_outdirectory, "{sample}_fastq.csv"), sample=samples),
     log:
         file=os.path.join(fastq_outdirectory, "logs", "fastq_folders.log"),
-    # conda:
-    #     "envs/minimal_python.yaml"
+    conda:
+        "../envs/minimal_python.yaml"
     shell:
         """
-        /usr/bin/python3 scripts/get_proxy_fastq_files.py {input}
+        python3 scripts/get_proxy_fastq_files.py {input}
         """
 
 
@@ -39,17 +39,13 @@ rule cellranger_count_b4aggr:
             ),
             sample=samples,
         ),
-        WebSummary=expand(
-            os.path.join(count_outdir, "{sample}_count", "outs", "web_summary.html"),
-            sample=samples,
-        ),
     log:
         os.path.join(count_outdir, "logs", "count_aggr.log"),
     params:
         countdir=lambda wc: count_outdir,
         additional_info_aggr=config_count["add_info_aggr"],
-    # conda:
-    #     "envs/minimal_python.yaml"
+    conda:
+        "../envs/minimal_python.yaml"
     shell:
         """
         bash scripts/get_count_aggr_csv.sh {params.countdir} > {params.countdir}/aggregation_count.csv;
@@ -103,6 +99,6 @@ rule cellranger_count:
         --localcores={resources.cores} \
         --localmem={resources.memory} \
         {params.add_arguments} \
-        2>&1 | tee -a {log.file}; \
+        >> {log.file} 2>&1; \
         bash scripts/move_pipestance_count_dir.sh {log.file} {params.count_outdir2use}; 
         """

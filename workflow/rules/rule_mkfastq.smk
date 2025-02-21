@@ -189,7 +189,7 @@ rule cellranger_mkfastq:
         {params.args2add} \
         --localcores={resources.cores} \
         --localmem={resources.memory} \
-        2>&1 | tee -a {log};
+        >> {log} 2>&1; \
         bash scripts/move_pipestance_mkfastq_dir.sh {log:q} {params.outdir2use:q};
         bash scripts/get_fastq_csv.sh {params.outdir2use:q} "{params.lib_type}" > {output.flag};
         bash scripts/proxy_for_directory.sh {output.flag};

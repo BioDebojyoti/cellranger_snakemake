@@ -1,9 +1,7 @@
-# bcl_folder_paths: "../gosia_single_cell_runs/bcl_folder_paths.csv"
-bcl_folder_paths: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/bcl_folder_paths_count_only.csv"
-# "../gosia_single_cell_runs/bcl_folder_paths.csv" # gex + vdj
+bcl_folder_paths: "/home/debojyoti/Projects/core_facility/cellranger_snakemake_tests/bcl_folder_paths_multi.csv"
+# bcl_folder_paths: "/home/debojyoti/Projects/core_facility/cellranger_snakemake_tests/gosia_single_cell_runs/bcl_folder_paths_count_only.csv"
 
-results_directory: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gex_count_test_two"
-# fastq_outdirectory: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gex_count_test_new"
+results_directory: "/home/debojyoti/Projects/core_facility/cellranger_snakemake_tests/gex_count_test_four"
 
 resources:
   localcores: 8

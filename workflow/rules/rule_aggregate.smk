@@ -3,7 +3,6 @@ import os, sys
 import pandas as pd
 
 aggr_outdir = os.path.join(results_directory, "aggr_results")
-# aggr_outdir = os.path.join(fastq_outdirectory, "aggr_results")
 
 
 # Rule to aggregate libraries
@@ -39,6 +38,6 @@ rule cellranger_aggr:
         cellranger aggr --id={params.aggr_id} --csv={input.csv} --normalize={params.aggr_normalize} \
         --localcores={resources.cores} \
         --localmem={resources.memory} \
-        2>&1 | tee -a {log.file};
+        >> {log.file} 2>&1; \
         bash scripts/move_pipestance_aggr_dir.sh {log.file} {params.aggr_outdir}; 
         """

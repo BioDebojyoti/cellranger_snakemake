@@ -62,7 +62,7 @@ rule cellranger_vdj_b4aggr:
         vdjdir=vdj_outdir,
         additional_info_aggr=config_vdj["add_info_aggr"],
     conda:
-        "envs/minimal_python.yaml"
+        "../envs/minimal_python.yaml"
     shell:
         """
         bash scripts/get_vdj_aggr_csv.sh {params.vdjdir} > {params.vdjdir}/aggregation_vdj.csv;
@@ -107,6 +107,6 @@ rule cellranger_vdj:
         --localcores={resources.cores} \
         --localmem={resources.memory} \
         {params.add_arguments} \
-        2>&1 | tee -a {log.file}; \
+        >> {log.file} 2>&1; \
         bash scripts/move_pipestance_vdj_dir.sh {log.file} {params.vdj_outdir2use}; 
         """
