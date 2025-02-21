@@ -49,7 +49,7 @@ rule cellranger_count_b4aggr:
     shell:
         """
         bash scripts/get_count_aggr_csv.sh {params.countdir} > {params.countdir}/aggregation_count.csv;
-        /usr/bin/python3 scripts/add_info_aggr.py {params.countdir}/aggregation_count.csv {params.additional_info_aggr}
+        python3 scripts/add_info_aggr.py {params.countdir}/aggregation_count.csv {params.additional_info_aggr}
         """
 
 
