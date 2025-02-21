@@ -6,7 +6,7 @@ from scripts import concat_for_multi as cfm
 import shutil
 import re
 
-multi_outdir = config_multi["output_multi"]
+multi_outdir = os.path.join(results_directory, "multi_results")
 
 donor_list = list(
     set(pd.read_csv(config_multi["additional_info_aggr"])["donor"].tolist())
@@ -29,7 +29,7 @@ checkpoint cellranger_multi_input_prep:
     log:
         os.path.join(multi_outdir, "logs", "multi_input_prep.log"),
     conda:
-        "envs/minimal_python.yaml"
+        "../envs/minimal_python.yaml"
     shell:
         """
         python scripts/get_multi_input.py {params.config_file} {params.multi_outdir} {input.fastq_paths}
@@ -52,9 +52,9 @@ rule cellranger_multi_b4aggr:
             donor_id=donor_list,
         ),
     conda:
-        "envs/minimal_python.yaml"
+        "../envs/minimal_python.yaml"
     params:
-        multidir=multi_outdir,
+        multidir=lambda wc: multi_outdir,
         additional_info_aggr=config_multi["additional_info_aggr"],
     log:
         os.path.join(multi_outdir, "logs", "multi_pre_aggr.log"),
@@ -100,7 +100,7 @@ rule cellranger_multi:
         ),
     params:
         id2use="{donor_id}",
-        multi_outdir2use=os.path.join(multi_outdir, "{donor_id}"),
+        multi_outdir2use=lambda wc: os.path.join(multi_outdir, "{donor_id}"),
     resources:
         cores=config_count["resources"]["localcores"],
         memory=config_count["resources"]["localmem"],
@@ -117,6 +117,6 @@ rule cellranger_multi:
         --csv={input.csv} \
         --localcores={resources.cores} \
         --localmem={resources.memory} \
-        2>&1 | tee -a "{log.file}"; \
+        >> {log.file} 2>&1; \
         bash scripts/move_pipestance_multi_dir.sh {log.file} {params.multi_outdir2use}; 
         """

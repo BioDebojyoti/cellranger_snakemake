@@ -22,24 +22,6 @@ def get_available_rules(snakemake_version):
     return rules_available
 
 
-# Define the function to determine output for cellranger_aggr
-# def output_dir_for_cellranger_aggr(wc):
-
-#     rules_available = get_available_rules(snakemake_version)
-
-#     if config_aggr.get("aggr_outdir", None):
-#         return config_aggr["aggr_outdir"]
-#     elif "cellranger_count" in rules_available:
-#         return os.path.join(config_count["output_count"], "aggr_results")
-#     elif "cellranger_vdj" in rules_available:
-#         return os.path.join(config_vdj["output_vdj"], "aggr_results")
-#     else:
-#         return os.path.join(config_multi["output_multi"], "aggr_results")
-
-
-# Define the function to determine input for cellranger_aggr
-
-
 def input_for_cellranger_aggr(wc):
 
     rules_available = get_available_rules(snakemake_version)

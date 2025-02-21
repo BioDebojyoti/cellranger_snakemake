@@ -7,16 +7,21 @@ project_name = config_seurat.get("project") or "singleCell"
 final_rds = f"{project_name}_analysed_seurat.rds"
 
 seurat_outdir = os.path.join(results_directory, "seurat_out")
-# seurat_outdir = os.path.join(fastq_outdirectory, "seurat_out")
 
 
 # Rule to run seurat on cellranger output
-rule seurat:
+rule seurat_step:
     input:
         gex=input_gex_for_seurat,
         aggr_csv=seurat_input_aggr_csv,
     output:
         seurat_rds=os.path.join(seurat_outdir, final_rds),
+        seurat_plots=report(
+            directory(seurat_outdir),
+            patterns=["{name}.pdf"],
+            caption="../report/seurat.rst",
+            category="seurat_step",
+        ),
     resources:
         cores=config_seurat["resources"]["cores"],
         threads=config_seurat["resources"]["threads"],
@@ -36,5 +41,5 @@ rule seurat:
         {params.extra_args} {params.vdj_t_args} {params.vdj_b_args} \
         --out-directory={params.seurat_out_directory} \
         --num-cores={resources.cores} --num-threads={resources.threads} \
-        --memory-usage={resources.memory} 2>&1 | tee -a {log.file}; 
+        --memory-usage={resources.memory} >> {log.file} 2>&1;
         """
