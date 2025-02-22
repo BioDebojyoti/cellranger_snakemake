@@ -1,0 +1,14 @@
+name: minimal_python
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.8 # Adjust to your desired Python version
+  - pandas # Required by your scripts
+  - re # Built-in module, no need to install, but listed for clarity
+  - sys # Built-in module, no need to install, but listed for clarity
+  - os # Built-in module, no need to install, but listed for clarity
+  - argparse # Used in some of your scripts
+  - pyyaml # For yaml module used in scripts/get_multi_input.py
+  - json # Used in scripts/get_proxy_fastq_files.py
+  - pip # For any additional Python dependencies not available through conda
