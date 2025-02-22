@@ -462,33 +462,13 @@ seurat_analysis <- function(
   print("Seurat analysis complete!!")
   print(end_time - start_time)
 
-  sink(paste0(seurat_out_dir, "/session_info.txt"))
-  sessionInfo()
-  sink()
+
+  writeLines(
+    capture.output(sessionInfo()), paste0(seurat_out_dir, "/sessioninfo.txt")
+      )
+
 }
 
-
-# data_dir <- "count/filtered_feature_bc_matrix"
-# # data_dir <- "count/sample_filtered_feature_bc_matrix"
-# data_file <- NULL
-# project_name <- "test"
-# seurat_out_dir <- "seurat_out"
-# min_cells <- 3
-# min_features <- 100
-# max_features <- 3000
-# percent_mt <- NULL
-# percent_rb <- NULL
-# aggr_csv_file <- "aggregation.csv"
-# tcr_file <- "vdj_t/filtered_contig_annotations.csv"
-# bcr_file <- "vdj_b/filtered_contig_annotations.csv"
-# layer_column <- "donor"
-# condition_column <- "health_status"
-# integration_method <- "RPCAIntegration"
-# # CCAIntegration, RPCAIntegration, HarmonyIntegration,
-# # FastMNNIntegration, scVIIntegration
-# enable_sct <- TRUE
-# perform_de <- FALSE
-# species <- "human"
 
 # Run Seurat analysis
 if ((!is.null(data_dir)) | (!is.null(data_file))) {

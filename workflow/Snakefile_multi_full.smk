@@ -18,3 +18,8 @@ ruleorder: cellranger_mkfastq > demultiplex_all > cellranger_multi_input_prep > 
 rule de_results:
     input:
         os.path.join(seurat_outdir, final_rds),
+
+
+onsuccess:
+    print("Workflow completed successfully!")
+    shell(f"snakemake -s Snakefile_multi_full.smk --report {report_file}")

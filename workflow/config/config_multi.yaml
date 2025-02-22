@@ -1,6 +1,3 @@
-#output_multi: "/home/debojyoti/Projects/core_facility/beam_t/runs"
-output_multi: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gex_vdj/multi_results"
-
 multi_config_csv:
   # [
   #   "/home/debojyoti/Projects/core_facility/cellranger_snakemake/gosia_single_cell_runs/multi_results/S14_multi_samplesheet.csv",
@@ -28,7 +25,7 @@ gene_expression:
   check_compatibility:
   include_introns:
 vdj:
-  reference: "/home/debojyoti/Projects/core_facility/cellranger_snakemake/refdata_cellranger_vdj_GRCh38_alts_ensembl_710"
+  reference: "/home/debojyoti/Projects/core_facility/cellranger_snakemake_tests/refdata_cellranger_vdj_GRCh38_alts_ensembl_710"
   primers:
   r1_length:
   r2_length:

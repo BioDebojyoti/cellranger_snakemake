@@ -12,11 +12,6 @@ include: os.path.join("rules", "rule_common_seurat.smk")
 include: os.path.join("rules", "rule_seurat.smk")
 
 
-# ruleorder: cellranger_mkfastq > demultiplex_all > cellranger_count > cellranger_count_b4aggr > cellranger_aggr > seurat
-
-# report_file = os.path.join(results_directory, "report.html")
-
-
 rule de_results:
     input:
         os.path.join(seurat_outdir, final_rds),
@@ -24,4 +19,4 @@ rule de_results:
 
 onsuccess:
     print("Workflow completed successfully!")
-    shell(f"snakemake --report {report_file}")
+    shell(f"snakemake -s Snakefile_count_full.smk --report {report_file}")
