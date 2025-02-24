@@ -17,11 +17,11 @@ rule fastq_folders:
         expand(os.path.join(fastq_outdirectory, "{sample}_fastq.csv"), sample=samples),
     log:
         file=os.path.join(fastq_outdirectory, "logs", "fastq_folders.log"),
-    conda:
-        "../envs/minimal_python.yaml"
+    container:
+        "docker://biodebojyoti/pythoncellranger:v1.0.0"
     shell:
         """
-        python3 scripts/get_proxy_fastq_files.py {input}
+        python scripts/get_proxy_fastq_files.py {input}
         """
 
 
@@ -44,12 +44,12 @@ rule cellranger_count_b4aggr:
     params:
         countdir=lambda wc: count_outdir,
         additional_info_aggr=config_count["add_info_aggr"],
-    conda:
-        "../envs/minimal_python.yaml"
+    container:
+        "docker://biodebojyoti/pythoncellranger:v1.0.0"
     shell:
         """
         bash scripts/get_count_aggr_csv.sh {params.countdir} > {params.countdir}/aggregation_count.csv;
-        python3 scripts/add_info_aggr.py {params.countdir}/aggregation_count.csv {params.additional_info_aggr}
+        python scripts/add_info_aggr.py {params.countdir}/aggregation_count.csv {params.additional_info_aggr}
         """
 
 
