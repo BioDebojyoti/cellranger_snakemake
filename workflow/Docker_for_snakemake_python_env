@@ -1,0 +1,12 @@
+# Use docker-cellranger as the base image
+FROM litd/docker-cellranger:v8.0.1
+
+# Install Python and pip using DNF
+RUN dnf install -y python3 python3-pip && \
+    ln -s /usr/bin/python3 /usr/bin/python
+
+# Install Python packages
+RUN pip3 install pandas pyyaml
+
+# Default entrypoint
+ENTRYPOINT ["/bin/bash"]
