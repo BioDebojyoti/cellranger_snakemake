@@ -5,7 +5,7 @@ snakemake pipeline for 10X data analysis using cellranger
 
 
 <p align="center">
-  <img alt="Light" src="./rulegraph_count.png" width="32%">
+  <img alt="Light" src="./rulegraph_count.png" width="44%">
 &nbsp; &nbsp; &nbsp; &nbsp;
   <img alt="Dark" src="./rulegraph_multi.png" width="40%">
 </p>
