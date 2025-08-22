@@ -1,16 +1,58 @@
-snakemake pipeline for 10X data analysis using cellranger
+## snakemake pipeline for 10X data analysis using cellranger and seurat!  
+
+
+Following demultiplexing and count generation and aggregation using cellranger, the Seurat wrapper [scQCAD](https://github.com/BioDebojyoti/scQCAD)
+ performs the following:
+
+Quality control,  
+Batch correction (optional),  
+Clustering  
+Cell-type annotation using SingleR  
+Differential expression (DE) analysis (optional).
 
 
 # Introduction:
 
+The following should be present in your system
+```bash
+singularity-3.8.6
+snakemake-7.12.1 (also worked with snakemake-8.27.1)
+conda 23.3.1
+```
+
+To run the pipeline, use:
+```bash
+snakemake --profile profile --use-conda --use-singularity
+```
+All configuration files neeeded are described below and should be configured as required!  
+
+
+A successful run should generate a folder with the following tree
+
+```bash
+$ tree -L 1 -d
+.
+├── aggr_results
+├── fastq_directory
+├── multi_results
+├── report.html
+└── seurat_out
+```
+ and a report.html as below:
+ 
+<p align="center">
+  <img alt="Light" src="./Report.png" width="90%">
+</p>
+
+
+
+The single-cell RNA pipeline starts from **bcl files** (requiring initial demultiplexing).
 
 <p align="center">
   <img alt="Light" src="./rulegraph_count.png" width="44%">
 &nbsp; &nbsp; &nbsp; &nbsp;
   <img alt="Dark" src="./rulegraph_multi.png" width="40%">
 </p>
-
-The single-cell RNA pipeline starts from **bcl files** (requiring initial demultiplexing).
 
 Based on the data format at the start
 
@@ -19,6 +61,7 @@ Based on the data format at the start
 Please prepare a csv file in one of the following formats:
 
 **[a]** pipeline **count**: gene expression-only data 
+
 ```txt
 feature_type,run_bcl_path,iem_samplesheet,samplesheet_4_bcl,bcl_run_index
 "Gene Expression",/path/bcl/folder1,False,/path/to/samplesheet/for/bcl/folder1,run1
@@ -177,21 +220,19 @@ additional_arguments: "--create-bam=false" # required
 
 
 3. workflow/config/config_multi.yaml
-
-```yaml
-#output_multi: "/home/debojyoti/Projects/core_facility/beam_t/runs"
-output_multi: "/home/debojyoti/Projects/multi_results"
-
-multi_config_csv:
-  [
+ <!-- multi_config_csv:
+ [
     "/home/debojyoti/Projects/core_facility/multi_results/S14_multi_samplesheet.csv",
     "/home/debojyoti/Projects/core_facility/multi_results/S22_multi_samplesheet.csv",
     "/home/debojyoti/Projects/core_facility/multi_results/S29_multi_samplesheet.csv",
     "/home/debojyoti/Projects/core_facility/multi_results/S31_multi_samplesheet.csv",
-  ]
-# "/home/debojyoti/Projects/core_facility/beam_t/5k_BEAM-T_Human_A0201_B0702_PBMC_5pv2_Multiplex_config.csv"
+  ]-->
+```yaml
+#output_multi: "/home/debojyoti/Projects/beam_t/runs"
+output_multi: "/home/debojyoti/Projects/multi_results"
 
-additional_info_aggr: "/home/debojyoti/Projects/core_facility/additional_info.csv"
+multi_config_csv:
+additional_info_aggr: "/home/debojyoti/Projects/additional_info.csv"
 input_csvs:
 
 gene_expression:
@@ -295,13 +336,4 @@ species:
 # annotation for species [default: human]
 ```
 
-Output file structure
-```bash
-$ tree -L 1 -d
-.
-├── aggr_results
-├── fastq_directory
-├── multi_results
-├── report.html
-└── seurat_out
-```
+
