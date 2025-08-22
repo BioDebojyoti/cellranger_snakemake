@@ -22,8 +22,13 @@ conda 23.3.1
 
 To run the pipeline, use:
 ```bash
-snakemake --profile profile --use-conda --use-singularity
+snakemake -s Snakefile_count_full.smk --profile profile --use-conda --use-singularity
 ```
+or if you want to analyze the GEX + V(D)J data
+```bash
+snakemake -s Snakefile_multi_full.smk --profile profile --use-conda --use-singularity
+```
+
 All configuration files neeeded are described below and should be configured as required!  
 
 
@@ -34,7 +39,7 @@ $ tree -L 1 -d
 .
 ├── aggr_results
 ├── fastq_directory
-├── multi_results
+├── multi_results (or count_results)
 ├── report.html
 └── seurat_out
 ```
